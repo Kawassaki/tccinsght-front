@@ -146,6 +146,10 @@ THE SOFTWARE.
 MIT
 MIT
 
+@angular/router@5.2.9
+MIT
+MIT
+
 @types/googlemaps@3.30.8
 MIT
 MIT License
