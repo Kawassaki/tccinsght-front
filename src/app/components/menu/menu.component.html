@@ -1,5 +1,18 @@
 <mat-toolbar class="background-toolbar">
   <mat-toolbar-row>
-    <span class="font-white">iBranch</span>
+    <span>iBranch</span>
+    
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item color = "default" routerLink="/map" onclick="">Mapa</button>
+      <button mat-menu-item color = "default" routerLink="/login" onclick="">Login</button>
+      <button mat-menu-item color = "default" routerLink="/user" onclick="">User</button>
+    </mat-menu>
+    
+    <button mat-icon-button [matMenuTriggerFor]="appMenu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    
+    
+    
   </mat-toolbar-row>
 </mat-toolbar>

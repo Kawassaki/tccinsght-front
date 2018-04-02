@@ -2,8 +2,5 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .background-toolbar{
-    background-color: #f48fb1;
-}
-.font-white{
-    color : #FFFF;
+    background-color: #bbdefb;
 }
