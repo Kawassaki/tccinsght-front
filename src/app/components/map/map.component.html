@@ -1,19 +1,21 @@
 
 <mat-card>	
-    <mat-card-title>
-      Teste Title
-    </mat-card-title>
+  <div style="text-align:center" class="container">
+      <!-- <mat-form-field class="example-full-width"> -->
       
-  <div style="text-align:center">
-    <div #gmap style='width:100%;height:400px'></div>
+      <!-- </mat-form-field> -->
+
+    <!-- <input matInput placeholder="Favorite food" #search/>
+    <div #gmap style='width:100%;height:400px'></div> -->
+
+    <div class="form-group container">
+        <mat-form-field>
+          <input matInput placeholder="Onde gostaria de ir?" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+        </mat-form-field>
+        </div>
+    <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+      <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    </agm-map>
+
   </div>
 </mat-card>	
-
-
-<div class="col-md-3 col-sm-12 col-xs-12">
-  <button mat-raised-button color = "primary" (click)="setMapType('terrain')">Terrain</button>
-  <button mat-raised-button color = "primary" (click)="setMapType('satellite')">Satellite</button>
-  <button mat-raised-button color = "primary" (click)="setMapType('roadmap')" >Road Map</button>
-</div>
-
-

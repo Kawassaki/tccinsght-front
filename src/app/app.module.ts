@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
 import { MaterialDesingModule } from './modules/material-desing/material-desing.module';
@@ -11,6 +13,7 @@ import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RoutingModule } from './routing.module';
 
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -22,14 +25,22 @@ import { RoutingModule } from './routing.module';
     LoginComponent,
     MapComponent,
     PageNotFoundComponent,
+    
   ],
   imports: [
     BrowserModule,
     MaterialDesingModule,
-    RoutingModule
+    RoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyCAGv3exRld0pzJZv-nORwsYFP09tp1p9Q",
+      libraries: ["places"]
+    }),
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
-    RouterModule
+    RouterModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
