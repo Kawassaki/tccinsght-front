@@ -13,7 +13,7 @@ import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RoutingModule } from './routing.module';
 
-import { AgmCoreModule } from '@agm/core';
+// import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -31,10 +31,10 @@ import { AgmCoreModule } from '@agm/core';
     BrowserModule,
     MaterialDesingModule,
     RoutingModule,
-    AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCAGv3exRld0pzJZv-nORwsYFP09tp1p9Q",
-      libraries: ["places"]
-    }),
+    // AgmCoreModule.forRoot({
+    //   apiKey: "AIzaSyCAGv3exRld0pzJZv-nORwsYFP09tp1p9Q",
+    //   libraries: ["places"]
+    // }),
     FormsModule,
     ReactiveFormsModule,
   ],

@@ -1,7 +1,6 @@
-import { ElementRef, NgZone, OnInit, ViewChild, Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { } from 'googlemaps';
-import { MapsAPILoader } from '@agm/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { MenuComponent } from './../menu/menu.component';
+import { } from '@types/googlemaps';
 
 @Component({
   selector: 'app-map',
@@ -9,66 +8,172 @@ import { MapsAPILoader } from '@agm/core';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  
-  public latitude: number;
-  public longitude: number;
-  public searchControl: FormControl;
-  public zoom: number;
-  
-  @ViewChild("search")
-  public searchElementRef: ElementRef;
-  
+
+
+  @ViewChild('gmap') gmapElement: any;
+  map: google.maps.Map;
+
+  @ViewChild('search') search: any;
+
+  private markers: any;
+  private places: any;
+  private latitude: number;
+  private longitude: number;
+  private zoom: number;
+  private mapCenter: any;
+  // private ngZone: NgZone;
+
   title = 'app';
-  
-  constructor(
-    private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone
-  ) {}
-  
+
+
+  constructor(private ngZone: NgZone) { }
+
+  setMapType(mapTypeId: string) {
+    this.map.setMapTypeId(mapTypeId)
+  }
+
   ngOnInit() {
-    //set google maps defaults
-    this.zoom = 4;
-    this.latitude = 39.8282;
-    this.longitude = -98.5795;
 
-    //create search FormControl
-    this.searchControl = new FormControl();
+    var self = this;
 
-    //set current position
-    this.setCurrentPosition();
+    let mapProp = {
+      center: this.mapCenter,
+      zoom: 13,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
 
-    //load Places Autocomplete
-    this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
-      });
+    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+    self.mapCenter = new google.maps.LatLng(-34.397, 150.644);
 
-      autocomplete.addListener("place_changed", () => {
-        this.ngZone.run(() => {
-          //get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+    this.initAutocomplete();
 
-          //verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
+    window.navigator.geolocation.getCurrentPosition(function (data) {
+      self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
+      self.map.setCenter(self.mapCenter);
+    });
 
-          //set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
-        });
+  }
+
+  ngAfterViewInit() { }
+
+  initAutocomplete() {
+    var self = this;
+    let searchBox = new google.maps.places.SearchBox(this.search.nativeElement);
+    // this.getZone(searchBox);
+
+
+    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.search.nativeElement);
+
+    this.map.addListener('bounds_changed', function () {
+      searchBox.setBounds(self.map.getBounds());
+    });
+
+    searchBox.addListener('places_changed', function () {
+      self.places = searchBox.getPlaces();
+
+      if (self.places.length == 0) {
+        return;
+      }
+
+      // Clear out the old markers.
+      self.cleanMarkers();
+      self.getDetails();
+
+    });
+  }
+
+  getZone(searchBox) {
+    var self = this;
+    this.ngZone.run(() => {
+      //get the place result
+      searchBox.getPlaces().forEach(function (eachPlace) {
+        let place: google.maps.places.PlaceResult = this.eachPlace.getPlace();
+        //verify result
+        if (place.geometry === undefined || place.geometry === null) {
+          return;
+        }
+
+        //set latitude, longitude and zoom
+        this.latitude = place.geometry.location.lat();
+        this.longitude = place.geometry.location.lng();
+        this.zoom = 12;
       });
     });
   }
 
-  private setCurrentPosition() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.zoom = 12;
-      });
+  cleanMarkers() {
+    if (this.markers === undefined || this.markers === null) {
+      this.markers = [];
+      return;
     }
+    this.markers.forEach(function (marker) {
+      marker.setMap(null);
+    });
+    this.markers = [];
+  }
+
+  getDetails() {
+    var self = this;
+    let service = new google.maps.places.PlacesService(this.map);
+
+    self.places.forEach(function (placeEach) {
+      // console.log(placeEach);
+      service.getDetails({
+        placeId: placeEach.place_id
+      }, function (place, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          let marker = self.markPlace(place);
+          google.maps.event.addListener(marker, 'click', function () {
+            console.log(place);
+            // infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+            //   'Place ID: ' + place.place_id + '<br>' +
+            //   place.formatted_address + '</div>');
+            // infowindow.open(map, this);
+          });
+        }
+      });
+
+    });
+
+  }
+
+
+  markPlace(place): any {
+
+    var self = this;
+    let bounds = new google.maps.LatLngBounds();
+    
+    if (!place.geometry) {
+      console.log("Returned place contains no geometry");
+      return;
+    }
+    var icon = {
+      url: place.icon,
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(25, 25)
+    };
+
+    let marker = new google.maps.Marker({
+      map: self.map,
+      icon: icon,
+      title: place.name,
+      position: place.geometry.location
+    })
+
+    // Create a marker for each place.
+    self.markers.push(marker);
+
+    if (place.geometry.viewport) {
+      // Only geocodes have viewport.
+      bounds.union(place.geometry.viewport);
+    } else {
+      bounds.extend(place.geometry.location);
+    }
+
+    this.map.fitBounds(bounds);
+
+    return marker;
   }
 }
