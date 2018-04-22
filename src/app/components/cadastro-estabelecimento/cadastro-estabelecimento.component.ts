@@ -1,13 +1,14 @@
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
 
-@Component({
-  selector: 'app-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
-})
-export class MapComponent implements OnInit {
 
+
+@Component({
+  selector: 'app-cadastro-estabelecimento',
+  templateUrl: './cadastro-estabelecimento.component.html',
+  styleUrls: ['./cadastro-estabelecimento.component.css']
+})
+export class CadastroEstabelecimentoComponent implements OnInit {
 
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
@@ -20,19 +21,17 @@ export class MapComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
-  // private ngZone: NgZone;
+  nome: string = "abc";
+  cnpj: any;
+  endereco: any;
+  telefone: any;
+  place_id: any;
+  website: any
+    
+  constructor() { }
 
-  title = 'app';
-
-
-  constructor(private ngZone: NgZone) { }
-
-  setMapType(mapTypeId: string) {
-    this.map.setMapTypeId(mapTypeId)
-  }
 
   ngOnInit() {
-
     var self = this;
 
     let mapProp = {
@@ -50,10 +49,7 @@ export class MapComponent implements OnInit {
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
     });
-
   }
-
-  ngAfterViewInit() { }
 
   initAutocomplete() {
     var self = this;
@@ -82,25 +78,6 @@ export class MapComponent implements OnInit {
     });
   }
 
-  getZone(searchBox) {
-    var self = this;
-    this.ngZone.run(() => {
-      //get the place result
-      searchBox.getPlaces().forEach(function (eachPlace) {
-        let place: google.maps.places.PlaceResult = this.eachPlace.getPlace();
-        //verify result
-        if (place.geometry === undefined || place.geometry === null) {
-          return;
-        }
-
-        //set latitude, longitude and zoom
-        this.latitude = place.geometry.location.lat();
-        this.longitude = place.geometry.location.lng();
-        this.zoom = 12;
-      });
-    });
-  }
-
   cleanMarkers() {
     if (this.markers === undefined || this.markers === null) {
       this.markers = [];
@@ -121,35 +98,27 @@ export class MapComponent implements OnInit {
       service.getDetails({
         placeId: placeEach.place_id
       }, function (place, status) {
+
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           let marker = self.addMarkPlace(place);
+
           google.maps.event.addListener(marker, 'click', function () {
-            console.log(place);
-            if("photos" in place){
-              place.photos.forEach(function (photoPlace){
-                console.log(photoPlace.getUrl({'maxWidth': 1200, 'maxHeight': 600}));
-                // photoPlace.getUrl;
-                console.log('https://maps.googleapis.com/maps/api/place/photo?photoreference=' + placeEach.reference + '&key=AIzaSyCAGv3exRld0pzJZv-nORwsYFP09tp1p9Q' );
-              });
-            }
-            // infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-            //   'Place ID: ' + place.place_id + '<br>' +
-            //   place.formatted_address + '</div>');
-            // infowindow.open(map, this);
+            self.nome = place.name;
+            self.telefone = place.international_phone_number;
+            self.place_id = place.place_id;
+            self.website = place.website;
+            self.endereco = place.vicinity;
           });
         }
       });
-
     });
-
   }
-
 
   addMarkPlace(place): any {
 
     var self = this;
     let bounds = new google.maps.LatLngBounds();
-    
+
     if (!place.geometry) {
       console.log("Returned place contains no geometry");
       return;

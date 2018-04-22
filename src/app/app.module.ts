@@ -12,8 +12,14 @@ import { LoginComponent } from './components/login/login.component';
 import { MapComponent } from './components/map/map.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { RoutingModule } from './routing.module';
+import { CadastroEstabelecimentoComponent } from './components/cadastro-estabelecimento/cadastro-estabelecimento.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { HttpClientModule } from '@angular/common/http';
 
-// import { AgmCoreModule } from '@agm/core';
+import { StarRatingModule } from 'angular-star-rating';
+
+
+
 
 
 @NgModule({
@@ -25,18 +31,19 @@ import { RoutingModule } from './routing.module';
     LoginComponent,
     MapComponent,
     PageNotFoundComponent,
-    
+    CadastroEstabelecimentoComponent,
+    HomePageComponent,
+       
   ],
   imports: [
     BrowserModule,
     MaterialDesingModule,
     RoutingModule,
-    // AgmCoreModule.forRoot({
-    //   apiKey: "AIzaSyCAGv3exRld0pzJZv-nORwsYFP09tp1p9Q",
-    //   libraries: ["places"]
-    // }),
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    StarRatingModule
+
   ],
   exports: [
     RouterModule,
