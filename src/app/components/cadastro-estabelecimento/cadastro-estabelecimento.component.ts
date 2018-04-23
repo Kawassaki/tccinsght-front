@@ -1,6 +1,8 @@
 import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
 import { } from '@types/googlemaps';
 
+import { Estabelecimento } from './../../models/endereco';
+
 
 
 @Component({
@@ -13,7 +15,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
   @ViewChild('search') search: any;
-  @ViewChild('trigger') trigger:any;
 
   private markers: any;
   private places: any;
@@ -21,19 +22,17 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
-  nome: string;
-  cnpj: any;
-  endereco: any;
-  telefone: any;
-  place_id: any;
-  website: any;
+  
+  public estabelecimento: Estabelecimento;
+
   private renderer: Renderer;
 
-  constructor() { }
+  constructor( private zone: NgZone ) { }
 
 
   ngOnInit() {
     var self = this;
+    this.estabelecimento = new Estabelecimento();
 
     let mapProp = {
       center: self.mapCenter,
@@ -43,8 +42,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
     
-    // self.mapCenter = new google.maps.LatLng(-34.397, 150.644);
-
     this.initAutocomplete();
     var lat;
     var long
@@ -55,20 +52,15 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
     });
-
-    // this.addMarkPlace(null, lat, long);
   }
 
   initAutocomplete() {
     var self = this;
     let searchBox = new google.maps.places.SearchBox(this.search.nativeElement);
-    // this.getZone(searchBox);
-
 
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.search.nativeElement);
 
     this.map.addListener('bounds_changed', function () {
-      // console.log(self.places);
       searchBox.setBounds(self.map.getBounds());
     });
 
@@ -79,7 +71,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         return;
       }
 
-      // Clear out the old markers.
       self.cleanMarkers();
       self.getDetails();
 
@@ -97,50 +88,43 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     this.markers = [];
   }
 
-  // zoomToArea(){
-  //   let geocoder = new google.maps.Geocoder();
-
-  //   if(){
-
-  //   } else {
-
-  //   }
-
-  // }
-
   getDetails() {
     var self = this;
     let service = new google.maps.places.PlacesService(this.map);
 
     self.places.forEach(function (placeEach) {
-      // console.log(placeEach);
       service.getDetails({
         placeId: placeEach.place_id
       }, function (place, status) {
 
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          let marker = self.addMarkPlace(place, null, null);
-
+          let marker = self.addMarkPlace(place);
+          
           google.maps.event.addListener(marker, 'click', function () {
-            self.nome = place.name;
-            self.telefone = place.international_phone_number;
-            self.place_id = place.place_id;
-            self.website = place.website;
-            self.endereco = place.vicinity;
-            // self.trigger.nativeElement.onclick();
-            self.renderer.listen(this.trigger.nativeElement, 'click', (evt) => {
-              console.log('Clicking the button', evt);
-            });
+              console.log(place.icon);
+              self.estabelecimento.nome = place.name;
+              self.estabelecimento.telefone = place.international_phone_number;
+              self.estabelecimento.place_id = place.place_id;
+              self.estabelecimento.website = place.website;
+              self.estabelecimento.endereco = place.vicinity;
+              self.zone.run(() => {});
+          });
+
+          marker.addListener('mouseover', function() {
 
           });
+
+          marker.addListener('mouseout', function() {
+
+          });
+
         }
       });
     });
   }
 
-  addMarkPlace(place, lat, long): any {
-
-    // if(place !== null || place !== undefined || place !== ''){
+  
+  addMarkPlace(place): any {
       var self = this;
       let bounds = new google.maps.LatLngBounds();
 
@@ -148,6 +132,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         console.log("Returned place contains no geometry");
         return;
       }
+
       var icon = {
         url: place.icon,
         size: new google.maps.Size(71, 71),
@@ -163,11 +148,9 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         position: place.geometry.location
       })
 
-      // Create a marker for each place.
       self.markers.push(marker);
 
       if (place.geometry.viewport) {
-        // Only geocodes have viewport.
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
@@ -177,21 +160,5 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
       return marker;
 
-    // } else {
-    //   var self = this;
-    //   let bounds = new google.maps.LatLngBounds(lat, long);
-
-    //   let marker = new google.maps.Marker({
-    //     map: self.map,
-    //     icon: icon,
-    //     title: place.name,
-    //     position: place.geometry.location
-    //   });
-
-    //   self.markers.push(marker);
-    //   this.map.fitBounds(bounds);
-      
-    //   return marker;
-    // }
   }
 }

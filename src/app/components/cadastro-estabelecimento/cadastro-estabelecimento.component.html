@@ -14,19 +14,19 @@
           
             <div class="example-container">
               <mat-form-field>
-                <input matInput #trigger placeholder="Identificador do seu local:" [(ngModel)]="place_id" disabled>
+                <input matInput placeholder="Identificador do seu local:" [(ngModel)]="estabelecimento.place_id" disabled>
               </mat-form-field>
               <mat-form-field>
-                <input matInput placeholder="Nome do Estabelecimento:" [(ngModel)]="nome">
+                <input matInput placeholder="Nome do Estabelecimento:" [(ngModel)]="estabelecimento.nome">
               </mat-form-field>
               <mat-form-field>
-                  <input matInput placeholder="Telefone:" [(ngModel)]="telefone">
+                  <input matInput placeholder="Telefone:" [(ngModel)]="estabelecimento.telefone">
               </mat-form-field>
               <mat-form-field>
-                  <input matInput placeholder="Website:" [(ngModel)]="website">
+                  <input matInput placeholder="Website:" [(ngModel)]="estabelecimento.website">
               </mat-form-field>
               <mat-form-field>
-                  <input matInput placeholder="Endereço:" [(ngModel)]="endereco">
+                  <input matInput placeholder="Endereço:" [(ngModel)]="estabelecimento.endereco">
               </mat-form-field>
             </div>
           </div>
