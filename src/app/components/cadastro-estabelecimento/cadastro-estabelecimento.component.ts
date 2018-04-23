@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
 import { } from '@types/googlemaps';
 
 
@@ -12,8 +12,8 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
   @ViewChild('gmap') gmapElement: any;
   map: google.maps.Map;
-
   @ViewChild('search') search: any;
+  @ViewChild('trigger') trigger:any;
 
   private markers: any;
   private places: any;
@@ -21,13 +21,14 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
-  nome: string = "abc";
+  nome: string;
   cnpj: any;
   endereco: any;
   telefone: any;
   place_id: any;
-  website: any
-    
+  website: any;
+  private renderer: Renderer;
+
   constructor() { }
 
 
@@ -35,20 +36,27 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     var self = this;
 
     let mapProp = {
-      center: this.mapCenter,
+      center: self.mapCenter,
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    self.mapCenter = new google.maps.LatLng(-34.397, 150.644);
+    
+    // self.mapCenter = new google.maps.LatLng(-34.397, 150.644);
 
     this.initAutocomplete();
-
+    var lat;
+    var long
     window.navigator.geolocation.getCurrentPosition(function (data) {
+      lat = data.coords.latitude;
+      long = data.coords.longitude;
+
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
     });
+
+    // this.addMarkPlace(null, lat, long);
   }
 
   initAutocomplete() {
@@ -89,6 +97,17 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     this.markers = [];
   }
 
+  // zoomToArea(){
+  //   let geocoder = new google.maps.Geocoder();
+
+  //   if(){
+
+  //   } else {
+
+  //   }
+
+  // }
+
   getDetails() {
     var self = this;
     let service = new google.maps.places.PlacesService(this.map);
@@ -100,7 +119,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       }, function (place, status) {
 
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          let marker = self.addMarkPlace(place);
+          let marker = self.addMarkPlace(place, null, null);
 
           google.maps.event.addListener(marker, 'click', function () {
             self.nome = place.name;
@@ -108,48 +127,71 @@ export class CadastroEstabelecimentoComponent implements OnInit {
             self.place_id = place.place_id;
             self.website = place.website;
             self.endereco = place.vicinity;
+            // self.trigger.nativeElement.onclick();
+            self.renderer.listen(this.trigger.nativeElement, 'click', (evt) => {
+              console.log('Clicking the button', evt);
+            });
+
           });
         }
       });
     });
   }
 
-  addMarkPlace(place): any {
+  addMarkPlace(place, lat, long): any {
 
-    var self = this;
-    let bounds = new google.maps.LatLngBounds();
+    // if(place !== null || place !== undefined || place !== ''){
+      var self = this;
+      let bounds = new google.maps.LatLngBounds();
 
-    if (!place.geometry) {
-      console.log("Returned place contains no geometry");
-      return;
-    }
-    var icon = {
-      url: place.icon,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25)
-    };
+      if (!place.geometry) {
+        console.log("Returned place contains no geometry");
+        return;
+      }
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
 
-    let marker = new google.maps.Marker({
-      map: self.map,
-      icon: icon,
-      title: place.name,
-      position: place.geometry.location
-    })
+      let marker = new google.maps.Marker({
+        map: self.map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      })
 
-    // Create a marker for each place.
-    self.markers.push(marker);
+      // Create a marker for each place.
+      self.markers.push(marker);
 
-    if (place.geometry.viewport) {
-      // Only geocodes have viewport.
-      bounds.union(place.geometry.viewport);
-    } else {
-      bounds.extend(place.geometry.location);
-    }
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
 
-    this.map.fitBounds(bounds);
+      this.map.fitBounds(bounds);
 
-    return marker;
+      return marker;
+
+    // } else {
+    //   var self = this;
+    //   let bounds = new google.maps.LatLngBounds(lat, long);
+
+    //   let marker = new google.maps.Marker({
+    //     map: self.map,
+    //     icon: icon,
+    //     title: place.name,
+    //     position: place.geometry.location
+    //   });
+
+    //   self.markers.push(marker);
+    //   this.map.fitBounds(bounds);
+      
+    //   return marker;
+    // }
   }
 }

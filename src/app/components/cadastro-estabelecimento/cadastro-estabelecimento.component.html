@@ -1,4 +1,4 @@
-<mat-tab-group>
+<mat-tab-group class="padding-pages">
   <mat-tab>
     <ng-template mat-tab-label>
         <mat-icon>store_mall_directory</mat-icon>
@@ -7,14 +7,14 @@
     <mat-card class="example-card">
          
       <div class="padding-tabs">
+        <mat-card-content class="padding-top">
         <input class="controls" type="text" placeholder="Encontre seu Estabelecimento" #search>
         <div style="text-align:center">
             <div #gmap style='width:100%;height:300px'></div>
           
-          <mat-card-content class="padding-top">
             <div class="example-container">
               <mat-form-field>
-                <input matInput placeholder="Identificador do seu local:" [(ngModel)]="place_id" disabled>
+                <input matInput #trigger placeholder="Identificador do seu local:" [(ngModel)]="place_id" disabled>
               </mat-form-field>
               <mat-form-field>
                 <input matInput placeholder="Nome do Estabelecimento:" [(ngModel)]="nome">
@@ -28,10 +28,9 @@
               <mat-form-field>
                   <input matInput placeholder="Endereço:" [(ngModel)]="endereco">
               </mat-form-field>
-            
             </div>
-          </mat-card-content>
-        </div>
+          </div>
+        </mat-card-content>
         <mat-card-actions>
           <button mat-button>LIKE</button>
           <button mat-button>SHARE</button>
