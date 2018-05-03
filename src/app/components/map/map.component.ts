@@ -1,5 +1,6 @@
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
+import { QuerySelectorService } from '../../services/query-selector.service';
 
 @Component({
   selector: 'app-map',
@@ -20,6 +21,7 @@ export class MapComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
+  hidden: boolean= true;
   // private ngZone: NgZone;
 
   title = 'app';
@@ -27,12 +29,13 @@ export class MapComponent implements OnInit {
 
   constructor(private ngZone: NgZone) { }
 
-  setMapType(mapTypeId: string) {
-    this.map.setMapTypeId(mapTypeId)
+  ngOnInit() {
+    this.initMap();
   }
 
-  ngOnInit() {
+  ngAfterViewInit() { }
 
+  initMap(){
     var self = this;
 
     let mapProp = {
@@ -50,10 +53,7 @@ export class MapComponent implements OnInit {
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
     });
-
   }
-
-  ngAfterViewInit() { }
 
   initAutocomplete() {
     var self = this;
@@ -84,7 +84,7 @@ export class MapComponent implements OnInit {
 
   getZone(searchBox) {
     var self = this;
-    this.ngZone.run(() => {
+    self.ngZone.run(() => {
       //get the place result
       searchBox.getPlaces().forEach(function (eachPlace) {
         let place: google.maps.places.PlaceResult = this.eachPlace.getPlace();
@@ -93,7 +93,6 @@ export class MapComponent implements OnInit {
           return;
         }
 
-        //set latitude, longitude and zoom
         this.latitude = place.geometry.location.lat();
         this.longitude = place.geometry.location.lng();
         this.zoom = 12;
@@ -182,5 +181,11 @@ export class MapComponent implements OnInit {
     this.map.fitBounds(bounds);
 
     return marker;
+  }
+
+  getQuerySelector(query){
+    this.hidden = true;
+    console.log("map.component.ts", query);
+
   }
 }

@@ -108,16 +108,8 @@ export class CadastroEstabelecimentoComponent implements OnInit {
               self.estabelecimento.website = place.website;
               self.estabelecimento.endereco = place.vicinity;
               self.zone.run(() => {});
-          });
-
-          marker.addListener('mouseover', function() {
 
           });
-
-          marker.addListener('mouseout', function() {
-
-          });
-
         }
       });
     });

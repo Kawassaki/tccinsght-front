@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+
+import { MapComponent } from '../map/map.component';
+import { QuerySelectorService } from '../../services/query-selector.service';
 
 @Component({
   selector: 'app-home-page',
@@ -7,9 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor() { }
+
+  constructor( private _querySelector: QuerySelectorService) { }
 
   ngOnInit() {
+    
   }
 
+ 
 }

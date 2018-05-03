@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatStepperModule } from '@angular/material/stepper';
 
 
 
@@ -35,6 +36,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatInputModule,
     MatSelectModule, 
     MatTabsModule,
+    MatStepperModule
   ],
   exports: [
     CommonModule,
@@ -49,6 +51,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatInputModule,
     MatSelectModule,
     MatTabsModule,
+    MatStepperModule
   ],
 
   declarations: []

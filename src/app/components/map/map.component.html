@@ -1,21 +1,15 @@
-<mat-card>
+<app-questionario (onFilter)='getQuerySelector($event)'></app-questionario>
+
+
+<mat-card [style.display]="hidden?'none':'inherit'">
   <mat-card-title>
     Teste Title
   </mat-card-title>
 
-<div style="text-align:center">
-    <!-- <mat-form-field class="example-full-width"> -->
-        <input placeholder="Onde você quer ir?" #search>
-      <!-- </ma/t-form-field> -->
-      <hr>
-      <hr>
+  <div style="text-align:center">
+    <input placeholder="Onde você quer ir?" #search>
+    <hr>
+    <hr>
     <div #gmap style='width:100%;height:400px'></div>
-</div>
+  </div>
 </mat-card>
-
-
-<div class="col-md-3 col-sm-12 col-xs-12">
-<button mat-raised-button color = "primary" (click)="setMapType('terrain')">Terrain</button>
-<button mat-raised-button color = "primary" (click)="setMapType('satellite')">Satellite</button>
-<button mat-raised-button color = "primary" (click)="setMapType('roadmap')" >Road Map</button>
-</div>

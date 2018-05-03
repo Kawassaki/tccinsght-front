@@ -17,6 +17,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 
 import { StarRatingModule } from 'angular-star-rating';
+import { QuerySelectorService } from './services/query-selector.service';
+import { QuestionarioComponent } from './components/questionario/questionario.component';
 
 
 
@@ -33,6 +35,7 @@ import { StarRatingModule } from 'angular-star-rating';
     PageNotFoundComponent,
     CadastroEstabelecimentoComponent,
     HomePageComponent,
+    QuestionarioComponent,
        
   ],
   imports: [
@@ -49,7 +52,9 @@ import { StarRatingModule } from 'angular-star-rating';
     RouterModule,
     
   ],
-  providers: [],
+  providers: [ 
+    QuerySelectorService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
