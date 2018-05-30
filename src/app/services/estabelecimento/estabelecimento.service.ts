@@ -19,7 +19,7 @@ export class EstabelecimentoService {
  public getEstabelecimentos(): Observable<any>{
 
   if (environment.jsonData) {
-    return this.http.get('https://tcc-api-insight.appspot.com/estabelecimento')
+    return this.http.get('https://tcc-api-insight.appspot.com/getEstabelecimento')
       .map(response => {
         localStorage.setItem('estabelecimentos', response.json());
         return response.json();
