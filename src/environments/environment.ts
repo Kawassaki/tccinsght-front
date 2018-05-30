@@ -4,5 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  jsonData: true,
+  apiUrl: 'https://tcc-api-insight.appspot.com'
+  // usersJsonUrl: '../../assets/data/users.json'
 };

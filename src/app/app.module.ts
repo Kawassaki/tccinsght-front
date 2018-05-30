@@ -15,10 +15,12 @@ import { RoutingModule } from './routing.module';
 import { CadastroEstabelecimentoComponent } from './components/cadastro-estabelecimento/cadastro-estabelecimento.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
 
 import { StarRatingModule } from 'angular-star-rating';
 import { QuerySelectorService } from './services/query-selector.service';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
+import { EstabelecimentoService } from './services/estabelecimento/estabelecimento.service';
 
 
 
@@ -45,7 +47,8 @@ import { QuestionarioComponent } from './components/questionario/questionario.co
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    StarRatingModule
+    StarRatingModule,
+    HttpModule
 
   ],
   exports: [
@@ -53,7 +56,7 @@ import { QuestionarioComponent } from './components/questionario/questionario.co
     
   ],
   providers: [ 
-    QuerySelectorService
+    EstabelecimentoService
   ],
   bootstrap: [AppComponent]
 })

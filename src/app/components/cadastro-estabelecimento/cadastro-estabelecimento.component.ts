@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
 import { } from '@types/googlemaps';
 
 import { Estabelecimento } from './../../models/endereco';
+import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
 
 
 
@@ -23,12 +24,23 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private zoom: number;
   private mapCenter: any;
   
+  
   public estabelecimento: Estabelecimento;
 
   private renderer: Renderer;
+  private teste:any;
 
-  constructor( private zone: NgZone ) { }
+  constructor( private zone: NgZone,
+               private estabelecimentoService: EstabelecimentoService) {
+            this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => this.teste = estabelecimentoTeste);
 
+  }
+
+
+
+  retornaEstabelecimentoApi(){
+    console.log(this.teste);
+  }
 
   ngOnInit() {
     var self = this;
