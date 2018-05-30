@@ -28,18 +28,22 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   public estabelecimento: Estabelecimento;
 
   private renderer: Renderer;
-  private teste:any;
+  private estabelecimentos:any;
+  private estabelecimentosById:any;
 
   constructor( private zone: NgZone,
                private estabelecimentoService: EstabelecimentoService) {
-            this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => this.teste = estabelecimentoTeste);
+            this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => this.estabelecimentos = estabelecimentoTeste);
+            this.estabelecimentoService.getEstabelecimentosById().subscribe(estabelecimentoTeste => this.estabelecimentosById = estabelecimentoTeste);
+             
 
   }
 
 
 
   retornaEstabelecimentoApi(){
-    console.log(this.teste);
+    console.log(this.estabelecimentos);
+    console.log(this.estabelecimentosById);
   }
 
   ngOnInit() {
