@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
-
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class EstabelecimentoService {
 
- baseUrl: string = ''
-
  constructor(private http: Http) { }
 
  public getEstabelecimentos(): Observable<any>{
-
-    return this.http.get('https://tcc-api-insight.appspot.com/getEstabelecimento')
+    return this.http.get( environment.apiUrl + '/rest/testJersey/testJerseyComPath')
       .map(response => {
         localStorage.setItem('estabelecimentos', response.json());
         return response.json();
@@ -21,8 +18,7 @@ export class EstabelecimentoService {
   }
 
   public getEstabelecimentosById(): Observable<any>{
-
-    return this.http.get('https://tcc-api-insight.appspot.com/getEstabelecimentoById')
+    return this.http.get(environment.apiUrl + '/rest/testJersey')
       .map(response => {
         localStorage.setItem('estabelecimentos', response.json());
         return response.json();
