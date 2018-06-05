@@ -39,8 +39,8 @@ export class UserComponent implements OnInit {
         usuario.longitude = data.coords.longitude;
       });
 
-      this.usuarioService.setIP(usuario);
-      
+      this.usuarioService.getIP(usuario);
+
     } else {
       usuario.latitude = null;
       usuario.longitude = null;

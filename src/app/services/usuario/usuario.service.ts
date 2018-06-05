@@ -19,7 +19,7 @@ export class UsuarioService {
     return this.http.post(environment.apiUrl + '/rest/salvarUsuario', usuario);
   }
 
-  setIP(usuario: Usuario){
+  public getIP(usuario: Usuario){
     return this.httpClient.get<{ip:string}>('https://jsonip.com').subscribe( data =>{
       usuario.ipDeAcesso = data.ip;
     });
