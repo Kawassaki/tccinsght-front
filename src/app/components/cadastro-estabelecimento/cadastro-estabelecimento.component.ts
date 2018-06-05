@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
 import { } from '@types/googlemaps';
 
-import { Estabelecimento } from './../../models/endereco';
+import { Estabelecimento } from './../../models/estabelecimento';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
 
 
@@ -30,21 +30,26 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private renderer: Renderer;
   private estabelecimentos:any;
   private estabelecimentosById:any;
-
-  constructor( private zone: NgZone,
-               private estabelecimentoService: EstabelecimentoService) {
-            this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => this.estabelecimentos = estabelecimentoTeste);
-            this.estabelecimentoService.getEstabelecimentosById().subscribe(estabelecimentoTeste => this.estabelecimentosById = estabelecimentoTeste);
-             
-
-  }
+  
+  constructor( 
+    private zone: NgZone,
+    private estabelecimentoService: EstabelecimentoService
+  ) {  }
 
 
 
   retornaEstabelecimentoApi(){
+    this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => this.estabelecimentos = estabelecimentoTeste);
+    this.estabelecimentoService.getEstabelecimentosById().subscribe(estabelecimentoTeste => this.estabelecimentosById = estabelecimentoTeste);
     console.log(this.estabelecimentos);
     console.log(this.estabelecimentosById);
   }
+
+  salvarEstabelecimento(){
+    var self = this;
+    self.estabelecimentoService.salvarEstabelecimento(self.estabelecimento);
+  }
+  
 
   ngOnInit() {
     var self = this;
@@ -122,7 +127,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
               self.estabelecimento.telefone = place.international_phone_number;
               self.estabelecimento.place_id = place.place_id;
               self.estabelecimento.website = place.website;
-              self.estabelecimento.endereco = place.vicinity;
+              self.estabelecimento.endereco.rua = place.vicinity;
               self.zone.run(() => {});
 
           });

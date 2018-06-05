@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../environments/environment';
 
+
 @Injectable()
 export class EstabelecimentoService {
 
@@ -25,7 +26,10 @@ export class EstabelecimentoService {
       });
   }
 
-
+  public salvarEstabelecimento(estabelecimento): Observable<any>{
+    console.log(estabelecimento);
+    return this.http.post(environment.apiUrl + '/rest/testJersey', estabelecimento);
+  }
 }
 
 

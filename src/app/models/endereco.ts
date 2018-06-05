@@ -1,12 +1,10 @@
-export class  Estabelecimento{
-    nome: string;
-    cnpj: any;
-    endereco: any;
-    telefone: any;
-    place_id: any;
-    website: any;
-  
-constructor(){
-    
-}
+export class Endereco {
+	rua : string;
+	cidade : string;
+	estado : string;
+	pais : string;
+	complemento : string;
+    numero: number;
+	latitude: any;
+	longitude: any;
 }

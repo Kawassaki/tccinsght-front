@@ -1,3 +1,26 @@
-<p>
-  user works!
-</p>
+  <div class="example-container">
+    <mat-form-field>
+      <input matInput placeholder="Primeiro Nome" [(ngModel)]="usuario.primeiroNome">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Ulltimo Nome" [(ngModel)]="usuario.ultimoNome">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Email" [(ngModel)]="usuario.email">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Genero" [(ngModel)]="usuario.sexo">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Contato" [(ngModel)]="usuario.contato">
+    </mat-form-field>
+    <mat-slide-toggle
+              class="example-margin"
+              [color]="color"
+              [(ngModel)]="usuario.permiteLocaliacao">
+              Deseja permitir que o Brunch acesse sua localização atual?
+    </mat-slide-toggle>
+    <mat-card-actions>
+      <button mat-button (click)="salvarUsuario()">API DATA</button>
+    </mat-card-actions>
+  </div>

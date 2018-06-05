@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { UserComponent } from './components/user/user.component';
@@ -21,10 +21,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import { QuerySelectorService } from './services/query-selector.service';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
 import { EstabelecimentoService } from './services/estabelecimento/estabelecimento.service';
-
-
-
-
+import { UsuarioService } from './services/usuario/usuario.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +53,8 @@ import { EstabelecimentoService } from './services/estabelecimento/estabelecimen
     
   ],
   providers: [ 
-    EstabelecimentoService
+    EstabelecimentoService,
+    UsuarioService
   ],
   bootstrap: [AppComponent]
 })

@@ -6,15 +6,15 @@
 
             <mat-menu #appMenu="matMenu">
               <button mat-menu-item color= "default" routerLink="/map" onclick="">Mapa</button>
-              <button mat-menu-item color= "default" routerLink="/login" onclick="">Login</button>
               <button mat-menu-item color= "default" routerLink="/home" onclick="">Home</button>
-              <button mat-menu-item color= "default" routerLink="/pageNotFound" onclick="">pageNotFound</button>
+              <!-- <button mat-menu-item color= "default" routerLink="/pageNotFound" onclick="">pageNotFound</button> -->
+              <button mat-menu-item color= "default" routerLink="/user" onclick="">Cadastro Usuario</button>
             </mat-menu>
 
             <button mat-icon-button [matMenuTriggerFor]="appMenu"><mat-icon>dehaze</mat-icon></button>
 
             <span class="example-spacer"></span>
-            <button mat-raised-button color="warn" routerLink="/cadastroEstabelecimento">Junte-se</button>
+            <button mat-raised-button color="warn" routerLink="/cadastroEstabelecimento">Cadastre seu Estabelecimento</button>
 
           </mat-toolbar-row>
       </mat-toolbar>
