@@ -17,11 +17,12 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
-import { StarRatingModule } from 'angular-star-rating';
 import { QuerySelectorService } from './services/query-selector.service';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
 import { EstabelecimentoService } from './services/estabelecimento/estabelecimento.service';
 import { UsuarioService } from './services/usuario/usuario.service';
+import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { PrimeNgModule } from './modules/prime-ng/prime-ng.module';
 
 @NgModule({
   declarations: [
@@ -35,16 +36,17 @@ import { UsuarioService } from './services/usuario/usuario.service';
     CadastroEstabelecimentoComponent,
     HomePageComponent,
     QuestionarioComponent,
+    SnackBarComponent,
        
   ],
   imports: [
     BrowserModule,
     MaterialDesingModule,
+    PrimeNgModule,
     RoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    StarRatingModule,
     HttpModule
 
   ],

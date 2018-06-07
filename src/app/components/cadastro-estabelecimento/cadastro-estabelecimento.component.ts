@@ -24,7 +24,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private zoom: number;
   private mapCenter: any;
   
-  
   public estabelecimento: Estabelecimento;
 
   private renderer: Renderer;
@@ -39,10 +38,20 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
 
   retornaEstabelecimentoApi(){
-    this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => this.estabelecimentos = estabelecimentoTeste);
-    this.estabelecimentoService.getEstabelecimentosById().subscribe(estabelecimentoTeste => this.estabelecimentosById = estabelecimentoTeste);
-    console.log(this.estabelecimentos);
-    console.log(this.estabelecimentosById);
+    this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste =>{
+       this.estabelecimentos = estabelecimentoTeste 
+       console.log(this.estabelecimentos);
+      }
+    );
+    
+    
+    this.estabelecimentoService.getEstabelecimentosById().subscribe(
+      estabelecimentoTeste => {
+        this.estabelecimentosById = estabelecimentoTeste
+        console.log(this.estabelecimentosById);
+      }
+    );
+    
   }
 
   salvarEstabelecimento(){
@@ -53,7 +62,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
   ngOnInit() {
     var self = this;
-    this.estabelecimento = new Estabelecimento();
+    self.estabelecimento = new Estabelecimento();
 
     let mapProp = {
       center: self.mapCenter,
@@ -61,9 +70,9 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+    self.map = new google.maps.Map(self.gmapElement.nativeElement, mapProp);
     
-    this.initAutocomplete();
+    self.initAutocomplete();
     var lat;
     var long
     window.navigator.geolocation.getCurrentPosition(function (data) {
@@ -72,7 +81,17 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
+      
+      var marker = new google.maps.Marker({
+        position: self.mapCenter,
+        map: self.map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
+      });
+
+      self.markers.push(marker);
     });
+    
   }
 
   initAutocomplete() {
@@ -127,7 +146,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
               self.estabelecimento.telefone = place.international_phone_number;
               self.estabelecimento.place_id = place.place_id;
               self.estabelecimento.website = place.website;
-              self.estabelecimento.endereco.rua = place.vicinity;
+              // self.estabelecimento.endereco.rua = place.vicinity;
               self.zone.run(() => {});
 
           });

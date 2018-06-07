@@ -6,10 +6,11 @@
         <input matInput placeholder="Ulltimo Nome" [(ngModel)]="usuario.ultimoNome">
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="Email" [(ngModel)]="usuario.email">
+        <input matInput placeholder="Enter your email" [formControl]="email" type="email">
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field>
-        <input matInput placeholder="Genero" [(ngModel)]="usuario.sexo">
+        <input matInput placeholder="Genero" [(ngModel)]="usuario.genero" >
     </mat-form-field>
     <mat-form-field>
       <input matInput placeholder="Contato" [(ngModel)]="usuario.contato">

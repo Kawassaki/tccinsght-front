@@ -1,15 +1,15 @@
-<app-questionario (onFilter)='getQuerySelector($event)'></app-questionario>
+<!-- <app-questionario (onFilter)='getQuerySelector($event)'></app-questionario> -->
 
-
-<mat-card [style.display]="hidden?'none':'inherit'">
+<!-- [style.display]="hidden?'none':'inherit'" -->
+<mat-card>
   <mat-card-title>
-    Teste Title
+    Busca
   </mat-card-title>
 
-  <div style="text-align:center">
-    <input placeholder="Onde você quer ir?" #search>
-    <hr>
-    <hr>
+  <!-- <div style="text-align:center"> -->
+    <input class="controls" placeholder="Buscar:" #search>
     <div #gmap style='width:100%;height:400px'></div>
-  </div>
+  <!-- </div> -->
+  <button mat-button (click)="gerarRota()">API DATA</button>
+
 </mat-card>

@@ -8,7 +8,7 @@ export class Usuario {
 	imagem : string;
 	primeiroNome : string;
 	ultimoNome : string;
-	sexo : string;
+	genero : string;
 	dataCadastro: any;
 	proprietario : boolean;
 	banco : string;

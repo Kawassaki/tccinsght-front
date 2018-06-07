@@ -1,11 +1,14 @@
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
 import { QuerySelectorService } from '../../services/query-selector.service';
+import { MatSnackBar } from '@angular/material';
+import { SelectItem } from 'primeng/components/common/api';
+import { MessageModule } from 'primeng/primeng';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
 })
 export class MapComponent implements OnInit {
 
@@ -21,82 +24,101 @@ export class MapComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
-  hidden: boolean= true;
-  // private ngZone: NgZone;
-
-  title = 'app';
-
-
-  constructor(private ngZone: NgZone) { }
+  private markerCurrentLocation;
+  // msgs: MessageModule[] = [];
+  // hidden: boolean= true;
+  
+  constructor(
+    private zone: NgZone,
+  ) { }
 
   ngOnInit() {
-    this.initMap();
+    this.criaMapa();
+    this.setLocalizacaoAtual();
+    this.initAutocomplete();
   }
 
-  ngAfterViewInit() { }
-
-  initMap(){
-    var self = this;
-
+  criaMapa(){
     let mapProp = {
-      center: this.mapCenter,
-      zoom: 13,
+      zoom: 17,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-    self.mapCenter = new google.maps.LatLng(-34.397, 150.644);
+  }
 
-    this.initAutocomplete();
+  setLocalizacaoAtual(){
+    const self = this;
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 500,
+      maximumAge: 0
+    };
+    
+    window.navigator.geolocation.watchPosition(function (data) {
 
-    window.navigator.geolocation.getCurrentPosition(function (data) {
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
-    });
+
+      let contentString = 'Sua localização';
+
+      let infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      self.markerCurrentLocation = new google.maps.Marker({
+        position: self.mapCenter,
+        map: self.map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
+      });
+
+      self.markerCurrentLocation.addListener('mouseover', function() {
+        infowindow.open(self.map, self.markerCurrentLocation);
+        self.toggleBounce(self.markerCurrentLocation)
+      });
+      self.markerCurrentLocation.addListener('mouseout', function(){
+        infowindow.close();
+        self.toggleBounce(self.markerCurrentLocation)
+      });
+
+      self.markerCurrentLocation.addListener('dragend', function(mark){
+        let localationDraggend = new google.maps.LatLng(mark.latLng.lat(), mark.latLng.lng());
+        if(self.mapCenter !== localationDraggend){
+          self.mapCenter = localationDraggend;
+          console.log("Localização Atualizada")
+        }
+      });
+    }, null, options);
+  }
+ 
+  toggleBounce(marker) {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
   }
 
   initAutocomplete() {
     var self = this;
     let searchBox = new google.maps.places.SearchBox(this.search.nativeElement);
-    // this.getZone(searchBox);
-
 
     this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.search.nativeElement);
 
     this.map.addListener('bounds_changed', function () {
-      // console.log(self.places);
       searchBox.setBounds(self.map.getBounds());
     });
-
+    
     searchBox.addListener('places_changed', function () {
+      self.map.setCenter(self.mapCenter);
       self.places = searchBox.getPlaces();
       console.log(searchBox);
       if (self.places.length == 0) {
         return;
       }
-
-      // Clear out the old markers.
       self.cleanMarkers();
+      self.markers.push(self.markerCurrentLocation);
       self.getDetails();
-
-    });
-  }
-
-  getZone(searchBox) {
-    var self = this;
-    self.ngZone.run(() => {
-      //get the place result
-      searchBox.getPlaces().forEach(function (eachPlace) {
-        let place: google.maps.places.PlaceResult = this.eachPlace.getPlace();
-        //verify result
-        if (place.geometry === undefined || place.geometry === null) {
-          return;
-        }
-
-        this.latitude = place.geometry.location.lat();
-        this.longitude = place.geometry.location.lng();
-        this.zoom = 12;
-      });
     });
   }
 
@@ -116,36 +138,23 @@ export class MapComponent implements OnInit {
     let service = new google.maps.places.PlacesService(this.map);
 
     self.places.forEach(function (placeEach) {
-      // console.log(placeEach);
       service.getDetails({
         placeId: placeEach.place_id
       }, function (place, status) {
+
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           let marker = self.addMarkPlace(place);
+          
           google.maps.event.addListener(marker, 'click', function () {
-            console.log(place);
-            if("photos" in place){
-              place.photos.forEach(function (photoPlace){
-                console.log(photoPlace.getUrl({'maxWidth': 1200, 'maxHeight': 600}));
-                // photoPlace.getUrl;
-                console.log('https://maps.googleapis.com/maps/api/place/photo?photoreference=' + placeEach.reference + '&key=AIzaSyCAGv3exRld0pzJZv-nORwsYFP09tp1p9Q' );
-              });
-            }
-            // infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-            //   'Place ID: ' + place.place_id + '<br>' +
-            //   place.formatted_address + '</div>');
-            // infowindow.open(map, this);
+            console.log(self.markers);
           });
         }
       });
-
     });
-
   }
 
 
-  addMarkPlace(place): any {
-
+  addMarkPlace(place){
     var self = this;
     let bounds = new google.maps.LatLngBounds();
     
@@ -167,12 +176,10 @@ export class MapComponent implements OnInit {
       title: place.name,
       position: place.geometry.location
     })
-
-    // Create a marker for each place.
+     
     self.markers.push(marker);
 
     if (place.geometry.viewport) {
-      // Only geocodes have viewport.
       bounds.union(place.geometry.viewport);
     } else {
       bounds.extend(place.geometry.location);
@@ -183,9 +190,32 @@ export class MapComponent implements OnInit {
     return marker;
   }
 
-  getQuerySelector(query){
-    this.hidden = true;
-    console.log("map.component.ts", query);
+  // getQuerySelector(query){
+  //   this.hidden = true;
+  //   console.log("map.component.ts", query);
+  // }
 
+  gerarRota(){
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+      draggable: true,
+      map: this.map
+    });
+
+    this.calculateAndDisplayRoute(directionsService, directionsDisplay);
+  }
+
+  calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    directionsService.route({
+      origin: {lat: this.markerCurrentLocation.position.lat(), lng: this.markerCurrentLocation.position.lng()},
+      destination: {lat: -25.4226576, lng: -49.27069740000002},
+      travelMode: google.maps.TravelMode.DRIVING
+    }, function(response, status) {
+      if (status === 'OK') {
+        directionsDisplay.setDirections(response);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
   }
 }
