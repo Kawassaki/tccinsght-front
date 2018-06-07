@@ -12,7 +12,7 @@ import { FormControl, Validators } from '@angular/forms';
 export class UserComponent implements OnInit {
 
   public usuario = new Usuario();
-  private color = 'accent';
+  public color = 'accent';
   public checked: boolean;
   public disabled: boolean;
   public email = new FormControl('', [Validators.required, Validators.email]); 
