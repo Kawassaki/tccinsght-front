@@ -29,6 +29,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private renderer: Renderer;
   private estabelecimentos:any;
   private estabelecimentosById:any;
+  private markerCurrentLocation;
   
   constructor( 
     private zone: NgZone,
@@ -82,14 +83,14 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
       self.map.setCenter(self.mapCenter);
       
-      var marker = new google.maps.Marker({
+      self.markerCurrentLocation = new google.maps.Marker({
         position: self.mapCenter,
         map: self.map,
         draggable: true,
         animation: google.maps.Animation.DROP
       });
 
-      self.markers.push(marker);
+      // self.markers.push(marker);
     });
     
   }
@@ -112,6 +113,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       }
 
       self.cleanMarkers();
+      self.markers.push(self.markerCurrentLocation);
       self.getDetails();
 
     });

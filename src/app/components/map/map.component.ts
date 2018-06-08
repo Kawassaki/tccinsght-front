@@ -2,8 +2,6 @@ import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
 import { QuerySelectorService } from '../../services/query-selector.service';
 import { MatSnackBar } from '@angular/material';
-import { SelectItem } from 'primeng/components/common/api';
-import { MessageModule } from 'primeng/primeng';
 
 @Component({
   selector: 'app-map',
@@ -24,7 +22,7 @@ export class MapComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
-  private markerCurrentLocation;
+  private markerCurrentLocation = new google.maps.Marker();
   // msgs: MessageModule[] = [];
   // hidden: boolean= true;
   
@@ -34,8 +32,9 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.criaMapa();
-    this.setLocalizacaoAtual();
+    this.markerCurrentLocation.setAnimation(google.maps.Animation.DROP);
     this.initAutocomplete();
+    this.setLocalizacaoAtual();
   }
 
   criaMapa(){
@@ -48,6 +47,7 @@ export class MapComponent implements OnInit {
 
   setLocalizacaoAtual(){
     const self = this;
+
     const options = {
       enableHighAccuracy: false,
       timeout: 500,
@@ -57,7 +57,10 @@ export class MapComponent implements OnInit {
     window.navigator.geolocation.watchPosition(function (data) {
 
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
-      self.map.setCenter(self.mapCenter);
+       
+      if(!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())){
+        self.map.setCenter(self.mapCenter);
+      }
 
       let contentString = 'Sua localização';
 
@@ -65,12 +68,9 @@ export class MapComponent implements OnInit {
         content: contentString
       });
 
-      self.markerCurrentLocation = new google.maps.Marker({
-        position: self.mapCenter,
-        map: self.map,
-        draggable: true,
-        animation: google.maps.Animation.DROP
-      });
+      self.markerCurrentLocation.setPosition(self.mapCenter);
+      self.markerCurrentLocation.setMap(self.map);
+      self.markerCurrentLocation.setDraggable(true);
 
       self.markerCurrentLocation.addListener('mouseover', function() {
         infowindow.open(self.map, self.markerCurrentLocation);
@@ -80,15 +80,20 @@ export class MapComponent implements OnInit {
         infowindow.close();
         self.toggleBounce(self.markerCurrentLocation)
       });
-
       self.markerCurrentLocation.addListener('dragend', function(mark){
         let localationDraggend = new google.maps.LatLng(mark.latLng.lat(), mark.latLng.lng());
         if(self.mapCenter !== localationDraggend){
           self.mapCenter = localationDraggend;
+          self.map.setCenter(self.mapCenter);
           console.log("Localização Atualizada")
         }
       });
     }, null, options);
+    
+    if(self.markers){
+      self.markers.push(self.markerCurrentLocation);
+    }
+
   }
  
   toggleBounce(marker) {
@@ -117,7 +122,6 @@ export class MapComponent implements OnInit {
         return;
       }
       self.cleanMarkers();
-      self.markers.push(self.markerCurrentLocation);
       self.getDetails();
     });
   }
@@ -207,7 +211,7 @@ export class MapComponent implements OnInit {
 
   calculateAndDisplayRoute(directionsService, directionsDisplay) {
     directionsService.route({
-      origin: {lat: this.markerCurrentLocation.position.lat(), lng: this.markerCurrentLocation.position.lng()},
+      origin: {lat: this.markerCurrentLocation.getPosition().lat(), lng: this.markerCurrentLocation.getPosition().lng()},
       destination: {lat: -25.4226576, lng: -49.27069740000002},
       travelMode: google.maps.TravelMode.DRIVING
     }, function(response, status) {
