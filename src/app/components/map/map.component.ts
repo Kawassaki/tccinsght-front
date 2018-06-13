@@ -1,7 +1,9 @@
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
 import { QuerySelectorService } from '../../services/query-selector.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
+import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
 
 @Component({
   selector: 'app-map',
@@ -12,9 +14,12 @@ export class MapComponent implements OnInit {
 
 
   @ViewChild('gmap') gmapElement: any;
-  map: google.maps.Map;
+  
+  private map: google.maps.Map;
 
   @ViewChild('search') search: any;
+
+  @ViewChild('rota') rota: any;
 
   private markers: any;
   private places: any;
@@ -26,7 +31,11 @@ export class MapComponent implements OnInit {
   private directionsService;
   private directionsDisplay;
 
+  private placesInformation = [];
+
   private markerCurrentLocation = new google.maps.Marker();
+
+
   
   private markerCurrentLocationInfo = new google.maps.InfoWindow({
     content: 'Sua localização'
@@ -52,6 +61,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     private zone: NgZone,
+    private estabelecimentoService : EstabelecimentoService,
+    public dialog : MatDialog
   ) { }
 
   ngOnInit() {
@@ -63,7 +74,8 @@ export class MapComponent implements OnInit {
   criaMapa(){
     let mapProp = {
       zoom: 15,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true
     };
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
   }
@@ -124,11 +136,13 @@ export class MapComponent implements OnInit {
 
   initAutocomplete() {
     var self = this;
-    let searchBox = new google.maps.places.SearchBox(this.search.nativeElement);
+    let searchBox = new google.maps.places.SearchBox(self.search.nativeElement);
+    
+    self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.search.nativeElement);
+    self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.rota.nativeElement);
+    
 
-    this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.search.nativeElement);
-
-    this.map.addListener('bounds_changed', function () {
+    self.map.addListener('bounds_changed', function () {
       searchBox.setBounds(self.map.getBounds());
     });
     
@@ -172,18 +186,16 @@ export class MapComponent implements OnInit {
           }
           window.setTimeout(function() {
             let marker = self.addMarkPlace(place);
-
             google.maps.event.addListener(marker, 'click', function () {
-
               if(marker.getAnimation() === google.maps.Animation.BOUNCE){
                 marker.setAnimation(null);
                 self.latitudeTo = null;
                 self.longitudeTo = null;
-              } else {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-                self.latitudeTo = place.geometry.location.lat();
-                self.longitudeTo = place.geometry.location.lng();
-              }
+              } 
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+              self.latitudeTo = place.geometry.location.lat();
+              self.longitudeTo = place.geometry.location.lng();
+              
             });
           }, timeout);
 
@@ -220,6 +232,12 @@ export class MapComponent implements OnInit {
     self.map.setZoom(13);
     self.map.setCenter(self.mapCenter);
 
+    self.getInformations(place);
+
+    if(self.directionsDisplay){
+      self.directionsDisplay.setDirections({routes: []});
+    }
+
     return marker;
 }
   // getQuerySelector(query){
@@ -248,7 +266,8 @@ export class MapComponent implements OnInit {
   calculateAndDisplayRoute(directionsService, directionsDisplay) {
     var self = this;
     directionsDisplay.setDirections({routes: []});
-    if(self.latitudeTo && self.longitudeTo){
+
+    if(self.latitudeTo && self.longitudeTo && (self.markers && self.markers.length > 1)){
       directionsService.route({
         origin: {lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng()},
         destination: {lat: self.latitudeTo, lng: self.longitudeTo},
@@ -260,12 +279,52 @@ export class MapComponent implements OnInit {
           window.alert('Directions request failed due to ' + status);
         }
       });
+    } else if(self.markers && self.markers.length === 1) {
+      directionsService.route({
+        origin: {lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng()},
+        destination: {lat: self.markers[0].position.lat(), lng: self.markers[0].position.lng()},
+        travelMode: google.maps.TravelMode.DRIVING
+      }, function(response, status) {
+        if (status === 'OK') {
+          directionsDisplay.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to 2' + status);
+        }
+      });
     } else {
-      console.log("Escolha um local para traçar a rota")
+      self.openDialog();
     }
   }
 
   limparRotas(directionsDisplay){
     directionsDisplay.setMap(null);
   }
+
+  getInformations(place){
+    var self = this;
+    // let placeService;
+    this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
+      estabelecimentoResponse => {
+        if(estabelecimentoResponse.place_id === place.place_id){
+          self.placesInformation.unshift(estabelecimentoResponse);
+          return;
+        }
+        self.placesInformation.push(place);
+      }
+    );
+
+    
+    // if(placeService){
+    //   self.placesInformation.push(placeService);
+    //   return;
+    // }
+  }
+
+  openDialog(): void {
+    this.dialog.open(DialogLocale, {
+      width: '480px',
+    });
+  }
 }
+
+

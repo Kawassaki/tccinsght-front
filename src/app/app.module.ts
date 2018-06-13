@@ -22,6 +22,7 @@ import { QuestionarioComponent } from './components/questionario/questionario.co
 import { EstabelecimentoService } from './services/estabelecimento/estabelecimento.service';
 import { UsuarioService } from './services/usuario/usuario.service';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
+import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     HomePageComponent,
     QuestionarioComponent,
     SnackBarComponent,
+    DialogLocale,
        
   ],
   imports: [
@@ -56,6 +58,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
     EstabelecimentoService,
     UsuarioService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogLocale]
 })
 export class AppModule { }

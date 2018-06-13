@@ -30,6 +30,15 @@ export class EstabelecimentoService {
     console.log(estabelecimento);
     return this.http.post(environment.apiUrl + '/rest/testJersey', estabelecimento);
   }
+
+  public getInfoByPlaceId(place): Observable<any>{
+    console.log(place);
+    return this.http.get(environment.apiUrl + '/rest/testJersey')
+    .map(response => {
+      localStorage.setItem('estabelecimentos', response.json());
+      return response.json();
+    });
+  }
 }
 
 

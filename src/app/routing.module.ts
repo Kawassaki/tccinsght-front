@@ -5,6 +5,7 @@ import { UserComponent } from './components/user/user.component';
 import { CadastroEstabelecimentoComponent } from './components/cadastro-estabelecimento/cadastro-estabelecimento.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { QuestionarioComponent } from './components/questionario/questionario.component';
 
 const routes: Routes = [
   { path: 'map', component: MapComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'cadastroEstabelecimento', component: CadastroEstabelecimentoComponent },
   { path: 'pageNotFound', component: PageNotFoundComponent },
   { path: 'home', component: HomePageComponent},
+  { path: 'quetionario', component: QuestionarioComponent},
   { path: '*/', component: HomePageComponent},
 
 ];

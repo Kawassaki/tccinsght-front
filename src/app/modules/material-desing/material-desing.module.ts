@@ -19,6 +19,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -37,7 +39,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTabsModule,
     MatStepperModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatDialogModule
   ],
   exports: [
     CommonModule,
@@ -54,7 +58,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatTabsModule,
     MatStepperModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule,
+    MatDialogModule
     
   ],
 

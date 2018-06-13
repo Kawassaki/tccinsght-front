@@ -7,9 +7,33 @@
   </mat-card-title>
 
   <!-- <div style="text-align:center"> -->
-    <input class="controls" placeholder="Buscar:" #search>
+    <div #rota>
+      <input class="controls" placeholder="Buscar:" #search>
+      <button mat-button (click)="gerarRota()" class="btn-route" matTooltip="Traçar Rota" matTooltipPosition="above"> <mat-icon class="icon" >near_me</mat-icon></button>
+    </div>
     <div #gmap style='width:100%;height:65vh;'></div>
   <!-- </div> -->
-  <button mat-button (click)="gerarRota()">Traçar Rota</button>
-
+  <!-- <button mat-button (click)="getInformations()">Show Info</button> -->
 </mat-card>
+
+<div *ngIf="placesInformation" >
+  <div *ngFor="let placeInfo of placesInformation">
+    <mat-card>
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{placeInfo.name}}</mat-card-title>
+          <mat-card-subtitle>{{placeInfo.cnpj}}</mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+          <p>
+            Teste3
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
