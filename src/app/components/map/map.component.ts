@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
-import { } from '@types/googlemaps';
+// import { } from '@types/googlemaps';
 import { QuerySelectorService } from '../../services/query-selector.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
@@ -27,6 +27,7 @@ export class MapComponent implements OnInit {
   private longitudeTo: number;
   private zoom: number;
   private mapCenter: any;
+  private mapLoaded = false;
   
   private directionsService;
   private directionsDisplay;
@@ -34,6 +35,8 @@ export class MapComponent implements OnInit {
   private placesInformation = [];
 
   private markerCurrentLocation = new google.maps.Marker();
+
+  private starList: boolean[] = [true,true,true,true,true];  
 
 
   
@@ -67,8 +70,10 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.criaMapa();
+    window.setInterval(2000);
     this.initAutocomplete();
     this.setLocalizacaoAtual();
+    this.mapLoaded = true
   }
 
   criaMapa(){
@@ -305,6 +310,7 @@ export class MapComponent implements OnInit {
     // let placeService;
     this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
       estabelecimentoResponse => {
+        self.setStar(place);
         if(estabelecimentoResponse.place_id === place.place_id){
           self.placesInformation.unshift(estabelecimentoResponse);
           return;
@@ -312,13 +318,21 @@ export class MapComponent implements OnInit {
         self.placesInformation.push(place);
       }
     );
-
-    
-    // if(placeService){
-    //   self.placesInformation.push(placeService);
-    //   return;
-    // }
   }
+
+  setStar(place){
+    if(place){
+      place.starList = [];               
+      for(var i=0;i<=4;i++){
+        if(i<=place.rating){  
+          place.starList[i]=false;  
+        }  
+        else{  
+          place.starList[i]=true;  
+        }  
+      }  
+    }
+  }  
 
   openDialog(): void {
     this.dialog.open(DialogLocale, {
