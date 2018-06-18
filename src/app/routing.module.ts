@@ -11,9 +11,9 @@ const routes: Routes = [
   { path: 'map', component: MapComponent },
   { path: 'user', component: UserComponent },
   { path: 'cadastroEstabelecimento', component: CadastroEstabelecimentoComponent },
-  { path: 'pageNotFound', component: PageNotFoundComponent },
-  { path: 'home', component: HomePageComponent},
-  { path: 'quetionario', component: QuestionarioComponent},
+  // { path: 'pageNotFound', component: PageNotFoundComponent },
+  // { path: 'home', component: HomePageComponent},
+  { path: 'questionario', component: QuestionarioComponent},
   { path: '*/', component: HomePageComponent},
 
 ];
