@@ -27,16 +27,16 @@ export class MapComponent implements OnInit {
   private longitudeTo: number;
   private zoom: number;
   private mapCenter: any;
-  private mapLoaded = false;
+  public mapLoaded = false;
   
   private directionsService;
   private directionsDisplay;
 
-  private placesInformation = [];
+  public placesInformation = [];
 
   private markerCurrentLocation = new google.maps.Marker();
 
-  private starList: boolean[] = [true,true,true,true,true];  
+  public starList: boolean[] = [true,true,true,true,true];  
 
 
   
