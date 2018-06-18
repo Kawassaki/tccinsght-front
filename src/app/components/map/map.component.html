@@ -29,13 +29,14 @@
         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
         <mat-card-content>
           <p>
-            Site: {{placeInfo.website}}
+            <b>Site:</b> {{placeInfo.website? placeInfo.website : "Sem dados disponíveis :("}}  
           </p>
           <p>
-            Número: {{placeInfo.formatted_phone_number}}
+            <b>Contato:</b> {{placeInfo.formatted_phone_number ? placeInfo.formatted_phone_number : "Sem dados disponíveis :("}} 
           </p>
-          <p>
-            Avaliação: 
+          <!-- <p> -->
+            <b>Nota:</b> 
+            <span matTooltip="{{placeInfo.rating ? placeInfo.rating : 'Este local ainda não foi avaliado :(' }}" matTooltipPosition="right"> 
             <a *ngFor="let item of placeInfo.starList">  
               <!-- <div *ngIf="!item">
                 <mat-icon [style.display]="item?'none':'inherit'">star</mat-icon>
@@ -43,9 +44,10 @@
               <div *ngIf="item">
                 <mat-icon [style.display]="item?'none':'inherit'">star_border</mat-icon>
               </div> -->
-              <i class="fa" [ngClass]="{'fa-star-o':item,'fa-star':!item}"></i>   
+              <i class="fa star" [ngClass]="{'fa-star-o':item,'fa-star':!item}"></i>   
             </a> 
-          </p>
+          <!-- </p> -->
+        </span> 
         </mat-card-content>
         <mat-card-actions>
           <button mat-button>LIKE</button>

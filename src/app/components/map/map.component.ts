@@ -179,6 +179,8 @@ export class MapComponent implements OnInit {
     let service = new google.maps.places.PlacesService(this.map);
     let timeout;
 
+    self.placesInformation = [];
+    
     self.places.forEach(function (placeEach) {
       service.getDetails({
         placeId: placeEach.place_id
@@ -316,6 +318,7 @@ export class MapComponent implements OnInit {
           return;
         }
         self.placesInformation.push(place);
+        self.zone.run(() => {});
       }
     );
   }
@@ -324,7 +327,7 @@ export class MapComponent implements OnInit {
     if(place){
       place.starList = [];               
       for(var i=0;i<=4;i++){
-        if(i<=place.rating){  
+        if(i < Math.floor(place.rating)){   
           place.starList[i]=false;  
         }  
         else{  
