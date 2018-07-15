@@ -2,8 +2,11 @@
     padding: 0 14px;
 }
 
-.example-spacer {
+.menu-spacer {
     flex: 1 1 auto;
+}
+.logout-spacer {
+   flex: 0.02 1 auto;
 }
 
 .background-toolbar{

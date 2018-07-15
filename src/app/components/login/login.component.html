@@ -1,3 +1,32 @@
-<p>
-  login works!
-</p>
+<div class="margin" *ngIf="!isAuth">
+
+  <mat-card class="card">
+    <mat-card-title>
+      Login
+    </mat-card-title>
+  
+    <div class="formLogin">
+      <mat-form-field>
+        <input matInput placeholder="Digite seu email:" [formControl]="email" required >
+        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field class="spaceInput">
+        <input matInput placeholder="Digite sua senha:" [type]="hide ? 'password' : 'text'" [(ngModel)]="user.senha" required />
+        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      </mat-form-field>
+    </div>
+    <!-- <div class="enter"> -->
+      <button mat-button class="enter" (click)="logar()">Entrar <i class="fa fa-sign-out fa-lg" aria-hidden="true"></i></button>
+    <!-- </div> -->
+  
+  </mat-card>
+  </div>
+  
+  <div *ngIf="isAuth">
+    <app-menu></app-menu>
+      <mat-card>
+        <router-outlet>
+        </router-outlet>
+      </mat-card>
+  </div>

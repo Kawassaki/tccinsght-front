@@ -1,0 +1,33 @@
+.card {
+    width: 500px;
+    background-color: #f9f6f6;
+  }
+  .margin{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 100px;
+  }
+  .formLogin {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .formLogin > * {
+    width: 100%;
+  }
+  .enter{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: #A5D6A7;
+    float: right;
+  }
+  
+  .spaceInput{
+    margin-top: 20px;
+  }
+  /* .sucesso{
+   
+  } */

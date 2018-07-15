@@ -23,6 +23,8 @@ import { EstabelecimentoService } from './services/estabelecimento/estabelecimen
 import { UsuarioService } from './services/usuario/usuario.service';
 import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.component';
+import { AuthenticationService } from './services/authentication.service';
+import { AvatarModule } from 'ng2-avatar';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,7 @@ import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.compone
     QuestionarioComponent,
     SnackBarComponent,
     DialogLocale,
-       
+           
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,9 @@ import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.compone
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    HttpModule
+    HttpModule,
+    AvatarModule.forRoot(), 
+
 
   ],
   exports: [
@@ -56,7 +60,8 @@ import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.compone
   ],
   providers: [ 
     EstabelecimentoService,
-    UsuarioService
+    UsuarioService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent],
   entryComponents: [DialogLocale]

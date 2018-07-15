@@ -6,6 +6,7 @@ import { CadastroEstabelecimentoComponent } from './components/cadastro-estabele
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   { path: 'map', component: MapComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   // { path: 'home', component: HomePageComponent},
   { path: 'questionario', component: QuestionarioComponent},
   { path: '*/', component: HomePageComponent},
+  { path: 'login', component: LoginComponent},
 
 ];
 

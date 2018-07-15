@@ -19,12 +19,15 @@
 </mat-card>
 
 <div *ngIf="placesInformation" >
-  <div *ngFor="let placeInfo of placesInformation">
-    <mat-card>
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>{{placeInfo.name}}</mat-card-title>
-          <mat-card-subtitle>{{placeInfo.formatted_address}}</mat-card-subtitle>
+  <div *ngFor="let placeInfo of placesInformation; let i = index" [attr.data-index]="i">
+    <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }">
+      <mat-card-header>
+          <avatar class="size-avatar" [name]="placeInfo.name" [displayType]="'circle'" [size]="40"></avatar>
+          <!-- <div mat-card-avatar class="example-header-image"> {{placeInfo.initialNamePlace}}</div> -->
+          <div>
+            <mat-card-title>{{placeInfo.name}}</mat-card-title>
+            <mat-card-subtitle>{{placeInfo.formatted_address}}</mat-card-subtitle>
+          </div>
         </mat-card-header>
         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
         <mat-card-content>
