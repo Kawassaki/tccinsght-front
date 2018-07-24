@@ -1,8 +1,5 @@
 {
   "configVersion": 1,
-  "appData": {
-    "test": true
-  },
   "index": "https://kawassaki.github.io/tccinsght-front/index.html",
   "assetGroups": [
     {
@@ -13,13 +10,11 @@
         "https://kawassaki.github.io/tccinsght-front/favicon.ico",
         "https://kawassaki.github.io/tccinsght-front/index.html",
         "https://kawassaki.github.io/tccinsght-front/inline.318b50c57b4eba3d437b.bundle.js",
-        "https://kawassaki.github.io/tccinsght-front/main.64cc5e95dd9449110649.bundle.js",
-        "https://kawassaki.github.io/tccinsght-front/polyfills.35d395590c0a06fb7afd.bundle.js",
+        "https://kawassaki.github.io/tccinsght-front/main.e11b2ca2bac021511740.bundle.js",
+        "https://kawassaki.github.io/tccinsght-front/polyfills.1457c99db4b6dba06e8d.bundle.js",
         "https://kawassaki.github.io/tccinsght-front/styles.523d98a3985232456fd5.bundle.css"
       ],
-      "patterns": [
-        "https:\\/\\/storage\\.googleapis\\.com\\/tcc-api-insight\\.appspot\\.com\\/.*"
-      ]
+      "patterns": []
     },
     {
       "name": "assets",
@@ -37,14 +32,14 @@
   "dataGroups": [],
   "hashTable": {
     "https://kawassaki.github.io/tccinsght-front/assets/icon-256x256.png": "a626b364db04ecbf34731df68ecf28413708f081",
-    "https://kawassaki.github.io/tccinsght-front/assets/icons/local_atm.svg": "485bb696759d81d2abdc86427314fbca23c1a5e2",
-    "https://kawassaki.github.io/tccinsght-front/assets/icons/local_dining.svg": "5d180fded375343df3785d4d2bd5c4eb43b7ce85",
-    "https://kawassaki.github.io/tccinsght-front/assets/icons/store_mall.svg": "9aca8a37d060578120688b2a1ba600e6a534a977",
+    "https://kawassaki.github.io/tccinsght-front/assets/icons/local_atm.svg": "cfc5abc0376c656efd1a585f7a610ddbdb75f71a",
+    "https://kawassaki.github.io/tccinsght-front/assets/icons/local_dining.svg": "8fb23029d2ece49a2102f55624197b988a63d9bc",
+    "https://kawassaki.github.io/tccinsght-front/assets/icons/store_mall.svg": "aa11907a94f86231a58a170e63407d9fa1dd6e80",
     "https://kawassaki.github.io/tccinsght-front/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-    "https://kawassaki.github.io/tccinsght-front/index.html": "62554c9255b173a13ddb79ea7dc2b63df600bd60",
+    "https://kawassaki.github.io/tccinsght-front/index.html": "d61f64f6bdeba86d4917836fbb7a7df805122eda",
     "https://kawassaki.github.io/tccinsght-front/inline.318b50c57b4eba3d437b.bundle.js": "998c6060446975e566fd17509558ddc68d72eec3",
-    "https://kawassaki.github.io/tccinsght-front/main.64cc5e95dd9449110649.bundle.js": "8adba175c873d0da0b1aaeddebd598bbf3105bdf",
-    "https://kawassaki.github.io/tccinsght-front/polyfills.35d395590c0a06fb7afd.bundle.js": "035ab6b153536dc257cae49009b0c1dc118bc075",
+    "https://kawassaki.github.io/tccinsght-front/main.e11b2ca2bac021511740.bundle.js": "4b1b31cc9f2417f1c3ea1ea42f9190f8eb18373a",
+    "https://kawassaki.github.io/tccinsght-front/polyfills.1457c99db4b6dba06e8d.bundle.js": "c7b365ef47db91a7d672881b233f740827cbc545",
     "https://kawassaki.github.io/tccinsght-front/styles.523d98a3985232456fd5.bundle.css": "506385ed185c5cc54c2b5f03015ded680e292187"
   },
   "navigationUrls": [
