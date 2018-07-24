@@ -1,6 +1,6 @@
 {
     "name": "Progressive Web Cat",
-    "short_name": "PWCat",
+    "short_name": "Brunch",
     "description": "A funny cat image generator",  
     "icons": [{
         "src": "/assets/icon-256x256.png",

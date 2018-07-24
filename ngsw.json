@@ -17,7 +17,9 @@
         "https://kawassaki.github.io/tccinsght-front/polyfills.35d395590c0a06fb7afd.bundle.js",
         "https://kawassaki.github.io/tccinsght-front/styles.523d98a3985232456fd5.bundle.css"
       ],
-      "patterns": []
+      "patterns": [
+        "https:\\/\\/storage\\.googleapis\\.com\\/tcc-api-insight\\.appspot\\.com\\/.*"
+      ]
     },
     {
       "name": "assets",
@@ -39,7 +41,7 @@
     "https://kawassaki.github.io/tccinsght-front/assets/icons/local_dining.svg": "5d180fded375343df3785d4d2bd5c4eb43b7ce85",
     "https://kawassaki.github.io/tccinsght-front/assets/icons/store_mall.svg": "9aca8a37d060578120688b2a1ba600e6a534a977",
     "https://kawassaki.github.io/tccinsght-front/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-    "https://kawassaki.github.io/tccinsght-front/index.html": "fc67466f505c14db9b275783b395c81cc2a07877",
+    "https://kawassaki.github.io/tccinsght-front/index.html": "62554c9255b173a13ddb79ea7dc2b63df600bd60",
     "https://kawassaki.github.io/tccinsght-front/inline.318b50c57b4eba3d437b.bundle.js": "998c6060446975e566fd17509558ddc68d72eec3",
     "https://kawassaki.github.io/tccinsght-front/main.64cc5e95dd9449110649.bundle.js": "8adba175c873d0da0b1aaeddebd598bbf3105bdf",
     "https://kawassaki.github.io/tccinsght-front/polyfills.35d395590c0a06fb7afd.bundle.js": "035ab6b153536dc257cae49009b0c1dc118bc075",
