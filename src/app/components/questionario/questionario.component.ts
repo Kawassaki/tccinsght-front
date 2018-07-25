@@ -18,7 +18,7 @@ export class QuestionarioComponent implements OnInit {
   fourthFormGroup: FormGroup;
   fivethFormGroup: FormGroup;
   sixthFormGroup: FormGroup;
-  private queryString: string = '';
+  queryString: string = undefined;
 
 
   constructor(private _formBuilder: FormBuilder,) { }
@@ -48,30 +48,30 @@ export class QuestionarioComponent implements OnInit {
 
     var self = this;
 
-    if(self.firstFormGroup.value.firstCtrl !== ""){
+    if(self.firstFormGroup.value.firstCtrl !== "" && self.firstFormGroup.value.firstCtrl !== null && self.firstFormGroup.value.firstCtrl !== undefined){
       self.queryString += self.firstFormGroup.value.firstCtrl + " "
     }
 
-    if(self.secondFormGroup.value.secondCtrl !== "" ){
+    if(self.secondFormGroup.value.secondCtrl !== "" && self.secondFormGroup.value.secondCtrl !== null && self.secondFormGroup.value.secondCtrl !== undefined ){
       self.queryString += self.secondFormGroup.value.secondCtrl + " "
     }
 
-    if(self.thirdFormGroup.value.thirdCtrl !== "" ){
+    if(self.thirdFormGroup.value.thirdCtrl !== "" && self.thirdFormGroup.value.thirdCtrl !== null && self.thirdFormGroup.value.thirdCtrl !== undefined){
       self.queryString += self.thirdFormGroup.value.thirdCtrl + " "
     }
 
-    if(self.fourthFormGroup.value.fourthCtrl !== ""){
+    if(self.fourthFormGroup.value.fourthCtrl !== "" && self.fourthFormGroup.value.fourthCtrl !== null && self.fourthFormGroup.value.fourthCtrl !== undefined){
       self.queryString += self.fourthFormGroup.value.fourthCtrl + " "
     }
 
-    if(self.fivethFormGroup.value.fivethCtrl !== ""){
+    if(self.fivethFormGroup.value.fivethCtrl !== "" && self.fivethFormGroup.value.fivethCtrl !== null && self.fivethFormGroup.value.fivethCtrl !== undefined){
       self.queryString += self.fivethFormGroup.value.fivethCtrl + " "
     }
 
     // console.log(self.queryString.trim());
 
     self.onFilter.emit(self.queryString.trim());
-    self.queryString = "";
+    // self.queryString = "";
 
 
     // self.mapa.

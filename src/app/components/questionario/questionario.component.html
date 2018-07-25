@@ -1,14 +1,15 @@
 <!-- <button mat-raised-button (click)="isLinear = true" id="toggle-linear">Enable linear mode</button> -->
 
 <mat-card>
-    <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper">
+    <!-- <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper"> -->
+      <mat-vertical-stepper [linear]="isLinear" #stepper class="stepper">
   
       <mat-step [stepControl]="firstFormGroup">
         <form [formGroup]="firstFormGroup">
           <ng-template matStepLabel> O que pretende comer?</ng-template> 
           <!-- <mat-icon>local_library</mat-icon> -->
           <mat-form-field class="example-container">
-            <input matInput placeholder="Last name, First name" formControlName="firstCtrl">
+            <input (change)="buscarEstabelecimentos()" matInput formControlName="firstCtrl">
           </mat-form-field>
           <div>
             <button mat-raised-button color="primary" matStepperNext>Next</button>
@@ -21,7 +22,7 @@
           <ng-template matStepLabel> Até onde você quer ir?</ng-template>
           <!-- <mat-icon>directions</mat-icon> -->
           <mat-form-field class="example-container">
-            <input matInput placeholder="Address" formControlName="secondCtrl">
+            <input (change)="buscarEstabelecimentos()" matInput formControlName="secondCtrl">
           </mat-form-field>
           <div>
             <button mat-raised-button color="warn"matStepperPrevious>Back</button>
@@ -33,9 +34,9 @@
       <mat-step [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup">
           <ng-template matStepLabel> Tipo do Estabelecimento?</ng-template>
-          <!-- <mat-icon>stroe_mall_directory</mat-icon> -->
+          <!-- <mat-icon>store_mall_directory</mat-icon> -->
           <mat-form-field class="example-container">
-            <input matInput placeholder="Address" formControlName="thirdCtrl">
+            <input (change)="buscarEstabelecimentos()" matInput formControlName="thirdCtrl">
           </mat-form-field>
           <div>
             <button mat-raised-button color="warn"matStepperPrevious>Back</button>
@@ -47,9 +48,9 @@
       <mat-step [stepControl]="fourthFormGroup">
         <form [formGroup]="fourthFormGroup">
           <ng-template matStepLabel> Quantas pessoas vão com você?</ng-template>
-          <!-- <mat-icon>stroe_mall_directory</mat-icon> -->
+          <!-- <mat-icon>store_mall_directory</mat-icon> -->
           <mat-form-field class="example-container">
-            <input matInput placeholder="Address" formControlName="fourthCtrl">
+            <input (change)="buscarEstabelecimentos()" matInput formControlName="fourthCtrl">
           </mat-form-field>
           <div>
             <button mat-raised-button color="warn"matStepperPrevious>Back</button>
@@ -61,9 +62,9 @@
       <mat-step [stepControl]="fivethFormGroup">
         <form [formGroup]="fivethFormGroup">
           <ng-template matStepLabel> Até quanto você pode gastar?</ng-template>
-          <!-- <mat-icon>stroe_mall_directory</mat-icon> -->
+          <!-- <mat-icon>store_mall_directory</mat-icon> -->
           <mat-form-field >
-            <input matInput placeholder="Address" class="example-container" formControlName="fivethCtrl">
+            <input (change)="buscarEstabelecimentos()" matInput class="example-container" formControlName="fivethCtrl">
           </mat-form-field>
           <div>
             <button mat-raised-button color="warn"matStepperPrevious>Back</button>
@@ -72,18 +73,17 @@
         </form>
       </mat-step>
   
-      <mat-step>
+      <!-- <mat-step>
         <ng-template matStepLabel>Done</ng-template>
         You are now done.
         <div>
           <button mat-raised-button color="warn"matStepperPrevious>Back</button>
           <button mat-raised-button color="warn"(click)="stepper.reset()">Reset</button>
         </div>
-      </mat-step>
+      </mat-step> -->
   
-      
-    </mat-horizontal-stepper>
+    </mat-vertical-stepper>
     
-    <button mat-raised-button color="success" (click)="buscarEstabelecimentos()">Buscar</button>
+    <button mat-raised-button color="success" [disabled]="queryString !== 'undefined'" (click)="buscarEstabelecimentos()">Buscar</button>
   
   </mat-card>
