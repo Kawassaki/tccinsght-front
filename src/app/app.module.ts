@@ -16,6 +16,7 @@ import { CadastroEstabelecimentoComponent } from './components/cadastro-estabele
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { QuerySelectorService } from './services/query-selector.service';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
@@ -50,7 +51,10 @@ import { AvatarModule } from 'ng2-avatar';
     ReactiveFormsModule,
     HttpClientModule,
     HttpModule,
-    AvatarModule.forRoot(), 
+    AvatarModule.forRoot(),
+    ServiceWorkerModule.register('/ngsw-worker.js', {
+      enabled: true
+    })
 
 
   ],

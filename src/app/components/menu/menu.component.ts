@@ -23,11 +23,17 @@ export class MenuComponent implements OnInit {
 
     }
   }
-
-
   sair(){
     localStorage.setItem('user', null);
     location.reload();
-    
+  }
+  goToCadastroEstabelecimento(){
+    this.router.navigate(['cadastroEstabelecimento']);
+    location.reload();
+  }
+  goToMapa(){
+    this.router.navigate(['busca']);
+    location.reload();
+
   }
 }

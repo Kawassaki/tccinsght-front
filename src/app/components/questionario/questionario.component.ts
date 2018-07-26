@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-questionario',
@@ -21,7 +22,7 @@ export class QuestionarioComponent implements OnInit {
   queryString: string = undefined;
 
 
-  constructor(private _formBuilder: FormBuilder,) { }
+  constructor(private _formBuilder: FormBuilder, private router: Router,) { }
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({

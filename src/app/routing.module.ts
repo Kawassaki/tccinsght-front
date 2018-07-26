@@ -9,12 +9,13 @@ import { QuestionarioComponent } from './components/questionario/questionario.co
 import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
-  { path: 'map', component: MapComponent },
+  { path: 'busca', component: MapComponent },
   { path: 'user', component: UserComponent },
   { path: 'cadastroEstabelecimento', component: CadastroEstabelecimentoComponent },
+
   // { path: 'pageNotFound', component: PageNotFoundComponent },
-  // { path: 'home', component: HomePageComponent},
-  { path: 'questionario', component: QuestionarioComponent},
+  { path: 'home', component: HomePageComponent},
+  // { path: 'questionario', component: QuestionarioComponent},
   { path: '*/', component: HomePageComponent},
   { path: 'login', component: LoginComponent},
 

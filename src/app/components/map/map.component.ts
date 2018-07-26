@@ -1,9 +1,11 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 // import { } from '@types/googlemaps';
 import { QuerySelectorService } from '../../services/query-selector.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
 import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-map',
@@ -14,12 +16,14 @@ export class MapComponent implements OnInit {
 
 
   @ViewChild('gmap') gmapElement: any;
-  
+
   private map: google.maps.Map;
 
   @ViewChild('search') search: any;
 
   @ViewChild('rota') rota: any;
+
+  @Output() onFilter: EventEmitter<any> = new EventEmitter();
 
   private markers: any;
   private places: any;
@@ -28,7 +32,10 @@ export class MapComponent implements OnInit {
   private zoom: number;
   private mapCenter: any;
   public mapLoaded = false;
-  
+  public loadding = false;
+
+  public formAnswered = false;
+
   private directionsService;
   private directionsDisplay;
 
@@ -36,10 +43,101 @@ export class MapComponent implements OnInit {
 
   private markerCurrentLocation = new google.maps.Marker();
 
-  public starList: boolean[] = [true,true,true,true,true];  
+  public starList: boolean[] = [true, true, true, true, true];
 
+  isLinear = false;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  thirdFormGroup: FormGroup;
+  fourthFormGroup: FormGroup;
+  fivethFormGroup: FormGroup;
+  sixthFormGroup: FormGroup;
+  queryString: string = undefined;
 
-  
+  constructor(
+    private zone: NgZone,
+    private estabelecimentoService: EstabelecimentoService,
+    public dialog: MatDialog,
+    private _formBuilder: FormBuilder,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    window.setInterval(2000);
+    this.criaMapa();
+    window.setInterval(2000);
+    this.loadForm();
+  }
+
+  loadForm() {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
+    this.thirdFormGroup = this._formBuilder.group({
+      thirdCtrl: ['', Validators.required]
+    });
+    this.fourthFormGroup = this._formBuilder.group({
+      fourthCtrl: ['', Validators.required]
+    });
+    this.fivethFormGroup = this._formBuilder.group({
+      fivethCtrl: ['', Validators.required]
+    });
+    this.sixthFormGroup = this._formBuilder.group({
+      sixthCtrl: ['', Validators.required]
+    });
+  }
+
+  buscarEstabelecimentos() {
+
+    var self = this;
+    self.queryString = "";
+
+    if (self.firstFormGroup.value.firstCtrl !== "" && self.firstFormGroup.value.firstCtrl !== null && self.firstFormGroup.value.firstCtrl !== undefined) {
+      self.queryString += self.firstFormGroup.value.firstCtrl + " "
+    }
+
+    if (self.secondFormGroup.value.secondCtrl !== "" && self.secondFormGroup.value.secondCtrl !== null && self.secondFormGroup.value.secondCtrl !== undefined) {
+      self.queryString += self.secondFormGroup.value.secondCtrl + " "
+    }
+
+    if (self.thirdFormGroup.value.thirdCtrl !== "" && self.thirdFormGroup.value.thirdCtrl !== null && self.thirdFormGroup.value.thirdCtrl !== undefined) {
+      self.queryString += self.thirdFormGroup.value.thirdCtrl + " "
+    }
+
+    if (self.fourthFormGroup.value.fourthCtrl !== "" && self.fourthFormGroup.value.fourthCtrl !== null && self.fourthFormGroup.value.fourthCtrl !== undefined) {
+      self.queryString += self.fourthFormGroup.value.fourthCtrl + " "
+    }
+
+    if (self.fivethFormGroup.value.fivethCtrl !== "" && self.fivethFormGroup.value.fivethCtrl !== null && self.fivethFormGroup.value.fivethCtrl !== undefined) {
+      self.queryString += self.fivethFormGroup.value.fivethCtrl + " "
+    }
+
+    // console.log(self.queryString.trim());
+
+    // self.onFilter.emit(self.queryString.trim());
+    // self.queryString = "";
+
+    if (self.queryString !== undefined && self.queryString !== null && self.queryString !== "") {
+      self.formAnswered = true;
+      self.initAutocomplete(self.queryString);
+      self.setLocalizacaoAtual();
+      self.mapLoaded = true;
+
+      self.loadding = true;
+      window.setTimeout(function() {
+        google.maps.event.trigger(self.search.nativeElement, 'focus')
+
+      }, 3000);
+      window.setTimeout(function() {
+        google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
+        self.loadding = false;
+      }, 3000);
+    }
+  }
+
   private markerCurrentLocationInfo = new google.maps.InfoWindow({
     content: 'Sua localização'
   });
@@ -62,21 +160,7 @@ export class MapComponent implements OnInit {
   };
 
 
-  constructor(
-    private zone: NgZone,
-    private estabelecimentoService : EstabelecimentoService,
-    public dialog : MatDialog
-  ) { }
-
-  ngOnInit() {
-    this.criaMapa();
-    window.setInterval(2000);
-    this.initAutocomplete();
-    this.setLocalizacaoAtual();
-    this.mapLoaded = true
-  }
-
-  criaMapa(){
+  criaMapa() {
     let mapProp = {
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -85,19 +169,19 @@ export class MapComponent implements OnInit {
     this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
   }
 
-  setLocalizacaoAtual(){
+  setLocalizacaoAtual() {
     const self = this;
     const options = {
       enableHighAccuracy: false,
       timeout: 500,
       maximumAge: 0
     };
-    
+
     window.navigator.geolocation.watchPosition(function (data) {
 
       self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
-       
-      if(!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())){
+
+      if (!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())) {
         self.map.setCenter(self.mapCenter);
       }
 
@@ -107,17 +191,17 @@ export class MapComponent implements OnInit {
       self.markerCurrentLocation.setDraggable(true);
       self.markerCurrentLocation.setIcon(self.circleCurrentPosition);
 
-      self.markerCurrentLocation.addListener('mouseover', function() {
+      self.markerCurrentLocation.addListener('mouseover', function () {
         self.markerCurrentLocationInfo.open(self.map, self.markerCurrentLocation);
       });
 
-      self.markerCurrentLocation.addListener('mouseout', function(){
+      self.markerCurrentLocation.addListener('mouseout', function () {
         self.markerCurrentLocationInfo.close();
       });
 
-      self.markerCurrentLocation.addListener('dragend', function(mark){
+      self.markerCurrentLocation.addListener('dragend', function (mark) {
         let localationDraggend = new google.maps.LatLng(mark.latLng.lat(), mark.latLng.lng());
-        if(self.mapCenter !== localationDraggend){
+        if (self.mapCenter !== localationDraggend) {
           self.mapCenter = localationDraggend;
           self.map.setCenter(self.mapCenter);
           console.log("Localização Atualizada")
@@ -125,12 +209,12 @@ export class MapComponent implements OnInit {
       });
     }, null, options);
 
-    if(self.markers){
+    if (self.markers) {
       self.markers.push(self.markerCurrentLocation);
     }
 
   }
- 
+
   toggleBounce(marker) {
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
@@ -139,28 +223,43 @@ export class MapComponent implements OnInit {
     }
   }
 
-  initAutocomplete() {
+  initAutocomplete(queryString) {
     var self = this;
-    let searchBox = new google.maps.places.SearchBox(self.search.nativeElement);
-    
-    self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.search.nativeElement);
-    self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.rota.nativeElement);
-    
 
-    self.map.addListener('bounds_changed', function () {
-      searchBox.setBounds(self.map.getBounds());
-    });
-    
-    searchBox.addListener('places_changed', function () {
-      self.map.setCenter(self.mapCenter);
-      self.places = searchBox.getPlaces();
-      console.log(searchBox);
-      if (self.places.length == 0) {
-        return;
-      }
-      self.cleanMarkers();
-      self.getDetails();
-    });
+    if (queryString !== undefined && queryString !== null && queryString !== "") {
+      self.search.nativeElement.value = queryString;
+
+
+      let searchBox = new google.maps.places.SearchBox(self.search.nativeElement);
+
+      // $timeout(function() {
+      // var input = angular.element("#" + 'id_of_searchBox')[0];
+
+      // }, 100);
+      // google.maps.event.trigger(self.search.nativeElement, 'focus')
+      // google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
+
+      self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.search.nativeElement);
+      self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.rota.nativeElement);
+
+      
+      self.map.addListener('bounds_changed', function () {
+        searchBox.setBounds(self.map.getBounds());
+      });
+
+      // google.maps.event.trigger(searchBox, 'place_changed');
+
+      searchBox.addListener('places_changed', function () {
+        self.map.setCenter(self.mapCenter);
+        self.places = searchBox.getPlaces();
+        console.log(searchBox);
+        if (self.places.length == 0) {
+          return;
+        }
+        self.cleanMarkers();
+        self.getDetails();
+      });
+    }
   }
 
   cleanMarkers() {
@@ -180,7 +279,7 @@ export class MapComponent implements OnInit {
     let timeout;
 
     self.placesInformation = [];
-    
+
     self.places.forEach(function (placeEach) {
       service.getDetails({
         placeId: placeEach.place_id
@@ -191,18 +290,18 @@ export class MapComponent implements OnInit {
           for (var i = 0; i < placeEach.length; i++) {
             timeout = i * 200;
           }
-          window.setTimeout(function() {
+          window.setTimeout(function () {
             let marker = self.addMarkPlace(place);
             google.maps.event.addListener(marker, 'click', function () {
-              if(marker.getAnimation() === google.maps.Animation.BOUNCE){
+              if (marker.getAnimation() === google.maps.Animation.BOUNCE) {
                 marker.setAnimation(null);
                 self.latitudeTo = null;
                 self.longitudeTo = null;
-              } 
+              }
               marker.setAnimation(google.maps.Animation.BOUNCE);
               self.latitudeTo = place.geometry.location.lat();
               self.longitudeTo = place.geometry.location.lng();
-              
+
             });
           }, timeout);
 
@@ -241,18 +340,18 @@ export class MapComponent implements OnInit {
 
     self.getInformations(place);
 
-    if(self.directionsDisplay){
-      self.directionsDisplay.setDirections({routes: []});
+    if (self.directionsDisplay) {
+      self.directionsDisplay.setDirections({ routes: [] });
     }
 
     return marker;
-}
+  }
   // getQuerySelector(query){
   //   this.hidden = true;
   //   console.log("map.component.ts", query);
   // }
 
-  gerarRota(){
+  gerarRota() {
     var self = this;
     if (self.directionsDisplay != null) {
       self.directionsDisplay.setMap(null);
@@ -266,32 +365,32 @@ export class MapComponent implements OnInit {
     // }, suppressMarkers: true
 
     self.directionsDisplay.setMap(self.map);
-    self.directionsDisplay.setOptions( { suppressMarkers: true } );
+    self.directionsDisplay.setOptions({ suppressMarkers: true });
     self.calculateAndDisplayRoute(self.directionsService, self.directionsDisplay);
   }
 
   calculateAndDisplayRoute(directionsService, directionsDisplay) {
     var self = this;
-    directionsDisplay.setDirections({routes: []});
+    directionsDisplay.setDirections({ routes: [] });
 
-    if(self.latitudeTo && self.longitudeTo && (self.markers && self.markers.length > 1)){
+    if (self.latitudeTo && self.longitudeTo && (self.markers && self.markers.length > 1)) {
       directionsService.route({
-        origin: {lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng()},
-        destination: {lat: self.latitudeTo, lng: self.longitudeTo},
+        origin: { lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng() },
+        destination: { lat: self.latitudeTo, lng: self.longitudeTo },
         travelMode: google.maps.TravelMode.DRIVING
-      }, function(response, status) {
+      }, function (response, status) {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
         } else {
           window.alert('Directions request failed due to ' + status);
         }
       });
-    } else if(self.markers && self.markers.length === 1) {
+    } else if (self.markers && self.markers.length === 1) {
       directionsService.route({
-        origin: {lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng()},
-        destination: {lat: self.markers[0].position.lat(), lng: self.markers[0].position.lng()},
+        origin: { lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng() },
+        destination: { lat: self.markers[0].position.lat(), lng: self.markers[0].position.lng() },
         travelMode: google.maps.TravelMode.DRIVING
-      }, function(response, status) {
+      }, function (response, status) {
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
         } else {
@@ -303,39 +402,39 @@ export class MapComponent implements OnInit {
     }
   }
 
-  limparRotas(directionsDisplay){
+  limparRotas(directionsDisplay) {
     directionsDisplay.setMap(null);
   }
 
-  getInformations(place){
+  getInformations(place) {
     var self = this;
     // let placeService;
     this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
       estabelecimentoResponse => {
         self.setStar(place);
-        if(estabelecimentoResponse.place_id === place.place_id){
+        if (estabelecimentoResponse.place_id === place.place_id) {
           self.placesInformation.unshift(estabelecimentoResponse);
           return;
         }
         self.placesInformation.push(place);
-        self.zone.run(() => {});
+        self.zone.run(() => { });
       }
     );
   }
 
-  setStar(place){
-    if(place){
-      place.starList = [];               
-      for(var i=0;i<=4;i++){
-        if(i < Math.floor(place.rating)){   
-          place.starList[i]=false;  
-        }  
-        else{  
-          place.starList[i]=true;  
-        }  
-      }  
+  setStar(place) {
+    if (place) {
+      place.starList = [];
+      for (var i = 0; i <= 4; i++) {
+        if (i < Math.floor(place.rating)) {
+          place.starList[i] = false;
+        }
+        else {
+          place.starList[i] = true;
+        }
+      }
     }
-  }  
+  }
 
   openDialog(): void {
     this.dialog.open(DialogLocale, {

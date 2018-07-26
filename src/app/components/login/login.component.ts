@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if(localStorage.getItem('user') === 'teste@cinq.com.br'){
       this.isAuth = true;
-      this.router.navigate(['map']);
+      // this.router.navigate(['map']);
     } else {
       this.router.navigate(['login']);
     }
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('user', self.user.email);
       console.log(localStorage);
       self.isAuth = true;
-      this.router.navigate(['map']);
+      this.router.navigate(['home']);
     } else {
       self.openDialog();
     }
