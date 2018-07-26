@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if(localStorage.getItem('user') === 'teste@cinq.com.br'){
       this.isAuth = true;
-      // this.router.navigate(['map']);
+      // this.router.navigate(['home']);
     } else {
       this.router.navigate(['login']);
     }

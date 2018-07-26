@@ -32,7 +32,7 @@ export class MapComponent implements OnInit {
   private zoom: number;
   private mapCenter: any;
   public mapLoaded = false;
-  public loadding = false;
+  public loading = true;
 
   public formAnswered = false;
 
@@ -124,17 +124,17 @@ export class MapComponent implements OnInit {
       self.formAnswered = true;
       self.initAutocomplete(self.queryString);
       self.setLocalizacaoAtual();
-      self.mapLoaded = true;
-
-      self.loadding = true;
+      
       window.setTimeout(function() {
         google.maps.event.trigger(self.search.nativeElement, 'focus')
-
+        
       }, 3000);
       window.setTimeout(function() {
         google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
-        self.loadding = false;
       }, 3000);
+      self.loading = false;
+      
+      self.mapLoaded = true;
     }
   }
 
