@@ -5,6 +5,8 @@ import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
 import { MatDialog } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 import { Usuario } from '../../models/usuario';
+// import '../assets/login-animation.js';
+import '../../../assets/login-animation.js';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +20,8 @@ export class LoginComponent implements OnInit {
   private returnUrl: string;
   public isAuth = false;
   public loginValid = false;
+  public emailTeste: string;
+  public password: string;
 
   public user = new Usuario();
 
@@ -28,6 +32,16 @@ export class LoginComponent implements OnInit {
     public dialog : MatDialog,
     private zone: NgZone,
   ) { }
+
+
+  ngAfterViewInit() {
+    (window as any).initialize();
+  }
+
+  // login(){
+  //   console.log(`email: ${this.email} password: ${this.password}`)
+  //   alert(`Email: ${this.email} Password: ${this.password}`)
+  // }
 
   ngOnInit() {
     if(localStorage.getItem('user') === 'teste@cinq.com.br'){
