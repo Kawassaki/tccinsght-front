@@ -1,0 +1,48 @@
+.background-image{
+    background-image: url("https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    height: 40.04em;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center;
+    width: 100%;
+    opacity: 0.9;
+}
+
+/* @media only screen and (min-height: 642px) and (max-height : 800px) {
+    .background-image{
+        height: 40.04em;
+    }
+      
+} */
+  
+@media only screen and (max-height: 667px) and (min-height: 642px){
+    .background-image{
+        height: 41.6em;
+
+    }      
+}
+@media only screen and (min-height: 668px) and (max-height: 736px)  {
+    .background-image{
+        height: 46.03em;
+
+    }      
+}
+@media only screen and (min-height: 737px) and (max-height: 812px)  {
+    .background-image{
+        height: 50.7em;
+
+    }
+}
+
+@media only screen and (min-height: 813px) and (max-height: 1024px)  {
+    .background-image{
+        height: 64em;
+
+    }
+}
+@media only screen and (min-height: 1025px) and (max-height: 1366px)  {
+    .background-image{
+        height: 83.5em;
+
+    }
+}
