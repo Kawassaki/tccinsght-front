@@ -10,10 +10,11 @@
       "installMode": "prefetch",
       "updateMode": "prefetch",
       "urls": [
+        "https://kawassaki.github.io/tccinsght-front/assets/login-animation.js",
         "https://kawassaki.github.io/tccinsght-front/favicon.ico",
         "https://kawassaki.github.io/tccinsght-front/index.html",
         "https://kawassaki.github.io/tccinsght-front/inline.318b50c57b4eba3d437b.bundle.js",
-        "https://kawassaki.github.io/tccinsght-front/main.1eb6d6ba0e55dd27e778.bundle.js",
+        "https://kawassaki.github.io/tccinsght-front/main.72377068355fa5ca764b.bundle.js",
         "https://kawassaki.github.io/tccinsght-front/polyfills.35d395590c0a06fb7afd.bundle.js",
         "https://kawassaki.github.io/tccinsght-front/styles.523d98a3985232456fd5.bundle.css"
       ],
@@ -29,7 +30,8 @@
         "https://kawassaki.github.io/tccinsght-front/assets/icon-256x256.png",
         "https://kawassaki.github.io/tccinsght-front/assets/icons/local_atm.svg",
         "https://kawassaki.github.io/tccinsght-front/assets/icons/local_dining.svg",
-        "https://kawassaki.github.io/tccinsght-front/assets/icons/store_mall.svg"
+        "https://kawassaki.github.io/tccinsght-front/assets/icons/store_mall.svg",
+        "https://kawassaki.github.io/tccinsght-front/assets/login-image.jpg"
       ],
       "patterns": []
     }
@@ -40,10 +42,12 @@
     "https://kawassaki.github.io/tccinsght-front/assets/icons/local_atm.svg": "485bb696759d81d2abdc86427314fbca23c1a5e2",
     "https://kawassaki.github.io/tccinsght-front/assets/icons/local_dining.svg": "5d180fded375343df3785d4d2bd5c4eb43b7ce85",
     "https://kawassaki.github.io/tccinsght-front/assets/icons/store_mall.svg": "9aca8a37d060578120688b2a1ba600e6a534a977",
+    "https://kawassaki.github.io/tccinsght-front/assets/login-animation.js": "0b7f46bfcdce5ac100e663289892478539cd6c3f",
+    "https://kawassaki.github.io/tccinsght-front/assets/login-image.jpg": "c30f05fd0a25b8fe96c4af3d2fe5a325a7331e82",
     "https://kawassaki.github.io/tccinsght-front/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
-    "https://kawassaki.github.io/tccinsght-front/index.html": "cb049e6f9b9ea6fc27bbac3382cf454503ebefd6",
+    "https://kawassaki.github.io/tccinsght-front/index.html": "9f44cdde61c17c6298a88969763017af813443a6",
     "https://kawassaki.github.io/tccinsght-front/inline.318b50c57b4eba3d437b.bundle.js": "998c6060446975e566fd17509558ddc68d72eec3",
-    "https://kawassaki.github.io/tccinsght-front/main.1eb6d6ba0e55dd27e778.bundle.js": "6a3b1594fcaf65bf45f05a0652b0f1854d0bf5d6",
+    "https://kawassaki.github.io/tccinsght-front/main.72377068355fa5ca764b.bundle.js": "1a9a3e83db723a3120ffe1e4ff4402cebcd6854d",
     "https://kawassaki.github.io/tccinsght-front/polyfills.35d395590c0a06fb7afd.bundle.js": "035ab6b153536dc257cae49009b0c1dc118bc075",
     "https://kawassaki.github.io/tccinsght-front/styles.523d98a3985232456fd5.bundle.css": "506385ed185c5cc54c2b5f03015ded680e292187"
   },
