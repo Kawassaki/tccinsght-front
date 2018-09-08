@@ -108,8 +108,8 @@ form {
 }
 form .svgContainer {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   margin: 0 auto 1em;
   border-radius: 50%;
   background: none;
@@ -178,7 +178,6 @@ form input[type='email']:focus, form input[type="text"]:focus, form input[type='
 form button {
   display: block;
   margin: 0;
-  padding: .65em 1em 1em;
   background-color: #FF6E40;
   border: none;
   border-radius: 4px;
@@ -194,9 +193,9 @@ form button {
   -webkit-transition: background-color .2s ease-out;
   transition: background-color .2s ease-out;
 }
-form button:hover, form button:active {
+/* form button:hover, form button:active {
   background-color: #FF6E40;
-}
+} */
 form .inputGroup1 .helper {
   position: absolute;
   z-index: 1;
@@ -239,4 +238,7 @@ form .inputGroup1.focusWithText .helper {
 .cadastrar{
   margin-top: 2% !important;
   background-color: #327592 !important;
+}
+.style-content{
+  margin: 1%;
 }

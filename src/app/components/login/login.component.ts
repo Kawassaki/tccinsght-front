@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   public hide = true;
   private returnUrl: string;
   public isAuth = false;
+  public isCadastro = false;
   public loginValid = false;
   public emailTeste: string;
   public password: string;
@@ -46,12 +47,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if(localStorage.getItem('user') === 'teste@cinq.com.br'){
       this.isAuth = true;
-      // this.router.navigate(['home']);
     } else {
       this.router.navigate(['login']);
     }
     
-    this.returnUrl = this.route.snapshot.queryParams['login'] || '/login';
   }
 
   logar(){
@@ -60,13 +59,30 @@ export class LoginComponent implements OnInit {
       self.user.email = self.email.value;
     }
     if(self.authService.login(self.user)){
+
       localStorage.setItem('user', self.user.email);
-      console.log(localStorage);
-      self.isAuth = true;
-      this.router.navigate(['home']);
+      
+      // console.log(localStorage);
+      window.location.reload();
+
+      window.setTimeout(function() {
+        self.isAuth = true;
+      }, 3000);
+
     } else {
       self.openDialog();
     }
+  }
+
+  cadastrar(){
+    let self = this;
+    self.isCadastro = true;
+    this.router.navigate(['cadastro']);
+  }
+
+  voltar(){
+    let self = this;
+    self.isCadastro = false;
   }
 
   openDialog(): void {

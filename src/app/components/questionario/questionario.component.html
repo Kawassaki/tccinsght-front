@@ -17,20 +17,6 @@
         </form>
       </mat-step>
   
-      <mat-step [stepControl]="secondFormGroup">
-        <form [formGroup]="secondFormGroup">
-          <ng-template matStepLabel> Até onde você quer ir?</ng-template>
-          <!-- <mat-icon>directions</mat-icon> -->
-          <mat-form-field class="example-container">
-            <input (change)="buscarEstabelecimentos()" matInput formControlName="secondCtrl">
-          </mat-form-field>
-          <div>
-            <button mat-raised-button color="warn"matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-  
       <mat-step [stepControl]="thirdFormGroup">
         <form [formGroup]="thirdFormGroup">
           <ng-template matStepLabel> Tipo do Estabelecimento?</ng-template>
@@ -44,44 +30,7 @@
           </div>
         </form>
       </mat-step>
-  
-      <mat-step [stepControl]="fourthFormGroup">
-        <form [formGroup]="fourthFormGroup">
-          <ng-template matStepLabel> Quantas pessoas vão com você?</ng-template>
-          <!-- <mat-icon>store_mall_directory</mat-icon> -->
-          <mat-form-field class="example-container">
-            <input (change)="buscarEstabelecimentos()" matInput formControlName="fourthCtrl">
-          </mat-form-field>
-          <div>
-            <button mat-raised-button color="warn"matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-  
-      <mat-step [stepControl]="fivethFormGroup">
-        <form [formGroup]="fivethFormGroup">
-          <ng-template matStepLabel> Até quanto você pode gastar?</ng-template>
-          <!-- <mat-icon>store_mall_directory</mat-icon> -->
-          <mat-form-field >
-            <input (change)="buscarEstabelecimentos()" matInput class="example-container" formControlName="fivethCtrl">
-          </mat-form-field>
-          <div>
-            <button mat-raised-button color="warn"matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-  
-      <!-- <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        You are now done.
-        <div>
-          <button mat-raised-button color="warn"matStepperPrevious>Back</button>
-          <button mat-raised-button color="warn"(click)="stepper.reset()">Reset</button>
-        </div>
-      </mat-step> -->
-  
+   
     </mat-vertical-stepper>
     
     <button mat-raised-button color="success" [disabled]="queryString !== 'undefined'" (click)="buscarEstabelecimentos()">Buscar</button>

@@ -12,3 +12,10 @@
 .background-toolbar{
     background-color: #bababade;
 }
+.style-menu{
+    padding: 0px;
+    opacity: 0.9;
+}
+.style-toolbar{
+    background-color: #ff6e4000;
+}

@@ -7,17 +7,16 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
 import { LoginComponent } from './components/login/login.component';
+import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
 
 const routes: Routes = [
   { path: 'busca', component: MapComponent },
   { path: 'user', component: UserComponent },
-  { path: 'cadastroEstabelecimento', component: CadastroEstabelecimentoComponent },
-
-  // { path: 'pageNotFound', component: PageNotFoundComponent },
+  { path: 'cadastro', component: CadastrarComponent },
   { path: 'home', component: HomePageComponent},
-  // { path: 'questionario', component: QuestionarioComponent},
   { path: '*/', component: HomePageComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'cadastroEstabelecimento', component: CadastroEstabelecimentoComponent }
 
 ];
 

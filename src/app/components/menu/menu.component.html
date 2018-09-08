@@ -1,26 +1,26 @@
-<mat-card>
-    <mat-card-header>
-        <mat-toolbar>
-          <mat-toolbar-row>
-            <!-- <span>Brunch</span> -->
-
-            <mat-menu #appMenu="matMenu">
-              <button mat-menu-item color= "default" routerLink="/map" (click)="goToMapa()">Busca</button>
-              <button mat-menu-item color= "default" routerLink="/home" onclick="">Home</button>
-              <!-- <button mat-menu-item color= "default" routerLink="/pageNotFound" onclick="">pageNotFound</button> -->
-              <button mat-menu-item color= "default" routerLink="/user" onclick="">Cadastro Usuario</button>
-              <!-- <button mat-menu-item color= "default" routerLink="/questionario" onclick="">Questionario</button> -->
-            </mat-menu>
-
-            <button mat-icon-button [matMenuTriggerFor]="appMenu"><mat-icon>dehaze</mat-icon></button>
-
-            <span class="menu-spacer"></span>
-            <button mat-raised-button color="warn" (click)="goToCadastroEstabelecimento()">Seja um Parceiro!</button>
-            <span class="logout-spacer"></span>
-            <button mat-button class="sair" (click)="sair()">Sair <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i></button>
-          </mat-toolbar-row>
-      </mat-toolbar>
-    </mat-card-header>
+<mat-card class="style-menu">
+     <mat-card-content>
+        <mat-toolbar class="style-toolbar">
+            <mat-toolbar-row>
+              <!-- <span>Brunch</span> -->
+  
+              <mat-menu #appMenu="matMenu">
+                <button mat-menu-item color= "default" routerLink="/map" (click)="goToMapa()">Busca</button>
+                <button mat-menu-item color= "default" routerLink="/home" onclick="">Home</button>
+                <!-- <button mat-menu-item color= "default" routerLink="/pageNotFound" onclick="">pageNotFound</button> -->
+                <button mat-menu-item color= "default" routerLink="/user" onclick="">Cadastro Usuario</button>
+                <!-- <button mat-menu-item color= "default" routerLink="/questionario" onclick="">Questionario</button> -->
+              </mat-menu>
+  
+              <button mat-icon-button [matMenuTriggerFor]="appMenu"><mat-icon>dehaze</mat-icon></button>
+  
+              <span class="menu-spacer"></span>
+              <button mat-raised-button color="warn" (click)="goToCadastroEstabelecimento()">Seja um Parceiro!</button>
+              <span class="logout-spacer"></span>
+              <button mat-button class="sair" (click)="sair()">Sair <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i></button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </mat-card-content>
 
 
 </mat-card>

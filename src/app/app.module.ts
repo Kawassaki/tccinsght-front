@@ -26,6 +26,7 @@ import { SnackBarComponent } from './components/snack-bar/snack-bar.component';
 import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AvatarModule } from 'ng2-avatar';
+import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { AvatarModule } from 'ng2-avatar';
     QuestionarioComponent,
     SnackBarComponent,
     DialogLocale,
+    CadastrarComponent,
            
   ],
   imports: [

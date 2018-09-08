@@ -31,9 +31,9 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['cadastroEstabelecimento']);
     location.reload();
   }
+
   goToMapa(){
     this.router.navigate(['busca']);
     location.reload();
-
   }
 }
