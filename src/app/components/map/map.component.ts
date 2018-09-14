@@ -1,11 +1,11 @@
 import { Component, NgZone, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-// import { } from '@types/googlemaps';
 import { QuerySelectorService } from '../../services/query-selector.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
 import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
+import { ModalDetailsComponent } from '../dialogs/modal-details/modal-details.component';
 
 @Component({
   selector: 'app-map',
@@ -60,6 +60,7 @@ export class MapComponent implements OnInit {
     private zone: NgZone,
     private estabelecimentoService: EstabelecimentoService,
     public dialog: MatDialog,
+    public modalDetails : MatDialog,
     private _formBuilder: FormBuilder,
     private router: Router
   ) { }
@@ -415,6 +416,14 @@ export class MapComponent implements OnInit {
   openDialog(): void {
     this.dialog.open(DialogLocale, {
       width: '480px',
+    });
+  }
+
+  openDetails(place){
+    this.modalDetails.open(ModalDetailsComponent, {
+      width: '920px',
+      data: {place : place, mapa : this.map},
+      
     });
   }
 }

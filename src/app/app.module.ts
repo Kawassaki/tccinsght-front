@@ -16,9 +16,7 @@ import { CadastroEstabelecimentoComponent } from './components/cadastro-estabele
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { QuerySelectorService } from './services/query-selector.service';
 import { QuestionarioComponent } from './components/questionario/questionario.component';
 import { EstabelecimentoService } from './services/estabelecimento/estabelecimento.service';
 import { UsuarioService } from './services/usuario/usuario.service';
@@ -27,6 +25,7 @@ import { DialogLocale } from './components/dialogs/dialog-locale/dialogs.compone
 import { AuthenticationService } from './services/authentication.service';
 import { AvatarModule } from 'ng2-avatar';
 import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
+import { ModalDetailsComponent }from './components/dialogs/modal-details/modal-details.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +42,7 @@ import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
     SnackBarComponent,
     DialogLocale,
     CadastrarComponent,
+    ModalDetailsComponent,
            
   ],
   imports: [
@@ -54,11 +54,6 @@ import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
     HttpClientModule,
     HttpModule,
     AvatarModule.forRoot(),
-    ServiceWorkerModule.register('/ngsw-worker.js', {
-      enabled: true
-    })
-
-
   ],
   exports: [
     RouterModule,
@@ -70,6 +65,6 @@ import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
     AuthenticationService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [DialogLocale]
+  entryComponents: [DialogLocale, ModalDetailsComponent]
 })
 export class AppModule { }

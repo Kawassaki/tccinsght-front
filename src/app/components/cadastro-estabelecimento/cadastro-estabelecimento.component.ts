@@ -1,7 +1,7 @@
 import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
 // import { } from '@types/googlemaps';
 
-import { Estabelecimento } from './../../models/estabelecimento';
+import { Estabelecimento } from '../../models/estabelecimento';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
 
 
