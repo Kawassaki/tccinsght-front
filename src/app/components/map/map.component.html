@@ -7,33 +7,23 @@
   <mat-expansion-panel [expanded]="formAnswered === false">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Ajude-nos a encontrar o local ideal para você!
+        Encontre o local ideal:
       </mat-panel-title>
-      <mat-panel-description>
-        Informe ao menos 1 filtro
-      </mat-panel-description>
     </mat-expansion-panel-header>
 
     <!-- <mat-card> -->
     <!-- <mat-horizontal-stepper [linear]="isLinear" #stepper="matHorizontalStepper"> -->
-    <mat-vertical-stepper [linear]="isLinear" #stepper class="stepper">
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field class="busca-input">
+          <input matInput placeholder="Digite aqui o que você deseja comer hoje" #busca autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-md-12">
+        <button mat-raised-button class="button-color-orange" (click)="buscarEstabelecimentos()">Buscar</button>
+      </div>
+    </div>
 
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
-          <ng-template matStepLabel> O que pretende comer?</ng-template>
-          <!-- <mat-icon>local_library</mat-icon> -->
-          <mat-form-field class="example-container">
-            <input matInput formControlName="firstCtrl">
-          </mat-form-field>
-          <div>
-            <button mat-raised-button color="primary" matStepperNext>Next</button>
-          </div>
-        </form>
-      </mat-step>
-
-    </mat-vertical-stepper>
-
-    <button mat-raised-button color="success" (click)="buscarEstabelecimentos()">Buscar</button>
 
     <!-- </mat-card> -->
 
@@ -43,16 +33,20 @@
 <mat-expansion-panel [expanded]="formAnswered === true" class="margin-top-map" [hidden]="!formAnswered" [disabled]="loading">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      Sugestões para você
+      Sugestões para você:
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div>
     <div [style.display]="mapLoaded?'none':'inherit'">
-      <div class="div-controls" #rota>
-        <input class="controls" placeholder="Buscar:" #search>
-        <button mat-button (click)="gerarRota()" class="btn-route" matTooltip="Traçar Rota" matTooltipPosition="above">
-          <mat-icon class="icon">near_me</mat-icon>
-        </button>
+      <div class="row" #rota>
+        <div class="col-md-9">
+          <input class="controls" placeholder="Buscar:" #search>
+        </div>
+        <div class="col-md-3">
+          <button mat-button (click)="gerarRota()" class="btn-route" matTooltip="Traçar Rota" matTooltipPosition="above">
+            <mat-icon class="icon">near_me</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
     <div #gmap style='width:100%;height:65vh;display:block;'></div>
@@ -62,12 +56,12 @@
 <mat-expansion-panel [expanded]="placesInformation.length > 0" class="margin-top-map" [hidden]="!formAnswered" [disabled]="loading">
   <mat-expansion-panel-header>
     <mat-panel-title>
-      Detalhes dos Estabelecimentos
+      Detalhes dos estabelecimentos:
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div *ngIf="placesInformation">
     <div *ngFor="let placeInfo of placesInformation; let i = index" [attr.data-index]="i">
-      <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }">
+      <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }" matBadge="8" matBadgePosition="after" matBadgeColor="accent">
         <mat-card-header>
           <avatar class="size-avatar" [name]="placeInfo.name" [displayType]="'circle'" [size]="40"></avatar>
           <!-- <div mat-card-avatar class="example-header-image"> {{placeInfo.initialNamePlace}}</div> -->

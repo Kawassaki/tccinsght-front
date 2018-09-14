@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('user', self.user.email);
       
       // console.log(localStorage);
-      window.location.reload();
+      this.router.navigate(['busca']);
 
       window.setTimeout(function() {
         self.isAuth = true;

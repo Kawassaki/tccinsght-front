@@ -79,3 +79,14 @@
   color: #FFD740; 
   border-color: #424242; 
 }
+.busca-input{
+  width: 100% !important;
+}
+.button-color-orange{
+  background-color: #FF6E40;
+  color: white;
+}
+
+.background-color-header{
+  background-color: #EEEEEE;
+}

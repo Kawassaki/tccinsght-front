@@ -23,6 +23,8 @@ export class MapComponent implements OnInit {
 
   @ViewChild('rota') rota: any;
 
+  @ViewChild('busca') busca: any;
+
   @Output() onFilter: EventEmitter<any> = new EventEmitter();
 
   private markers: any;
@@ -93,36 +95,10 @@ export class MapComponent implements OnInit {
   buscarEstabelecimentos() {
 
     var self = this;
-    self.queryString = "";
 
-    if (self.firstFormGroup.value.firstCtrl !== "" && self.firstFormGroup.value.firstCtrl !== null && self.firstFormGroup.value.firstCtrl !== undefined) {
-      self.queryString += self.firstFormGroup.value.firstCtrl + " "
-    }
-
-    if (self.secondFormGroup.value.secondCtrl !== "" && self.secondFormGroup.value.secondCtrl !== null && self.secondFormGroup.value.secondCtrl !== undefined) {
-      self.queryString += self.secondFormGroup.value.secondCtrl + " "
-    }
-
-    if (self.thirdFormGroup.value.thirdCtrl !== "" && self.thirdFormGroup.value.thirdCtrl !== null && self.thirdFormGroup.value.thirdCtrl !== undefined) {
-      self.queryString += self.thirdFormGroup.value.thirdCtrl + " "
-    }
-
-    if (self.fourthFormGroup.value.fourthCtrl !== "" && self.fourthFormGroup.value.fourthCtrl !== null && self.fourthFormGroup.value.fourthCtrl !== undefined) {
-      self.queryString += self.fourthFormGroup.value.fourthCtrl + " "
-    }
-
-    if (self.fivethFormGroup.value.fivethCtrl !== "" && self.fivethFormGroup.value.fivethCtrl !== null && self.fivethFormGroup.value.fivethCtrl !== undefined) {
-      self.queryString += self.fivethFormGroup.value.fivethCtrl + " "
-    }
-
-    // console.log(self.queryString.trim());
-
-    // self.onFilter.emit(self.queryString.trim());
-    // self.queryString = "";
-
-    if (self.queryString !== undefined && self.queryString !== null && self.queryString !== "") {
+    if (self.busca !== undefined && self.busca !== null && self.busca !== "") {
       self.formAnswered = true;
-      self.initAutocomplete(self.queryString);
+      self.initAutocomplete(self.busca.nativeElement.value);
       self.setLocalizacaoAtual();
       
       window.setTimeout(function() {
