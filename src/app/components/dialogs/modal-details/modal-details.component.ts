@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, NgZone } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
@@ -12,12 +12,9 @@ export class ModalDetailsComponent implements OnInit {
   activeLink = this.links[0];
   background = '#FF6E40';
 
-  @ViewChild('gmap') gmapElement: any;
-
   constructor(
     public modalRef: MatDialogRef<ModalDetailsComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private zone: NgZone,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
   onNoClick(): void {
@@ -25,7 +22,6 @@ export class ModalDetailsComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.gmapElement = new google.maps.Map(this.gmapElement.nativeElement, this.data.mapa);
     console.log(this.data);
   }
 }

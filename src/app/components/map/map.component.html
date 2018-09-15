@@ -76,7 +76,7 @@
             <b>Site:</b> {{placeInfo.website? placeInfo.website : "Sem dados disponíveis :("}}
           </p>
           <p>
-            <b>Contato:</b> {{placeInfo.formatted_phone_number ? placeInfo.formatted_phone_number : "Sem dados disponíveis :("}}
+            <b>Contato:</b> {{placeInfo.international_phone_number ? placeInfo.international_phone_number : "Sem dados disponíveis :("}}
           </p>
           <!-- <p> -->
           <b>Nota:</b>
@@ -94,7 +94,7 @@
           </span>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button (click)="openDetails(placeInfo)">Detalhes</button>
+          <button mat-stroked-button color="warn" (click)="openDetails(placeInfo)" [disabled]="!placeInfo.isCadastrado">Detalhes</button>
           <!-- <button mat-button>SHARE</button> -->
         </mat-card-actions>
       </mat-card>

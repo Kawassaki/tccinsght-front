@@ -2,5 +2,32 @@
     background-color: #FF6E40;
 }
 .tab-color{
+    color: #ff6e40;
+}
+
+.button-confirm{
+    background-color: #FF6E40;
     color: white;
+}
+
+.padding-tab{
+    padding: 1%;
+}
+.mat-tab-label{
+    color: #ff6e40 !important;
+}
+.icon-title{
+    margin: 0.6%;
+}
+
+.row-title{
+    display: flex;
+    flex-direction: row;
+}
+.list{
+    height: 287px;
+    overflow: auto;
+}
+.p-0{
+    padding: 0px 0px !important;
 }

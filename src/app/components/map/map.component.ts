@@ -229,7 +229,6 @@ export class MapComponent implements OnInit {
       searchBox.addListener('places_changed', function () {
         self.map.setCenter(self.mapCenter);
         self.places = searchBox.getPlaces();
-        console.log(searchBox);
         if (self.places.length == 0) {
           return;
         }
@@ -385,15 +384,32 @@ export class MapComponent implements OnInit {
 
   getInformations(place) {
     var self = this;
-    // let placeService;
+    // busca dados de cada place retornado pelo google para validar se tem cadastro no sistema ou não
     this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
       estabelecimentoResponse => {
         self.setStar(place);
-        if (estabelecimentoResponse.place_id === place.place_id) {
-          self.placesInformation.unshift(estabelecimentoResponse);
-          return;
+        
+        if(place.website){
+          place.isCadastrado = true;
+        } else {
+          place.isCadastrado = false;
         }
-        self.placesInformation.push(place);
+
+        if(place.isCadastrado){
+          self.placesInformation.unshift(place);
+        } else {
+          self.placesInformation.push(place);
+        }
+
+        // NÃO REMOVER ESSE MÉTODO
+        // if (estabelecimentoResponse.place_id === place.place_id) {
+        //   place.isCadastrado = true;
+        //   self.placesInformation.unshift(estabelecimentoResponse);
+        //   return;
+        // }
+
+        //Buscar os dados no banco para saber se ele tem cadastro ou não e reutilizar o mesmo json acresentando as informações que faltam
+
         self.zone.run(() => { });
       }
     );
@@ -422,6 +438,8 @@ export class MapComponent implements OnInit {
   openDetails(place){
     this.modalDetails.open(ModalDetailsComponent, {
       width: '920px',
+      height: '520px',
+      panelClass: 'custom-dialog-container',
       data: {place : place, mapa : this.map},
       
     });

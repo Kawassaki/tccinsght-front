@@ -22,6 +22,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatListModule
   ],
   exports: [
     CommonModule,
@@ -63,7 +65,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatListModule
     
   ],
 

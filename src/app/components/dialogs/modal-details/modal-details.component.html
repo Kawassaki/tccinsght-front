@@ -1,16 +1,67 @@
-<mat-card>
+<div class="row-title">
+  <mat-icon class="icon-title">store_mall_directory</mat-icon>
+  <h2 mat-dialog-title>{{data.place.name}}</h2>
+
+</div>
+<mat-card class="padding-card">
+  <mat-tab-group style="color: #ff6e40;">
+    <mat-tab label="Dados Úteis" class="padding-tab">
+
+      <mat-list class="list">
+        <mat-list-item>
+          <span>
+            <b>Site:</b>
+            <a *ngIf="data.place.website" href="{{data.place.website}}">
+              <p>{{data.place.website}}</p>
+            </a>
+            <p *ngIf="!data.place.website">Sem dados disponíveis :(</p>
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>
+            <b>Contato:</b>
+            <p>{{data.place.international_phone_number? data.place.international_phone_number : "Sem dados disponíveis :("}}
+            </p>
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>
+            <b>Endereço:</b>
+            <p>{{data.place.vicinity ? data.place.vicinity : "Sem dados disponíveis :("}}</p>
+          </span>
+        </mat-list-item>
+        <mat-list-item>
+          <span>
+            <b>Funcionamento:</b>
+          </span>
+        </mat-list-item>
+        <div *ngIf="data.place.opening_hours">
+          <mat-list-item *ngFor="let horairos of data.place.opening_hours.weekday_text; let i = index">
+            {{horairos}}
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </div>
+        <mat-list-item *ngIf="!data.place.opening_hours">
+          Sem horários disponíveis
+        </mat-list-item>
+      </mat-list>
+
+    </mat-tab>
+    <mat-tab label="Avaliações">
+      <mat-list class="list">
+
+      </mat-list>
+    </mat-tab>
+    <mat-tab label="Informações Adicionais">
+      <mat-list class="list">
+
+      </mat-list>
+
+    </mat-tab>
+  </mat-tab-group>
   <mat-card-header>
-    <h2 mat-dialog-title><mat-icon>store_mall_directory</mat-icon> {{data.place.name}}</h2>
   </mat-card-header>
-  <mat-card-content>
-    <nav mat-tab-nav-bar class="background-tabs">
-      <a class="tab-color" mat-tab-link *ngFor="let link of links" (click)="activeLink = link" [active]="activeLink == link"> {{link}} </a>
-    </nav>
-    <div #gmap></div>
-  </mat-card-content>
   <mat-card-actions>
-    <mat-dialog-actions>
-      <button mat-raised-button mat-dialog-close>Ok</button>
-    </mat-dialog-actions>
+    <button mat-raised-button mat-dialog-close class="button-confirm">Ok</button>
   </mat-card-actions>
 </mat-card>
