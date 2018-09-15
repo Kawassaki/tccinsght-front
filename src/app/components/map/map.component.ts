@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, NgZone, AfterViewInit , ViewChild, Output, EventEmitter } from '@angular/core';
 import { QuerySelectorService } from '../../services/query-selector.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
@@ -12,7 +12,7 @@ import { ModalDetailsComponent } from '../dialogs/modal-details/modal-details.co
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements AfterViewInit{
 
 
   @ViewChild('gmap') gmapElement: any;
@@ -65,7 +65,7 @@ export class MapComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  ngAfterViewInit(){
     window.setInterval(2000);
     this.criaMapa();
     window.setInterval(2000);

@@ -56,19 +56,31 @@ body {
 @media only screen and (max-height: 667px) and (min-height: 642px) {
   .form{
     top:333px;
-
+  }
+  .style-content{
+    margin: 1%;
+    max-height: 34em;
+    overflow: auto;
   }      
 }
 @media only screen and (min-height: 668px) and (max-height: 736px)  {
   .form{
     top:363px;
-
-  }      
+  }
+  .style-content{
+    margin: 1%;
+    max-height: 39em;
+    overflow: auto;
+  }          
 }
 @media only screen and (min-height: 737px) and (max-height: 812px)  {
   .form{
       top:391px;
-
+  }
+  .style-content{
+    margin: 1%;
+    max-height: 43em;
+    overflow: auto;
   }
 }
 
@@ -77,13 +89,22 @@ body {
      top: 463px;
 
   }
+  .style-content{
+    margin: 1%;
+    max-height: 43em;
+    overflow: auto;
+  }
 }
 
 @media only screen and (min-height: 1025px) and (max-height: 1366px)  {
   .form{
     top: 600px;
-
- }
+  }
+  .style-content{
+    margin: 1%;
+    max-height: 56em;
+    overflow: auto;
+  }
 }
 
 
@@ -241,4 +262,6 @@ form .inputGroup1.focusWithText .helper {
 }
 .style-content{
   margin: 1%;
+  max-height: 510px;
+  overflow: auto;
 }

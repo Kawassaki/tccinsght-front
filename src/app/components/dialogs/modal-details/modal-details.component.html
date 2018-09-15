@@ -48,9 +48,37 @@
 
     </mat-tab>
     <mat-tab label="Avaliações">
-      <mat-list class="list">
-
-      </mat-list>
+      <div *ngIf="data.place.reviews" class="list">
+        <mat-card>
+          <mat-card-header>
+            <div class="row-rating">
+              <div class="row-rating-label">
+                <h2 class="media">{{data.place.rating}}</h2>
+                <p>Média</p>
+              </div>
+              <a *ngFor="let item of data.place.starList">
+                <i class="fa star fa-3x" [ngClass]="{'fa-star-o':item,'fa-star':!item}"></i>
+              </a>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <div *ngFor="let review of data.place.reviews">
+          <mat-card>
+            <mat-card-header>
+                <avatar class="size-avatar" [name]="review.author_name" [displayType]="'circle'" [size]="40"></avatar>
+                <div>
+                  <mat-card-title>{{review.author_name}} - Nota {{review.rating}}</mat-card-title>
+                  <mat-card-subtitle>{{review.relative_time_description}}</mat-card-subtitle>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+              <span>{{review.text}}</span>
+            </mat-card-content>
+            <mat-card-actions>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
     </mat-tab>
     <mat-tab label="Informações Adicionais">
       <mat-list class="list">
