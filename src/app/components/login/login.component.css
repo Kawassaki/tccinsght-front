@@ -262,6 +262,6 @@ form .inputGroup1.focusWithText .helper {
 }
 .style-content{
   margin: 1%;
-  max-height: 510px;
+  max-height: 54em;
   overflow: auto;
 }
