@@ -126,7 +126,7 @@
       <div class="inputGroup inputGroup1">
         <label for="email">Email*</label>
         <input type="text" id="email" name="email" [formControl]="emailLogin" class="email" maxlength="256" required/>
-        <mat-error *ngIf="emailLogin.invalid">{{getErrorMessage(emailLogin)}}</mat-error>
+        <mat-error *ngIf="emailLogin.invalid">{{getErrorEmail(emailLogin)}}</mat-error>
         <!-- <p class="helper helper1">exemplo@domain.com</p> -->
         <span class="indicator"></span>
       </div>
@@ -158,19 +158,20 @@
       <div class="inputGroup inputGroup1">
         <label for="email">Email*</label>
         <input matInput type="text" id="email" name="email" [formControl]="emailCadastro" class="email" maxlength="256" required/>
-        <mat-error *ngIf="emailCadastro.invalid">{{getErrorMessage(emailCadastro)}}</mat-error>
+        <mat-error *ngIf="emailCadastro.invalid">{{getErrorEmail(emailCadastro)}}</mat-error>
       </div>
       <div class="inputGroup inputGroup2">
         <label for="password">Senha*</label>
-        <input type="password" id="password" name="password" [(ngModel)]="userCadastro.senha" class="password" required/>
+        <input type="password" id="passwordCadastro" name="password" [(ngModel)]="userCadastro.senha" class="password" required/>
       </div>
       <div class="inputGroup inputGroup2">
         <label for="password">Confirmar Senha*</label>
-        <input type="password" id="passwordCadastro" name="password" [(ngModel)]="userCadastro.senha" class="password" required/>
+        <input type="password" id="passwordCadastroConfirm" name="password" [(ngModel)]="userCadastro.confirmaSenha" class="password" required/>
+        <mat-error *ngIf="userCadastro.confirmaSenha !== userCadastro.senha">{{getErrorConfirmPassword(userCadastro.confirmaSenha)}}</mat-error>
       </div>
 
       <div class="inputGroup inputGroup3">
-        <button mat-flat-button  (click)="confrimar()" [disabled]="cadastroForm.invalid || emailCadastro.invalid">Confirmar</button>
+        <button mat-flat-button  (click)="confrimar()" [disabled]="cadastroForm.invalid || emailCadastro.invalid || userCadastro.confirmaSenha !== userCadastro.senha">Confirmar</button>
         <button mat-flat-button class="cadastrar" (click)="isCadastro = false">Voltar</button>
       </div>
     </form>

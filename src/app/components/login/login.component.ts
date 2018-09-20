@@ -106,7 +106,10 @@ export class LoginComponent implements OnInit {
     console.log(self.userCadastro);
   }
   
-  getErrorMessage(email) {
+  getErrorEmail(email) {
     return email.hasError('required') ? '' : email.hasError('email') ? 'Formato do e-mail é inválido' : '';
+  }
+  getErrorConfirmPassword(senha) {
+    return senha !== null && senha !== undefined && senha !== '' ? 'A confirmação da senha deve ser igual a senha' : '';
   }
 }
