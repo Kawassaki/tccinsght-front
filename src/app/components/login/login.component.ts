@@ -15,7 +15,8 @@ import '../../../assets/login-animation.js';
 })
 export class LoginComponent implements OnInit {
 
-  public email = new FormControl('', [Validators.required, Validators.email]);
+  public emailCadastro = new FormControl('', [Validators.required, Validators.email]);
+  public emailLogin = new FormControl('', [Validators.required, Validators.email]);
   public hide = true;
   private returnUrl: string;
   public isAuth = false;
@@ -24,7 +25,9 @@ export class LoginComponent implements OnInit {
   public emailTeste: string;
   public password: string;
 
-  public user = new Usuario();
+  public userLogin = new Usuario();
+  
+  public userCadastro = new Usuario();
 
   constructor(
     private authService: AuthenticationService,
@@ -55,12 +58,12 @@ export class LoginComponent implements OnInit {
 
   logar(){
     let self = this;
-    if(self.email && self.email.valid){
-      self.user.email = self.email.value;
+    if(self.emailLogin && self.emailLogin.valid){
+      self.userLogin.email = self.emailLogin.value;
     }
-    if(self.authService.login(self.user)){
+    if(self.authService.login(self.userLogin)){
 
-      localStorage.setItem('user', self.user.email);
+      localStorage.setItem('user', self.userLogin.email);
       
       // console.log(localStorage);
       window.location.reload();
@@ -91,8 +94,19 @@ export class LoginComponent implements OnInit {
       width: '480px',
     });
   }
+
+  confrimar(): void {
+    var self = this;
+    // chamar a service para persistir no banco o usuário
+    if(self.emailCadastro && self.emailCadastro.valid){
+      self.userCadastro.email = self.emailCadastro.value;
+    }
+
+    // salvar essas informações
+    console.log(self.userCadastro);
+  }
   
-  getErrorMessage() {
-    return this.email.hasError('required') ? 'Digite seu e-mail' : this.email.hasError('email') ? 'Formato do e-mail é inválido' : '';
+  getErrorMessage(email) {
+    return email.hasError('required') ? '' : email.hasError('email') ? 'Formato do e-mail é inválido' : '';
   }
 }
