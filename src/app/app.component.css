@@ -42,7 +42,6 @@
 }
 @media only screen and (min-height: 1025px) and (max-height: 1366px)  {
     .background-image{
-        height: 83.5em;
-
+        height: 85.5em;
     }
 }
