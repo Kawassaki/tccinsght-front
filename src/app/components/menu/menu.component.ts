@@ -27,8 +27,14 @@ export class MenuComponent implements OnInit {
     localStorage.setItem('user', null);
     location.reload();
   }
+
   goToCadastroEstabelecimento(){
     this.router.navigate(['cadastroEstabelecimento']);
+    location.reload();
+  }
+
+  goToUser(){
+    this.router.navigate(['user']);
     location.reload();
   }
 

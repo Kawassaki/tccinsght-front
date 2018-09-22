@@ -102,14 +102,17 @@ export class MapComponent implements AfterViewInit{
       self.initAutocomplete(self.busca.nativeElement.value);
       self.setLocalizacaoAtual();
       
-      window.setTimeout(function() {
-        google.maps.event.trigger(self.search.nativeElement, 'focus')
-        
-      }, 3000);
-      window.setTimeout(function() {
-        google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
-      }, 3000);
-      self.loading = false;
+      if(self.search.nativeElement !== null){
+
+        window.setTimeout(function() {
+          google.maps.event.trigger(self.search.nativeElement, 'focus')
+          
+        }, 1000);
+        window.setTimeout(function() {
+          google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
+        }, 1000);
+        self.loading = false;
+      }
       
       self.mapLoaded = true;
     }
@@ -120,7 +123,7 @@ export class MapComponent implements AfterViewInit{
   });
 
   private circleCurrentPosition = {
-    path: google.maps.SymbolPath.CIRCLE,
+    path: './assets/icons/currentLocation.png',
     fillColor: '#FF9E80',
     fillOpacity: 1,
     scale: 3,
@@ -129,7 +132,7 @@ export class MapComponent implements AfterViewInit{
   };
 
   private placeMarker = {
-    url: 'https://storage.googleapis.com/tcc-api-insight.appspot.com/map-marker.png',
+    icon: './assets/icons/map-marker.png',
     size: new google.maps.Size(90, 90),
     origin: new google.maps.Point(0, 0),
     anchor: new google.maps.Point(17, 34),
@@ -155,10 +158,9 @@ export class MapComponent implements AfterViewInit{
     };
 
     window.navigator.geolocation.watchPosition(function (data) {
-
-      self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
-
+      
       if (!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())) {
+        self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
         self.map.setCenter(self.mapCenter);
       }
 
@@ -166,7 +168,7 @@ export class MapComponent implements AfterViewInit{
       self.markerCurrentLocation.setPosition(self.mapCenter);
       self.markerCurrentLocation.setMap(self.map);
       self.markerCurrentLocation.setDraggable(true);
-      self.markerCurrentLocation.setIcon(self.circleCurrentPosition);
+      self.markerCurrentLocation.setIcon('./assets/icons/currentLocation.png');
 
       self.markerCurrentLocation.addListener('mouseover', function () {
         self.markerCurrentLocationInfo.open(self.map, self.markerCurrentLocation);
@@ -296,7 +298,7 @@ export class MapComponent implements AfterViewInit{
 
     let marker = new google.maps.Marker({
       map: self.map,
-      icon: self.placeMarker,
+      icon: './assets/icons/map-marker.png',
       title: place.name,
       position: place.geometry.location,
       animation: google.maps.Animation.DROP
@@ -311,7 +313,7 @@ export class MapComponent implements AfterViewInit{
     }
 
     self.map.fitBounds(bounds);
-    self.map.setZoom(13);
+    self.map.setZoom(15);
     self.map.setCenter(self.mapCenter);
 
     self.getInformations(place);

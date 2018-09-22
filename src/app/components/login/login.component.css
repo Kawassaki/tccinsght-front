@@ -53,7 +53,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-@media only screen and (max-height: 667px) and (min-height: 642px) {
+@media only screen and (max-height: 667px) and (min-height: 500px) {
+  .form{
+    top:333px;
+  }
+  .style-content{
+    margin: 1% !important;
+    max-height: 32em !important;
+    overflow: auto !important;
+  }      
+}
+@media only screen and (max-height: 668px) and (min-height: 642px) {
   .form{
     top:333px;
   }
@@ -68,9 +78,9 @@ body {
     top:363px;
   }
   .style-content{
-    margin: 1%;
-    max-height: 39em;
-    overflow: auto;
+    margin: 1%!important;
+    max-height: 39em!important;
+    overflow: auto!important;
   }          
 }
 @media only screen and (min-height: 737px) and (max-height: 812px)  {
@@ -78,32 +88,32 @@ body {
       top:391px;
   }
   .style-content{
-    margin: 1%;
-    max-height: 43em;
-    overflow: auto;
+    margin: 1%!important;
+    max-height: 43em!important;
+    overflow: auto!important;
   }
 }
 
-@media only screen and (min-height: 813px) and (max-height: 1024px)  {
+@media only screen and (min-height: 813px) and (max-height: 1023px)  {
   .form{
      top: 463px;
 
   }
   .style-content{
-    margin: 1%;
-    max-height: 43em;
-    overflow: auto;
+    margin: 1%!important;
+    max-height: 43em!important;
+    overflow: auto!important;
   }
 }
 
-@media only screen and (min-height: 1025px) and (max-height: 1366px)  {
+@media only screen and (min-height: 1024px) and (max-height: 1366px)  {
   .form{
     top: 600px;
   }
   .style-content{
-    margin: 1%;
-    max-height: 56em;
-    overflow: auto;
+    margin: 1% !important;
+    max-height: 56em!important;
+    overflow: auto!important;
   }
 }
 

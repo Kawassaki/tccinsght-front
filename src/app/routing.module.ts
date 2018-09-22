@@ -13,8 +13,8 @@ const routes: Routes = [
   { path: 'busca', component: MapComponent },
   { path: 'user', component: UserComponent },
   { path: 'cadastro', component: CadastrarComponent },
-  { path: 'home', component: HomePageComponent},
-  { path: '*/', component: HomePageComponent},
+  { path: '*/', component: MapComponent},
+  { path: '', component: MapComponent},
   { path: 'login', component: LoginComponent},
   { path: 'cadastroEstabelecimento', component: CadastroEstabelecimentoComponent }
 

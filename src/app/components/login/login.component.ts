@@ -39,7 +39,10 @@ export class LoginComponent implements OnInit {
 
 
   ngAfterViewInit() {
-    (window as any).initialize();
+    if(window !== null && window !== undefined){
+      (window as any).initialize();
+    }
+      
   }
 
   // login(){

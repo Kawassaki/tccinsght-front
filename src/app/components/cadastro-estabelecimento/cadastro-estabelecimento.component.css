@@ -1,6 +1,7 @@
 .example-container {
     display: flex;
     flex-direction: column;
+    padding: 1%;
   }
 
   .example-card {
@@ -14,6 +15,10 @@
   
   .example-container > * {
     width: 100%;
+  }
+  .padding-pages{
+    padding: 30px;
+    height: 100%;
   }
 
   .padding-tabs{
@@ -29,8 +34,11 @@
     border-radius: 2px 0 0 2px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    height: 30px;
-    width: 450px;
+    height: 28px;
+    width: 200px;
     outline: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    margin-left: 10px;
+    left: 0% !important;
   }

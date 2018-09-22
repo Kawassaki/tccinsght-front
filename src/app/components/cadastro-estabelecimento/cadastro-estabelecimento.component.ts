@@ -23,43 +23,49 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private longitude: number;
   private zoom: number;
   private mapCenter: any;
-  
+  public mapLoaded = false;
+
   public estabelecimento: Estabelecimento;
 
   private renderer: Renderer;
-  private estabelecimentos:any;
-  private estabelecimentosById:any;
-  private markerCurrentLocation;
-  
-  constructor( 
+  private estabelecimentos: any;
+  private estabelecimentosById: any;
+
+  private markerCurrentLocation = new google.maps.Marker();
+  private markerCurrentLocationInfo = new google.maps.InfoWindow({
+    content: 'Sua localização'
+  });
+
+
+  constructor(
     private zone: NgZone,
     private estabelecimentoService: EstabelecimentoService
-  ) {  }
+  ) { }
 
 
 
-  retornaEstabelecimentoApi(){
-    this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste =>{
-       this.estabelecimentos = estabelecimentoTeste 
-       console.log(this.estabelecimentos);
-      }
+  retornaEstabelecimentoApi() {
+    this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => {
+      this.estabelecimentos = estabelecimentoTeste
+      console.log(this.estabelecimentos);
+    }
     );
-    
-    
+
+
     this.estabelecimentoService.getEstabelecimentosById().subscribe(
       estabelecimentoTeste => {
         this.estabelecimentosById = estabelecimentoTeste
         console.log(this.estabelecimentosById);
       }
     );
-    
+
   }
 
-  salvarEstabelecimento(){
+  salvarEstabelecimento() {
     var self = this;
     self.estabelecimentoService.salvarEstabelecimento(self.estabelecimento);
   }
-  
+
 
   ngOnInit() {
     var self = this;
@@ -67,32 +73,55 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
     let mapProp = {
       center: self.mapCenter,
-      zoom: 13,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true // remove controladores default
+
     };
 
     self.map = new google.maps.Map(self.gmapElement.nativeElement, mapProp);
-    
-    self.initAutocomplete();
-    var lat;
-    var long
-    window.navigator.geolocation.getCurrentPosition(function (data) {
-      lat = data.coords.latitude;
-      long = data.coords.longitude;
 
-      self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
-      self.map.setCenter(self.mapCenter);
-      
-      self.markerCurrentLocation = new google.maps.Marker({
-        position: self.mapCenter,
-        map: self.map,
-        draggable: true,
-        animation: google.maps.Animation.DROP
+    
+    self.mapLoaded = true;
+
+    self.initAutocomplete();
+    
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 500,
+      maximumAge: 0
+    };
+
+    window.navigator.geolocation.getCurrentPosition(function (data) {
+
+      if (!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())) {
+        self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
+        self.map.setCenter(self.mapCenter);
+      }
+
+      self.markerCurrentLocation.setAnimation(google.maps.Animation.DROP);
+      self.markerCurrentLocation.setPosition(self.mapCenter);
+      self.markerCurrentLocation.setMap(self.map);
+      self.markerCurrentLocation.setDraggable(true);
+      self.markerCurrentLocation.setIcon('./assets/icons/currentLocation.png');
+
+      self.markerCurrentLocation.addListener('mouseover', function () {
+        self.markerCurrentLocationInfo.open(self.map, self.markerCurrentLocation);
       });
 
-      // self.markers.push(marker);
-    });
-    
+      self.markerCurrentLocation.addListener('mouseout', function () {
+        self.markerCurrentLocationInfo.close();
+      });
+
+      self.markerCurrentLocation.addListener('dragend', function (mark) {
+        let localationDraggend = new google.maps.LatLng(mark.latLng.lat(), mark.latLng.lng());
+        if (self.mapCenter !== localationDraggend) {
+          self.mapCenter = localationDraggend;
+          self.map.setCenter(self.mapCenter);
+          console.log("Localização Atualizada")
+        }
+      });
+    }, null, options);
   }
 
   initAutocomplete() {
@@ -112,8 +141,8 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         return;
       }
 
-      self.cleanMarkers();
-      self.markers.push(self.markerCurrentLocation);
+      // self.cleanMarkers();
+      // self.markers.push(self.markerCurrentLocation);
       self.getDetails();
 
     });
@@ -141,15 +170,18 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           let marker = self.addMarkPlace(place);
-          
+
           google.maps.event.addListener(marker, 'click', function () {
-              console.log(place.icon);
-              self.estabelecimento.nome = place.name;
-              self.estabelecimento.telefone = place.international_phone_number;
-              self.estabelecimento.place_id = place.place_id;
-              self.estabelecimento.website = place.website;
-              // self.estabelecimento.endereco.rua = place.vicinity;
-              self.zone.run(() => {});
+            console.log(place);
+            self.estabelecimento.nome = place.name;
+            self.estabelecimento.telefone = place.international_phone_number;
+            self.estabelecimento.place_id = place.place_id;
+            self.estabelecimento.website = place.website;
+            self.estabelecimento.endereco = place.formatted_address;
+            self.estabelecimento.proprietario = localStorage.getItem('user'); //pega o usuário salvo na sessão e seta como proprietário
+            var informacoes = [];
+            
+            self.zone.run(() => { });
 
           });
         }
@@ -157,42 +189,29 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     });
   }
 
-  
+
   addMarkPlace(place): any {
-      var self = this;
-      let bounds = new google.maps.LatLngBounds();
+    var self = this;
+    let bounds = new google.maps.LatLngBounds();
 
-      if (!place.geometry) {
-        console.log("Returned place contains no geometry");
-        return;
-      }
+    if (!place.geometry) {
+      console.log("Returned place contains no geometry");
+      return;
+    }
 
-      var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
+    self.markerCurrentLocation.setPosition(place.geometry.location);
+    // self.markers[0].setPosition(place.geometry.location);
 
-      let marker = new google.maps.Marker({
-        map: self.map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      })
+    if (place.geometry.viewport) {
+      bounds.union(place.geometry.viewport);
+    } else {
+      bounds.extend(place.geometry.location);
+    }
 
-      self.markers.push(marker);
-
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-
-      this.map.fitBounds(bounds);
-
-      return marker;
+    this.map.fitBounds(bounds);
+    // console.log(self.markers);
+    
+    return self.markerCurrentLocation;
 
   }
 }

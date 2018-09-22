@@ -8,13 +8,13 @@ export class  Estabelecimento{
     telefone: any;
     place_id: any;
     website : string;
+    endereco : string;
 
     informacoesAdicionais:{};
 
-    endereco: Endereco;
-    proprietario: Usuario;
+    proprietario: any;
 
-    avaliacao: Avaliacao;
+    avaliacao: any;
   
 constructor(){}
 }
