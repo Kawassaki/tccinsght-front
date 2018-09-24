@@ -59,7 +59,7 @@
       Detalhes dos estabelecimentos:
     </mat-panel-title>
   </mat-expansion-panel-header>
-  <div *ngIf="!placesInformation.length > 0" class="spinner">
+  <div *ngIf="!(placesInformation.length > 0)" class="spinner">
       <mat-spinner></mat-spinner>
   </div>
   <div *ngIf="placesInformation">
