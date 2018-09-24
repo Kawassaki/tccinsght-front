@@ -1,6 +1,6 @@
 <!-- <mat-card class="example-card"> -->
 <mat-accordion>
-  <mat-expansion-panel [expanded] = "true">
+  <mat-expansion-panel [expanded]="false">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Mapa:
@@ -26,10 +26,10 @@
 <mat-tab-group class="padding-pages">
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>store_mall_directory</mat-icon>
+      <mat-icon>store_mall_directory</mat-icon> Dados Úteis
     </ng-template>
 
-    <div class="example-container">
+    <div class="container">
       <mat-form-field>
         <input matInput placeholder="Identificador do seu local:" [(ngModel)]="estabelecimento.place_id" disabled>
       </mat-form-field>
@@ -51,37 +51,48 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>local_dining</mat-icon>
+      <mat-icon>local_dining</mat-icon> Informações
     </ng-template>
 
     <div class="padding-tabs">
-      <mat-card-title>Informações uteis para seus clientes</mat-card-title>
 
-      <div class="example-container">
-        <mat-form-field>
-          <input matInput placeholder="Input">
-        </mat-form-field>
-        <mat-form-field>
-          <textarea matInput placeholder="Textarea"></textarea>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select placeholder="Select">
-            <mat-option>Option</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <button class="col-md-12" (click)="addDetail()" mat-icon-button matTooltip="Insira uma Informação" matTooltipPosition="before">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+
+      <div class="row" *ngFor="let detail of listDetails;  let i = index">
+        <div class="col-md-12">
+          <mat-card class="mt-1" [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }">
+            <mat-card-content>
+              <div class="container">
+                <mat-form-field>
+                  <input matInput placeholder="Titulo:" [(ngModel)]="detail.titulo">
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput placeholder="Descrição:" [(ngModel)]="detail.descricao">
+                </mat-form-field>
+              </div>
+              <div style="display: flex; justify-content: flex-end;">
+                <button mat-icon-button matTooltip="Novo Campo" matTooltipPosition="before" (click)="removeDetail(detail)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </div>
   </mat-tab>
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>local_atm</mat-icon>
+      <mat-icon>local_atm</mat-icon> Pagamento
     </ng-template>
 
     <div class="padding-tabs">
-      <mat-card-title>Pagamento</mat-card-title>
+      <!-- <mat-card-title>Pagamento</mat-card-title> -->
     </div>
   </mat-tab>
 
 </mat-tab-group>
-<button mat-button (click)="salvarEstabelecimento()">API DATA</button>
+<button mat-button (click)="salvarEstabelecimento()">Salvar</button>

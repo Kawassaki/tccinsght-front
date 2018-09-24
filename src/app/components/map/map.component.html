@@ -59,6 +59,9 @@
       Detalhes dos estabelecimentos:
     </mat-panel-title>
   </mat-expansion-panel-header>
+  <div *ngIf="!placesInformation.length > 0" class="spinner">
+      <mat-spinner></mat-spinner>
+  </div>
   <div *ngIf="placesInformation">
     <div *ngFor="let placeInfo of placesInformation; let i = index" [attr.data-index]="i">
       <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }" matBadge="8" matBadgePosition="after" matBadgeColor="accent">

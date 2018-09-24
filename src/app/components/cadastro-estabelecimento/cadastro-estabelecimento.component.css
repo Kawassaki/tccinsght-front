@@ -1,4 +1,4 @@
-.example-container {
+.container {
     display: flex;
     flex-direction: column;
     padding: 1%;
@@ -12,13 +12,20 @@
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
   }
+  .mat-expansion-panel-body > *{
+    padding: 0%;
+  }
   
-  .example-container > * {
+  .container > * {
     width: 100%;
   }
   .padding-pages{
-    padding: 30px;
+    padding-top: 1%;
     height: 100%;
+  }
+
+  .p0{
+    padding: 0 !important;
   }
 
   .padding-tabs{
@@ -26,6 +33,9 @@
   }
   .padding-top{
     padding-top: 10px;
+  }
+  .mt-1{
+    margin-top: 1%;
   }
 
   .controls {
@@ -35,7 +45,7 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     height: 28px;
-    width: 200px;
+    width: 210px;
     outline: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     padding: 10px;

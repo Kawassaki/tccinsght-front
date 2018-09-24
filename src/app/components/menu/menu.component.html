@@ -7,7 +7,7 @@
         <button mat-menu-item color="default" routerLink="/user" onclick="">Cadastro Usuario</button> -->
 
         <button mat-icon-button (click)="goToMapa()" matTooltip="Buscar Estabelecimentos" matTooltipPosition="before">
-          <i class="fa fa-search fa-2x"></i>
+          <mat-icon>search</mat-icon>
         </button>
 
         <span class="menu-spacer"></span>
@@ -24,7 +24,7 @@
         </button> -->
 
         <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Opções" matTooltipPosition="after">
-          <i class="fa fa-user fa-2x"></i>
+          <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="goToUser()" matTooltip="Configurações da Conta" matTooltipPosition="after">

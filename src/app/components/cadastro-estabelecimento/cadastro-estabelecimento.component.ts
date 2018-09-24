@@ -36,6 +36,13 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     content: 'Sua localização'
   });
 
+  private newPlaceObject = {
+    estabelecimento: null,
+    placeDetails : null,
+    pagamento : null
+
+  };
+  private listDetails = [];
 
   constructor(
     private zone: NgZone,
@@ -63,7 +70,16 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
   salvarEstabelecimento() {
     var self = this;
-    self.estabelecimentoService.salvarEstabelecimento(self.estabelecimento);
+
+    self.newPlaceObject.estabelecimento = self.estabelecimento;
+    // criar uma string no java para armazenar esses dados,
+    // e concatenar com algum caracter especial like '|' para depois na hora de recuperar dar um splt('|') 
+    // easy
+    self.newPlaceObject.placeDetails = self.listDetails;
+    self.newPlaceObject.pagamento = "Montar Objeto de Pagamento para enviar pro banco de dados";
+
+    // self.estabelecimentoService.salvarEstabelecimento(self.newPlaceObject);
+    console.log(self.newPlaceObject);
   }
 
 
@@ -81,11 +97,11 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
     self.map = new google.maps.Map(self.gmapElement.nativeElement, mapProp);
 
-    
+
     self.mapLoaded = true;
 
     self.initAutocomplete();
-    
+
     const options = {
       enableHighAccuracy: false,
       timeout: 500,
@@ -180,7 +196,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
             self.estabelecimento.endereco = place.formatted_address;
             self.estabelecimento.proprietario = localStorage.getItem('user'); //pega o usuário salvo na sessão e seta como proprietário
             var informacoes = [];
-            
+
             self.zone.run(() => { });
 
           });
@@ -210,8 +226,18 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
     this.map.fitBounds(bounds);
     // console.log(self.markers);
-    
+
     return self.markerCurrentLocation;
 
+  }
+
+  addDetail() {
+    var self = this;
+    var newDetail = { 'titulo': 'TesteTitulo', 'descricao': 'lalala' };
+    self.listDetails.unshift(newDetail);
+  }
+
+  removeDetail(detail) {
+    this.listDetails.splice(detail, 1);
   }
 }
