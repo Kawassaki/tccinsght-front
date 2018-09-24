@@ -42,7 +42,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     pagamento : null
 
   };
-  private listDetails = [];
+  public listDetails = [];
 
   constructor(
     private zone: NgZone,
