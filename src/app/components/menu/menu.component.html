@@ -27,15 +27,15 @@
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="goToUser()" matTooltip="Configurações da Conta" matTooltipPosition="after">
+          <button mat-menu-item (click)="goToUser()">
             <mat-icon>account_circle</mat-icon>
             <span>Conta</span>
           </button>
-          <button mat-menu-item (click)="goToCadastroEstabelecimento()" matTooltip="Cadastre seu Estabelecimento" matTooltipPosition="after">
+          <button mat-menu-item (click)="goToCadastroEstabelecimento()">
             <mat-icon>store_mall_directory</mat-icon>
             <span>Seja um Parceiro</span>
           </button>
-          <button mat-menu-item (click)="sair()" matTooltip="Sair" matTooltipPosition="after">
+          <button mat-menu-item (click)="sair()">
             <mat-icon>exit_to_app</mat-icon>
             <span>Sair</span>
           </button>
