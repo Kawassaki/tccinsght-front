@@ -2,27 +2,11 @@
   <mat-card-content>
     <mat-toolbar class="style-toolbar">
       <mat-toolbar-row>
-
-        <!-- <button mat-menu-item color="default" routerLink="/map" (click)="goToMapa()">Busca</button>
-        <button mat-menu-item color="default" routerLink="/user" onclick="">Cadastro Usuario</button> -->
-
         <button mat-icon-button (click)="goToMapa()" matTooltip="Buscar Estabelecimentos" matTooltipPosition="before">
           <mat-icon>search</mat-icon>
         </button>
 
         <span class="menu-spacer"></span>
-        <!-- <button mat-raised-button color="warn" (click)="goToCadastroEstabelecimento()">Seja um Parceiro!</button> -->
-        <!-- <button mat-icon-button (click)="goToCadastroEstabelecimento()">
-          <i class="fa fa-handshake-o fa-2x"></i>
-        </button>
-        <span class="logout-spacer"></span>
-        <button mat-icon-button (click)="goToUser()">
-          <i class="fa fa-user fa-2x"></i>
-        </button>
-        <button mat-button class="sair" (click)="sair()"><i class="fa fa-sing-out fa-2x"></i> Sair
-          <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i>
-        </button> -->
-
         <button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Opções" matTooltipPosition="after">
           <mat-icon>account_circle</mat-icon>
         </button>
