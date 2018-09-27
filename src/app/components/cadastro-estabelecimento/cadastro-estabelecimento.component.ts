@@ -86,6 +86,8 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   ngOnInit() {
     var self = this;
     self.estabelecimento = new Estabelecimento();
+    var newDetail = { 'titulo': '', 'descricao': '' };
+    self.listDetails.unshift(newDetail);
 
     let mapProp = {
       center: self.mapCenter,
@@ -233,7 +235,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
   addDetail() {
     var self = this;
-    var newDetail = { 'titulo': 'TesteTitulo', 'descricao': 'lalala' };
+    var newDetail = { 'titulo': '', 'descricao': '' };
     self.listDetails.unshift(newDetail);
   }
 

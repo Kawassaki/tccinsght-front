@@ -52,3 +52,7 @@
     margin-left: 10px;
     left: 0% !important;
   }
+  .button-color-orange{
+    background-color: #FF6E40;
+    color: white;
+  }
