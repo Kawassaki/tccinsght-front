@@ -26,6 +26,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { AvatarModule } from 'ng2-avatar';
 import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
 import { ModalDetailsComponent }from './components/dialogs/modal-details/modal-details.component';
+import { CreditCardDirectivesModule } from 'angular-cc-library';
 
 @NgModule({
   declarations: [
@@ -54,13 +55,15 @@ import { ModalDetailsComponent }from './components/dialogs/modal-details/modal-d
     HttpClientModule,
     HttpModule,
     AvatarModule.forRoot(),
+    CreditCardDirectivesModule
+  
   ],
   exports: [
     RouterModule,
     
   ],
   providers: [ 
-    EstabelecimentoService,
+    EstabelecimentoService, 
     UsuarioService,
     AuthenticationService
   ],

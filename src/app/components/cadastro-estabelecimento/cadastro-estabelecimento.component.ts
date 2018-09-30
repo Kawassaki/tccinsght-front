@@ -1,8 +1,9 @@
 import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
-// import { } from '@types/googlemaps';
+import { CreditCardValidator } from 'angular-cc-library';
 
 import { Estabelecimento } from '../../models/estabelecimento';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
+import { FormGroup, FormBuilder, Validators, FormControl } from '../../../../node_modules/@angular/forms';
 
 
 
@@ -24,6 +25,12 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   private zoom: number;
   private mapCenter: any;
   public mapLoaded = false;
+  public numeroCartao: any;
+  public vencimento: any;
+  public codigoVerificador: any;
+  public formPayment: FormGroup;
+  public email = new FormControl('', [Validators.required, Validators.email]);
+  public expanded = false;
 
   public estabelecimento: Estabelecimento;
 
@@ -38,15 +45,16 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
   private newPlaceObject = {
     estabelecimento: null,
-    placeDetails : null,
-    pagamento : null
+    placeDetails: null,
+    pagamento: null
 
   };
   public listDetails = [];
 
   constructor(
     private zone: NgZone,
-    private estabelecimentoService: EstabelecimentoService
+    private estabelecimentoService: EstabelecimentoService,
+    private _fb: FormBuilder
   ) { }
 
 
@@ -83,8 +91,11 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   }
 
 
+
   ngOnInit() {
     var self = this;
+    self.validaFormPagament();
+
     self.estabelecimento = new Estabelecimento();
     var newDetail = { 'titulo': '', 'descricao': '' };
     self.listDetails.unshift(newDetail);
@@ -142,6 +153,14 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     }, null, options);
   }
 
+  validaFormPagament() {
+    this.formPayment = this._fb.group({
+      numeroCartao: ['', [<any>CreditCardValidator.validateCCNumber]],
+      vencimento: ['', [<any>CreditCardValidator.validateExpDate]],
+      codigoVerificador: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
+    });
+  }
+
   initAutocomplete() {
     var self = this;
     let searchBox = new google.maps.places.SearchBox(this.search.nativeElement);
@@ -154,13 +173,9 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
     searchBox.addListener('places_changed', function () {
       self.places = searchBox.getPlaces();
-      console.log(searchBox);
       if (self.places.length == 0) {
         return;
       }
-
-      // self.cleanMarkers();
-      // self.markers.push(self.markerCurrentLocation);
       self.getDetails();
 
     });
@@ -189,19 +204,17 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           let marker = self.addMarkPlace(place);
 
-          google.maps.event.addListener(marker, 'click', function () {
-            console.log(place);
-            self.estabelecimento.nome = place.name;
-            self.estabelecimento.telefone = place.international_phone_number;
-            self.estabelecimento.place_id = place.place_id;
-            self.estabelecimento.website = place.website;
-            self.estabelecimento.endereco = place.formatted_address;
-            self.estabelecimento.proprietario = localStorage.getItem('user'); //pega o usuário salvo na sessão e seta como proprietário
-            var informacoes = [];
+          self.estabelecimento.nome = place.name;
+          self.estabelecimento.telefone = place.international_phone_number;
+          self.estabelecimento.place_id = place.place_id;
+          self.estabelecimento.website = place.website;
+          self.estabelecimento.endereco = place.formatted_address;
+          self.estabelecimento.proprietario = localStorage.getItem('user'); //pega o usuário salvo na sessão e seta como proprietário
+          var informacoes = [];
+          
+          self.zone.run(() => { });
 
-            self.zone.run(() => { });
 
-          });
         }
       });
     });
@@ -242,4 +255,11 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   removeDetail(detail) {
     this.listDetails.splice(detail, 1);
   }
+
+  getErrorMessage() {
+    return this.email.hasError('required') ? 'Digite seu E-mail' :
+      this.email.hasError('email') ? 'E-mail inválido' :
+        '';
+  }
+
 }

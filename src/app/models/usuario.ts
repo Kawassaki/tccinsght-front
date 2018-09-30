@@ -5,6 +5,7 @@ export class Usuario {
 	cpf : string;
 	contato : string;
 	senha : string;
+	confirmaSenha : string;
 	imagem : string;
 	primeiroNome : string;
 	ultimoNome : string;

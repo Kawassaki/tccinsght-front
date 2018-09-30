@@ -76,8 +76,6 @@ export class LoginComponent implements OnInit {
         self.isAuth = true;
       }, 3000);
 
-    } else {
-      self.openDialog();
     }
   }
 
@@ -90,12 +88,6 @@ export class LoginComponent implements OnInit {
   voltar(){
     let self = this;
     self.isCadastro = false;
-  }
-
-  openDialog(): void {
-    this.dialog.open(DialogLocale, {
-      width: '480px',
-    });
   }
 
   confrimar(): void {

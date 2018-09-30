@@ -35,7 +35,7 @@ export class MenuComponent implements OnInit {
 
   goToUser(){
     this.router.navigate(['user']);
-    location.reload();
+    // location.reload();
   }
 
   goToMapa(){

@@ -4,33 +4,43 @@
       <avatar [name]="usuario.primeiroNome" [displayType]="'circle'" [size]="40"></avatar>
     </div>
 
-    <mat-card-title>Felipe Kawassaki</mat-card-title>
-    <mat-card-subtitle>Num sei</mat-card-subtitle>
+    <mat-card-title>{{usuario.primeiroNome ? usuario.primeiroNome : 'Sem nome' }}</mat-card-title>
+    <mat-card-subtitle>{{email.value ? email.value : 'Sem email'}}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
     <div class="example-container">
       <mat-form-field>
-        <input matInput placeholder="Primeiro Nome" [(ngModel)]="usuario.primeiroNome">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Ulltimo Nome" [(ngModel)]="usuario.ultimoNome">
+        <input matInput placeholder="Nome" [(ngModel)]="usuario.primeiroNome">
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Email" [formControl]="email" type="email">
         <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
       </mat-form-field>
-      <mat-form-field>
-        <!-- Mudar para Option -->
-        <input matInput placeholder="Genero" [(ngModel)]="usuario.genero">
-      </mat-form-field>
-      <mat-form-field>
-        <!-- Mudar para Number cell-->
-        <input matInput placeholder="Contato" [(ngModel)]="usuario.contato">
-      </mat-form-field>
+
       <mat-slide-toggle class="example-margin" [color]="color" [(ngModel)]="usuario.permiteLocaliacao">
         Permitir sua localização atual?
       </mat-slide-toggle>
+
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Alterar Senha:
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="example-container">
+            <mat-form-field>
+              <input matInput placeholder="Digite sua senha" [(ngModel)]="usuario.senha">
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput placeholder="Confirme sua senha" [(ngModel)]="usuario.confirmaSenha">
+              <mat-error *ngIf="usuario.confirmaSenha !== usuario.senha">{{getErrorConfirmPassword(usuario.confirmaSenha)}}</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+
       <mat-card-actions>
         <button mat-raised-button class="button-color-orange" (click)="salvarUsuario()">Salvar</button>
       </mat-card-actions>

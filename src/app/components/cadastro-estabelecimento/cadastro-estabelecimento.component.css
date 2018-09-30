@@ -37,6 +37,9 @@
   .mt-1{
     margin-top: 1%;
   }
+  .vertical-align{
+    vertical-align: text-bottom;
+  }
 
   .controls {
     margin-top: 10px;

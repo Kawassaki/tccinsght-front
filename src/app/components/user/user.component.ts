@@ -52,10 +52,14 @@ export class UserComponent implements OnInit {
 
   }
 
+  getErrorConfirmPassword(senha) {
+    return senha !== null && senha !== undefined && senha !== '' ? 'A confirmação da senha deve ser igual a senha' : '';
+  }
+
   getErrorMessage() {
-    return this.email.hasError('required') ? 'You must enter a value' :
-        this.email.hasError('email') ? 'Not a valid email' :
-            '';
+    return this.email.hasError('required') ? 'Digite seu E-mail' :
+      this.email.hasError('email') ? 'E-mail inválido' :
+        '';
   }
 
 }

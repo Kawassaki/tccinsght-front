@@ -1,9 +1,9 @@
 <!-- <mat-card class="example-card"> -->
 <mat-accordion>
-  <mat-expansion-panel [expanded]="false">
+  <mat-expansion-panel [expanded]="expanded">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Mapa:
+        Encontre seu estabelecimento no mapa
       </mat-panel-title>
     </mat-expansion-panel-header>
 
@@ -26,7 +26,7 @@
 <mat-tab-group class="padding-pages">
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>store_mall_directory</mat-icon> Dados Úteis
+      <mat-icon class="vertical-align">store_mall_directory</mat-icon> Dados Úteis
     </ng-template>
 
     <div class="container">
@@ -51,14 +51,15 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>local_dining</mat-icon> Informações
+      <mat-icon class="vertical-align">local_dining</mat-icon> Informações Adicionais
     </ng-template>
 
     <div class="padding-tabs">
 
-      <button class="col-md-12" (click)="addDetail()" mat-icon-button matTooltip="Insira uma Informação" matTooltipPosition="before">
-        <mat-icon>add_circle</mat-icon>
+      <button class="col-md-12" (click)="addDetail()" mat-icon-button>
+        <mat-icon>add_circle</mat-icon> 
       </button>
+      <span>Cadastre Informações adicionais para seus clientes!</span>
 
       <div class="row" *ngFor="let detail of listDetails">
         <div class="col-md-12">
@@ -86,8 +87,29 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>local_atm</mat-icon> Pagamento
+      <mat-icon class="vertical-align">local_atm</mat-icon> Pagamento
     </ng-template>
+
+    <form [formGroup]="formPayment">
+      <div class="container">
+        <mat-form-field>
+          <input matInput placeholder="Número do Cartão:" formControlName="numeroCartao" id="cc-number" type="tel" autocomplete="cc-number"
+            ccNumber>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Data do Vencimento:" formControlName="vencimento" id="cc-exp-date" type="tel" autocomplete="cc-exp"
+            ccExp>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Código Verificador:" formControlName="codigoVerificador" id="cc-cvc" type="tel" autocomplete="off"
+            ccCVC>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Email" [formControl]="email" type="email">
+          <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
 
     <div class="padding-tabs">
       <!-- <mat-card-title>Pagamento</mat-card-title> -->
@@ -95,4 +117,4 @@
   </mat-tab>
 
 </mat-tab-group>
-<button  mat-raised-button class="button-color-orange" (click)="salvarEstabelecimento()">Salvar</button>
+<button mat-raised-button class="button-color-orange" (click)="salvarEstabelecimento()">Salvar</button>
