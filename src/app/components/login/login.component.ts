@@ -1,13 +1,14 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, ElementRef, Renderer } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router, ActivatedRoute } from "@angular/router";
 import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { FormControl, Validators } from '@angular/forms';
 import { Usuario } from '../../models/usuario';
 // import '../assets/login-animation.js';
 import '../../../assets/login-animation.js';
 import { UsuarioService } from '../../services/usuario/usuario.service';
+import { SnackBarComponent } from '../snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,6 @@ export class LoginComponent implements OnInit {
   public emailCadastro = new FormControl('', [Validators.required, Validators.email]);
   public emailLogin = new FormControl('', [Validators.required, Validators.email]);
   public hide = true;
-  private returnUrl: string;
   public isAuth = false;
   public isCadastro = false;
   public loginValid = false;
@@ -30,30 +30,28 @@ export class LoginComponent implements OnInit {
 
   public userCadastro = new Usuario();
 
+  @ViewChild('inputEmailLogin') inputEmailLogin: ElementRef;
+  @ViewChild('nomeCadastro') nomeCadastro: ElementRef;
+
   constructor(
-    private authService: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private zone: NgZone,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private renderer: Renderer,
+    public snackBar: MatSnackBar
   ) { }
 
 
   ngAfterViewInit() {
+    this.setFocusEmail();
     if (window !== null && window !== undefined) {
       (window as any).initialize();
     }
-
   }
 
-  // login(){
-  //   console.log(`email: ${this.email} password: ${this.password}`)
-  //   alert(`Email: ${this.email} Password: ${this.password}`)
-  // }
-
   ngOnInit() {
-    if (localStorage.getItem('user') === 'teste@cinq.com.br') {
+    if (localStorage.getItem('user') !== null) {
       this.isAuth = true;
     } else {
       this.router.navigate(['login']);
@@ -63,22 +61,40 @@ export class LoginComponent implements OnInit {
 
   logar() {
     let self = this;
+
     if (self.emailLogin && self.emailLogin.valid) {
       self.userLogin.email = self.emailLogin.value;
     }
-    if (self.authService.login(self.userLogin)) {
 
-      localStorage.setItem('user', self.userLogin.email);
+    let loginRequest = {
+      email: self.userLogin.email,
+      senha: self.userLogin.senha
+    };
 
-      // console.log(localStorage);
-      window.location.reload();
-      this.router.navigate(['busca']);
+    this.usuarioService.login(loginRequest).subscribe(
+      usuario => {
+        if (usuario !== null) {
 
-      window.setTimeout(function () {
-        self.isAuth = true;
-      }, 3000);
+          localStorage.setItem('user', usuario);
+          window.location.reload();
 
-    }
+          this.router.navigate(['busca']);
+
+          window.setTimeout(function () {
+            self.isAuth = true;
+          }, 3000);
+
+        } else {
+          var userNotFoundMessage: string = "Usuário não encontrado, tente novamente";
+          var action: string = '';
+
+          this.snackBar.open(userNotFoundMessage, action, {
+            duration: 1000,
+            panelClass: ['success-snackbar']
+          });
+        }
+      }
+    );
   }
 
   cadastrar() {
@@ -94,32 +110,53 @@ export class LoginComponent implements OnInit {
 
   confrimar(): void {
     var self = this;
-    // chamar a service para persistir no banco o usuário
+    const options = {
+      enableHighAccuracy: false,
+      timeout: 500,
+      maximumAge: 0
+    };
+
     if (self.emailCadastro && self.emailCadastro.valid) {
       self.userCadastro.email = self.emailCadastro.value;
     }
 
-    // var usuarioTest: Usuario;
-    // usuarioTest.primeiroNome = "Brenda";
-    // usuarioTest.segundoNome = "Sakai";
-    // usuarioTest.senha = "Briz2018@";
-    // usuarioTest.email = "bresakai@gmail.com";
-    // usuarioTest.dadosUsuarioSessao.latitude = "-23,55052";
-    // usuarioTest.dadosUsuarioSessao.longitude = "-46,633309";
-    
-    this.userCadastro.dadosUsuarioSessao.latitude = "-23,55052";
-    this.userCadastro.dadosUsuarioSessao.longitude = "-46,633309";
-    this.usuarioService.getIP(this.userCadastro);
+    window.navigator.geolocation.watchPosition(function (data) {
+      self.userCadastro.dadosUsuarioSessao.latitude = data.coords.latitude.toString();
+      self.userCadastro.dadosUsuarioSessao.longitude = data.coords.longitude.toString();
+      self.usuarioService.getIP(self.userCadastro);
+      // console.log(self.userCadastro);
+      
+    }, null, options);
 
-    this.usuarioService.salvarUsuario(this.userCadastro);
-    // salvar essas informações
-    // console.log(self.userCadastro);
+    this.usuarioService.salvarUsuario(this.userCadastro).subscribe(
+      usuario => {
+        if(usuario !== null){
+            self.voltar();
+        } else {
+          var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos novamente";
+          var action: string = '';
+
+          this.snackBar.open(userNotFoundMessage, action, {
+            duration: 1000,
+            panelClass: ['success-snackbar']
+          });
+        }
+      }
+    );
+
+    
   }
 
-getErrorEmail(email) {
-  return email.hasError('required') ? '' : email.hasError('email') ? 'Formato do e-mail é inválido' : '';
-}
-getErrorConfirmPassword(senha) {
-  return senha !== null && senha !== undefined && senha !== '' ? 'A confirmação da senha deve ser igual a senha' : '';
-}
+  setFocusEmail() {
+    if (this.inputEmailLogin !== null && this.inputEmailLogin !== undefined) {
+      this.inputEmailLogin.nativeElement.focus();
+    }
+  }
+
+  getErrorEmail(email) {
+    return email.hasError('required') ? '' : email.hasError('email') ? 'Formato do e-mail é inválido' : '';
+  }
+  getErrorConfirmPassword(senha) {
+    return senha !== null && senha !== undefined && senha !== '' ? 'A confirmação da senha deve ser igual a senha' : '';
+  }
 }

@@ -24,7 +24,7 @@ export class MenuComponent implements OnInit {
     }
   }
   sair(){
-    localStorage.setItem('user', null);
+    localStorage.removeItem('user');
     location.reload();
   }
 

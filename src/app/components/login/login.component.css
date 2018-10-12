@@ -9,6 +9,12 @@
     flex-direction: column;
     margin-top: 100px;
   }
+
+  .success-snackbar {
+    background-color: #FFF !important;
+    color: #C62828 !important;
+  }
+
   .formLogin {
     display: flex;
     flex-direction: column;

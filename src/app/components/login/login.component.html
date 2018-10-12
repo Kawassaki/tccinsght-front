@@ -125,7 +125,7 @@
 
       <div class="inputGroup inputGroup1">
         <label for="email">Email*</label>
-        <input type="text" id="email" name="email" [formControl]="emailLogin" class="email" maxlength="256" required/>
+        <input type="text" id="email" #inputEmailLogin name="email" [formControl]="emailLogin" class="email" maxlength="256" required>
         <mat-error *ngIf="emailLogin.invalid">{{getErrorEmail(emailLogin)}}</mat-error>
         <!-- <p class="helper helper1">exemplo@domain.com</p> -->
         <span class="indicator"></span>
@@ -153,7 +153,7 @@
 
       <div class="inputGroup inputGroup1">
         <label for="nome">Nome*</label>
-        <input type="text" id="nome" name="nome" [(ngModel)]="userCadastro.primeiroNome" class="nome" required/>
+        <input type="text" id="nome" name="nome" [(ngModel)]="userCadastro.primeiroNome" class="nome" required #nomeCadastro>
       </div>
       <div class="inputGroup inputGroup1">
         <label for="email">Email*</label>

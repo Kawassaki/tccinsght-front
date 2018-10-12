@@ -11,18 +11,26 @@ export class UsuarioService {
 
   constructor(
     private http: Http,
-    private httpClient : HttpClient
+    private httpClient: HttpClient
   ) { }
 
-  public salvarUsuario(usuario: Usuario){
-    console.log(usuario);
-    this.http.post('http://localhost:8000/rest/usuario/salvar', usuario).subscribe(
-      res => console.log(res.json())
+  public salvarUsuario(usuario: Usuario) {
+    return this.http.post(environment.apiUrl + '/rest/usuario/salvar', usuario).map(
+      response => {
+        return response.json();
+      }
+    );
+  }
+  public login(loginRequest: any) {
+    return this.http.post(environment.apiUrl + '/rest/usuario/entrar', loginRequest).map(
+      response => {
+        return response.json();
+      }
     );
   }
 
-  public getIP(usuario: Usuario){
-    return this.httpClient.get<{ip:string}>('https://jsonip.com').subscribe( data =>{
+  public getIP(usuario: Usuario) {
+    return this.httpClient.get<{ ip: string }>('https://jsonip.com').subscribe(data => {
       usuario.dadosUsuarioSessao.ipAcesso = data.ip;
     });
   }
