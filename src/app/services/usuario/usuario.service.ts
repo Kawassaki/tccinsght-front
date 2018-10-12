@@ -14,14 +14,16 @@ export class UsuarioService {
     private httpClient : HttpClient
   ) { }
 
-  public salvarUsuario(usuario: Usuario): Observable<any>{
+  public salvarUsuario(usuario: Usuario){
     console.log(usuario);
-    return this.http.post(environment.apiUrl + '/rest/salvarUsuario', usuario);
+    this.http.post('http://localhost:8000/rest/usuario/salvar', usuario).subscribe(
+      res => console.log(res.json())
+    );
   }
 
   public getIP(usuario: Usuario){
     return this.httpClient.get<{ip:string}>('https://jsonip.com').subscribe( data =>{
-      usuario.ipDeAcesso = data.ip;
+      usuario.dadosUsuarioSessao.ipAcesso = data.ip;
     });
   }
 

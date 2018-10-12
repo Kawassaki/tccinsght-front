@@ -42,7 +42,7 @@ export class UserComponent implements OnInit {
       });
       
 
-      this.usuarioService.getIP(usuario);
+      // this.usuarioService.getIP(usuario);
 
     } else {
       usuario.latitude = null;

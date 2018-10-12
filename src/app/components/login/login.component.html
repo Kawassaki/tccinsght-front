@@ -153,7 +153,7 @@
 
       <div class="inputGroup inputGroup1">
         <label for="nome">Nome*</label>
-        <input type="text" id="nome" name="nome" [(ngModel)]="userCadastro.nome" class="nome" required/>
+        <input type="text" id="nome" name="nome" [(ngModel)]="userCadastro.primeiroNome" class="nome" required/>
       </div>
       <div class="inputGroup inputGroup1">
         <label for="email">Email*</label>
@@ -166,12 +166,12 @@
       </div>
       <div class="inputGroup inputGroup2">
         <label for="password">Confirmar Senha*</label>
-        <input type="password" id="passwordCadastroConfirm" name="password" [(ngModel)]="userCadastro.confirmaSenha" class="password" required/>
-        <mat-error *ngIf="userCadastro.confirmaSenha !== userCadastro.senha">{{getErrorConfirmPassword(userCadastro.confirmaSenha)}}</mat-error>
+        <input type="password" id="passwordCadastroConfirm" name="password" [(ngModel)]="confirmaSenha" class="password" required/>
+        <mat-error *ngIf="confirmaSenha !== senha">{{getErrorConfirmPassword(confirmaSenha)}}</mat-error>
       </div>
 
       <div class="inputGroup inputGroup3">
-        <button mat-flat-button  (click)="confrimar()" [disabled]="cadastroForm.invalid || emailCadastro.invalid || userCadastro.confirmaSenha !== userCadastro.senha">Confirmar</button>
+        <button mat-flat-button  (click)="confrimar()" [disabled]="cadastroForm.invalid || emailCadastro.invalid || confirmaSenha !== userCadastro.senha">Confirmar</button>
         <button mat-flat-button class="cadastrar" (click)="isCadastro = false">Voltar</button>
       </div>
     </form>
