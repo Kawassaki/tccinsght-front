@@ -272,9 +272,17 @@ form .inputGroup1.focusWithText .helper {
   font-size: 1.5em;
 }
 
+.facebook{
+  margin-top: 2% !important;
+  background-color: #327592 !important;
+}
 .cadastrar{
   margin-top: 2% !important;
   background-color: #327592 !important;
+}
+.google{
+  margin-top: 2% !important;
+  background-color: #dd4b39 !important;
 }
 .style-content{
   margin: 1%;

@@ -11,6 +11,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="Brunch">
   <link rel="apple-touch-icon" href="images/icons/icon-256x256.png">
+  <script src="//connect.facebook.net/en_US/sdk.js"></script>
   <!-- <link rel="apple-touch-icon" href="/assets/icon-256x256.png"> -->
   <!-- <link rel="icon" type="image/png" href="https://storage.googleapis.com/tcc-api-insight.appspot.com/map-marker.png" sizes="152x152"> -->
 
@@ -24,6 +25,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="https://storage.googleapis.com/tcc-api-insight.appspot.com/favicon.png">
   <link rel="manifest" href="manifest.json">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="831675641660-g4mq7g691tqbgf86qcrmllnvea5imhgm.apps.googleusercontent.com.apps.googleusercontent.com">
+
+  <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1487798564656572',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v3.2'
+        });
+          
+        FB.AppEvents.logPageView();   
+          
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
 
 
 </head>

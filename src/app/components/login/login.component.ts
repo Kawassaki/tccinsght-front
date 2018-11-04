@@ -8,6 +8,8 @@ import { Usuario } from '../../models/usuario';
 // import '../assets/login-animation.js';
 import '../../../assets/login-animation.js';
 import { UsuarioService } from '../../services/usuario/usuario.service';
+import { AuthService } from "angular4-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
 
 @Component({
   selector: 'app-login',
@@ -38,7 +40,8 @@ export class LoginComponent implements OnInit {
     public dialog: MatDialog,
     private usuarioService: UsuarioService,
     private renderer: Renderer,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private authService: AuthService
   ) { }
 
 
@@ -173,4 +176,38 @@ export class LoginComponent implements OnInit {
   getErrorConfirmPassword(senha) {
     return senha !== null && senha !== undefined && senha !== '' ? 'A confirmação da senha deve ser igual a senha' : '';
   }
+
+  signInWithGoogle(): void {
+    var self = this;
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
+      (userData) => {
+        if(userData.authToken != null){
+          localStorage.setItem('user',JSON.stringify(userData));
+          window.location.reload();
+          this.router.navigate(['busca']);
+          window.setTimeout(function () {
+            self.isAuth = true;
+          }, 3000);
+        }
+            
+      }
+    );
+  }
+  signInWithFB(): void {
+    var self = this;
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(
+      (userData) => {
+        if(userData.authToken != null){
+          localStorage.setItem('user',JSON.stringify(userData));
+          window.location.reload();
+          this.router.navigate(['busca']);
+          window.setTimeout(function () {
+            self.isAuth = true;
+          }, 3000);
+        }
+      }
+    );
+  }
+
+
 }

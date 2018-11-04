@@ -139,6 +139,12 @@
       <div class="inputGroup inputGroup3">
         <!-- <button mat-flat-button color="primary">Primary</button> -->
         <button mat-flat-button [disabled]="loginForm.invalid" (click)="logar()">Entrar</button>
+        <button type="button" class="google" (click)="signInWithGoogle()" mdbBtn  mdbWavesEffect>
+          <i class="fa fa-google left"></i> Google
+        </button>
+        <button mat-flat-button (click)="signInWithFB()" size="lg" class="facebook" mdbWavesEffect>
+          <i class="fa fa-facebook left"></i> Facebook
+        </button>
         <button mat-flat-button class="cadastrar" (click)="cadastrar()">Cadastre-se</button>
       </div>
     </form>

@@ -28,8 +28,19 @@ import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
 import { ModalDetailsComponent }from './components/dialogs/modal-details/modal-details.component';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { CpfCnpjModule } from 'ng2-cpf-cnpj';
-// import { AppMaskerModule } from 'brmasker';
+import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
+import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
 
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("831675641660-g4mq7g691tqbgf86qcrmllnvea5imhgm.apps.googleusercontent.com")
+  },
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("1487798564656572")
+  }
+]);
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,8 +70,7 @@ import { CpfCnpjModule } from 'ng2-cpf-cnpj';
     AvatarModule.forRoot(),
     CreditCardDirectivesModule,
     CpfCnpjModule,
-    // AppMaskerModule
-  
+    SocialLoginModule.initialize(config)  
   ],
   exports: [
     RouterModule,
