@@ -27,6 +27,8 @@ import { AvatarModule } from 'ng2-avatar';
 import { CadastrarComponent } from './components/cadastrar/cadastrar.component';
 import { ModalDetailsComponent }from './components/dialogs/modal-details/modal-details.component';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
+import { CpfCnpjModule } from 'ng2-cpf-cnpj';
+// import { AppMaskerModule } from 'brmasker';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
     HttpClientModule,
     HttpModule,
     AvatarModule.forRoot(),
-    CreditCardDirectivesModule
+    CreditCardDirectivesModule,
+    CpfCnpjModule,
+    // AppMaskerModule
   
   ],
   exports: [

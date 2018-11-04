@@ -4,6 +4,11 @@ import { CreditCardValidator } from 'angular-cc-library';
 import { Estabelecimento } from '../../models/estabelecimento';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '../../../../node_modules/@angular/forms';
+import { Usuario } from '../../models/usuario';
+import { Detalhes } from '../../models/detalhes';
+import { Pagamento } from '../../models/pagamento';
+
+import { MatSnackBar } from '@angular/material';
 
 
 
@@ -31,81 +36,49 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   public formPayment: FormGroup;
   public email = new FormControl('', [Validators.required, Validators.email]);
   public expanded = false;
+  public cpfTitular : string;
+  
 
-  public estabelecimento: Estabelecimento;
-
+  public estabelecimento = new Estabelecimento();
+  
   private renderer: Renderer;
   private estabelecimentos: any;
   private estabelecimentosById: any;
-
+  
+  private usuario = new Usuario();
+  
   private markerCurrentLocation = new google.maps.Marker();
   private markerCurrentLocationInfo = new google.maps.InfoWindow({
     content: 'Sua localização'
   });
-
-  private newPlaceObject = {
-    estabelecimento: null,
-    placeDetails: null,
-    pagamento: null
-
-  };
-  public listDetails = [];
-
+  
+  
   constructor(
     private zone: NgZone,
     private estabelecimentoService: EstabelecimentoService,
-    private _fb: FormBuilder
-  ) { }
-
-
-
-  retornaEstabelecimentoApi() {
-    this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => {
-      this.estabelecimentos = estabelecimentoTeste
-      console.log(this.estabelecimentos);
-    }
-    );
-
-
-    this.estabelecimentoService.getEstabelecimentosById().subscribe(
-      estabelecimentoTeste => {
-        this.estabelecimentosById = estabelecimentoTeste
-        console.log(this.estabelecimentosById);
-      }
-    );
-
+    private _fb: FormBuilder,
+    public snackBar: MatSnackBar,
+  ) {
+    this.estabelecimento.pagamento =  new Pagamento();
   }
-
-  salvarEstabelecimento() {
-    var self = this;
-
-    self.newPlaceObject.estabelecimento = self.estabelecimento;
-    // criar uma string no java para armazenar esses dados,
-    // e concatenar com algum caracter especial like '|' para depois na hora de recuperar dar um splt('|') 
-    // easy
-    self.newPlaceObject.placeDetails = self.listDetails;
-    self.newPlaceObject.pagamento = "Montar Objeto de Pagamento para enviar pro banco de dados";
-
-    // self.estabelecimentoService.salvarEstabelecimento(self.newPlaceObject);
-    console.log(self.newPlaceObject);
-  }
-
-
 
   ngOnInit() {
     var self = this;
     self.validaFormPagament();
 
-    self.estabelecimento = new Estabelecimento();
-    var newDetail = { 'titulo': '', 'descricao': '' };
-    self.listDetails.unshift(newDetail);
+    self.usuario = JSON.parse(localStorage.getItem('user'));
+    self.estabelecimento = self.buscaEstabelecimentoPorUsuario(self.usuario.id);
+  }
+
+  carregaMapa(){
+    
+    var self = this;
 
     let mapProp = {
       center: self.mapCenter,
       zoom: 15,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true // remove controladores default
-
     };
 
     self.map = new google.maps.Map(self.gmapElement.nativeElement, mapProp);
@@ -152,13 +125,68 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       });
     }, null, options);
   }
+  retornaEstabelecimentoApi() {
+    // this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => {
+    //   this.estabelecimentos = estabelecimentoTeste
+    //   console.log(this.estabelecimentos);
+    // }
+    // );
+
+
+    // this.estabelecimentoService.getEstabelecimentosById().subscribe(
+    //   estabelecimentoTeste => {
+    //     this.estabelecimentosById = estabelecimentoTeste
+    //     console.log(this.estabelecimentosById);
+    //   }
+    // );
+
+  }
+
+  salvarEstabelecimento() {
+    var self = this;
+
+    self.estabelecimento.usuario = self.usuario;
+    
+    if(self.formPayment.valid){
+      self.estabelecimento.pagamento.numeroCartao = self.formPayment.controls.numeroCartao.value;
+      self.estabelecimento.pagamento.dataVencimento = new Date(('01/' + self.formPayment.controls.vencimento.value.replace(' ', ''))).toISOString();
+      self.estabelecimento.pagamento.codigoVerificador = self.formPayment.controls.codigoVerificador.value;
+      self.estabelecimento.pagamento.email = self.email.value;
+    }
+
+    self.estabelecimentoService.salvarEstabelecimento(self.estabelecimento).subscribe(
+      estabelecimento => {
+        
+        if(estabelecimento !== null){
+            var estabelecimentoMessage: string = "Estabelecimento Salvo com Sucesso! :)";
+            var action: string = '';
+  
+            self.snackBar.open(estabelecimentoMessage, action, {
+              duration: 10000,
+              panelClass: ['success-snackbar']
+            });
+        } else {
+          var estabelecimentoMessage: string = "Dados do estabelecimento inconsistentes, verifique os campos e tente novamente";
+          var action: string = '';
+
+          self.snackBar.open(estabelecimentoMessage, action, {
+            duration: 10000,
+            panelClass: ['success-snackbar']
+          });
+        }
+      }
+    );
+    // console.log(self.estabelecimento);
+  }
 
   validaFormPagament() {
-    this.formPayment = this._fb.group({
+    var self = this;
+    self.formPayment = self._fb.group({
       numeroCartao: ['', [<any>CreditCardValidator.validateCCNumber]],
       vencimento: ['', [<any>CreditCardValidator.validateExpDate]],
       codigoVerificador: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(4)]]
     });
+   
   }
 
   initAutocomplete() {
@@ -205,16 +233,12 @@ export class CadastroEstabelecimentoComponent implements OnInit {
           let marker = self.addMarkPlace(place);
 
           self.estabelecimento.nome = place.name;
-          self.estabelecimento.telefone = place.international_phone_number;
-          self.estabelecimento.place_id = place.place_id;
+          self.estabelecimento.contato = place.international_phone_number;
+          self.estabelecimento.placeId = place.place_id;
           self.estabelecimento.website = place.website;
           self.estabelecimento.endereco = place.formatted_address;
-          self.estabelecimento.proprietario = localStorage.getItem('user'); //pega o usuário salvo na sessão e seta como proprietário
-          var informacoes = [];
-          
+          self.estabelecimento.email = self.email.value;
           self.zone.run(() => { });
-
-
         }
       });
     });
@@ -248,18 +272,81 @@ export class CadastroEstabelecimentoComponent implements OnInit {
 
   addDetail() {
     var self = this;
-    var newDetail = { 'titulo': '', 'descricao': '' };
-    self.listDetails.unshift(newDetail);
+    var newDetail = new Detalhes();
+    newDetail.titulo = '';
+    newDetail.descricao = '';
+    self.estabelecimento.detalhes.unshift(newDetail);
   }
 
   removeDetail(detail) {
-    this.listDetails.splice(detail, 1);
+    this.estabelecimento.detalhes.splice(detail, 1);
   }
 
   getErrorMessage() {
-    return this.email.hasError('required') ? 'Digite seu E-mail' :
-      this.email.hasError('email') ? 'E-mail inválido' :
-        '';
+    return this.email.hasError('email') ? 'E-mail inválido' : '';
+  }
+
+  buscaEstabelecimentoPorUsuario(idUsuario){
+    var self = this;
+
+    var estabelecimento = new Estabelecimento();
+    estabelecimento.detalhes = [];
+    var pagamento = new Pagamento();
+    
+    this.estabelecimentoService.buscarEstabelecimentoPorUsuario(idUsuario).subscribe(
+      estabelecimentoResponse =>{
+        if(estabelecimentoResponse !== null && estabelecimentoResponse !== undefined){
+          console.log(estabelecimentoResponse);
+          
+          estabelecimento.id = estabelecimentoResponse.id;
+          estabelecimento.contato = estabelecimentoResponse.contato;
+          estabelecimento.email = estabelecimentoResponse.email;
+          estabelecimento.nome = estabelecimentoResponse.nome;
+          estabelecimento.placeId = estabelecimentoResponse.placeId;
+          estabelecimento.website = estabelecimentoResponse.website;
+          estabelecimento.email = estabelecimentoResponse.pagamento.email;
+          estabelecimento.endereco = estabelecimentoResponse.endereco;
+
+          pagamento.codigoVerificador = estabelecimentoResponse.pagamento.codigoVerificador;
+          pagamento.cpfTitular = estabelecimentoResponse.pagamento.cpfTitular;
+          pagamento.dataVencimento = new Date(estabelecimentoResponse.pagamento.dataVencimento).toISOString();
+          // pagamento.dataVencimento.
+          self.email.setValue(estabelecimentoResponse.pagamento.email);
+          pagamento.email = estabelecimentoResponse.pagamento.email;
+          pagamento.numeroCartao = estabelecimentoResponse.pagamento.numeroCartao;
+          pagamento.nomeTitular = estabelecimentoResponse.pagamento.nomeTitular;
+          pagamento.id = estabelecimentoResponse.pagamento.id;
+
+          self.formPayment.controls.numeroCartao.setValue(pagamento.numeroCartao);
+          self.formPayment.controls.codigoVerificador.setValue(pagamento.codigoVerificador);
+          var mes = new Date(pagamento.dataVencimento).getUTCMonth();
+          var ano = new Date(pagamento.dataVencimento).getUTCFullYear();
+          
+          self.formPayment.controls.vencimento.setValue((mes + 1) + ' / ' + ano);
+
+          estabelecimento.pagamento = pagamento;
+
+          estabelecimentoResponse.detalhes.forEach(detalheResponse => {
+            var detalhes = new Detalhes();
+            detalhes.id = detalheResponse.id;
+            detalhes.titulo = detalheResponse.titulo;
+            detalhes.descricao = detalheResponse.descricao;
+            estabelecimento.detalhes.unshift(detalhes);
+          });
+          console.log(estabelecimento);
+          
+          if(estabelecimento.detalhes.length === 0){
+            self.addDetail();
+          }
+          self.expanded = false;
+
+        } else {
+          self.expanded = true;
+          self.carregaMapa();
+        }
+      }
+    );
+    return estabelecimento;
   }
 
 }

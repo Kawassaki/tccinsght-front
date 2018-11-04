@@ -5,7 +5,7 @@
     </div>
 
     <mat-card-title>{{usuario.primeiroNome ? usuario.primeiroNome : 'Sem nome' }}</mat-card-title>
-    <mat-card-subtitle>{{email.value ? email.value : 'Sem email'}}</mat-card-subtitle>
+    <mat-card-subtitle>{{usuario.email? usuario.email : 'Sem email'}}</mat-card-subtitle>
   </mat-card-header>
 
   <mat-card-content>
@@ -14,8 +14,8 @@
         <input matInput placeholder="Nome" [(ngModel)]="usuario.primeiroNome">
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Email" [formControl]="email" type="email">
-        <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        <input matInput placeholder="Email" [(ngModel)]="usuario.email" type="email">
+        <!-- <mat-error *ngIf="usuario.email.invalid">{{getErrorMessage()}}</mat-error> -->
       </mat-form-field>
 
       <mat-slide-toggle class="example-margin" [color]="color" [(ngModel)]="usuario.permiteLocaliacao">

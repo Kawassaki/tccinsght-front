@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit, ViewChild, Renderer } from '@angular/core';
 import { Usuario } from '../../models/usuario';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 
 
 @Component({
@@ -18,18 +19,58 @@ export class UserComponent implements OnInit {
   public email = new FormControl('', [Validators.required, Validators.email]); 
   
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    var self = this;
+    if(localStorage.getItem('user') !== null && localStorage.getItem('user')){
+      let usuarioStorage = JSON.parse(localStorage.getItem('user'));
+      self.usuario.email = usuarioStorage.email;
+      self.usuario.primeiroNome = usuarioStorage.primeiroNome;
+      self.usuario.segundoNome = usuarioStorage.segundoNome;
+    }
   }
 
   salvarUsuario(){
     var self = this;
     self.usuario.email = self.email.value;
     
-    this.salvaGeolocation(self.usuario);  
+    this.usuarioService.salvarUsuario(self.usuario).subscribe(
+      usuarioResponse => {
+        
+        if(usuarioResponse !== null){
+          
+          if(usuarioResponse.email !== null){
+        
+            var userNotFoundMessage: string = "Salvo com Sucesso! :)";
+            var action: string = '';
+  
+            self.snackBar.open(userNotFoundMessage, action, {
+              duration: 10000,
+              panelClass: ['success-snackbar']
+            });
+          
+          } else {
+            var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
+            var action: string = '';
+  
+            self.snackBar.open(userNotFoundMessage, action, {
+              duration: 10000,
+              panelClass: ['success-snackbar']
+            });
+          }
+          
+        } else {
+          var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
+          var action: string = '';
 
-    self.usuarioService.salvarUsuario(self.usuario);
+          self.snackBar.open(userNotFoundMessage, action, {
+            duration: 10000,
+            panelClass: ['success-snackbar']
+          });
+        }
+      }
+    );
   }
 
 

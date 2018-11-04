@@ -7,6 +7,6 @@ export const environment = {
   production: false,
   jsonData: true,
   // apiUrl: 'https://tcc-api-insight.appspot.com'
-  apiUrl: 'http://localhost:8000'
+  apiUrl: 'http://localhost:8080'
   // usersJsonUrl: '../../assets/data/users.json'
 };

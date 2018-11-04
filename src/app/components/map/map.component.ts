@@ -1,4 +1,4 @@
-import { Component, NgZone, AfterViewInit , ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, NgZone, AfterViewInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { QuerySelectorService } from '../../services/query-selector.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { EstabelecimentoService } from '../../services/estabelecimento/estabelecimento.service';
@@ -12,7 +12,7 @@ import { ModalDetailsComponent } from '../dialogs/modal-details/modal-details.co
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
 })
-export class MapComponent implements AfterViewInit{
+export class MapComponent implements AfterViewInit {
 
 
   @ViewChild('gmap') gmapElement: any;
@@ -60,12 +60,12 @@ export class MapComponent implements AfterViewInit{
     private zone: NgZone,
     private estabelecimentoService: EstabelecimentoService,
     public dialog: MatDialog,
-    public modalDetails : MatDialog,
+    public modalDetails: MatDialog,
     private _formBuilder: FormBuilder,
     private router: Router
   ) { }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     window.setInterval(2000);
     this.criaMapa();
     window.setInterval(2000);
@@ -101,19 +101,19 @@ export class MapComponent implements AfterViewInit{
       self.formAnswered = true;
       self.initAutocomplete(self.busca.nativeElement.value);
       self.setLocalizacaoAtual();
-      
-      if(self.search.nativeElement !== null){
 
-        window.setTimeout(function() {
+      if (self.search.nativeElement !== null) {
+
+        window.setTimeout(function () {
           google.maps.event.trigger(self.search.nativeElement, 'focus')
-          
+
         }, 1000);
-        window.setTimeout(function() {
+        window.setTimeout(function () {
           google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
         }, 1000);
         self.loading = false;
       }
-      
+
       self.mapLoaded = true;
     }
   }
@@ -158,7 +158,7 @@ export class MapComponent implements AfterViewInit{
     };
 
     window.navigator.geolocation.watchPosition(function (data) {
-      
+
       if (!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())) {
         self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
         self.map.setCenter(self.mapCenter);
@@ -221,7 +221,7 @@ export class MapComponent implements AfterViewInit{
       self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.search.nativeElement);
       self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.rota.nativeElement);
 
-      
+
       self.map.addListener('bounds_changed', function () {
         searchBox.setBounds(self.map.getBounds());
       });
@@ -259,6 +259,8 @@ export class MapComponent implements AfterViewInit{
     self.placesInformation = [];
 
     self.places.forEach(function (placeEach) {
+      console.log(placeEach);
+
       service.getDetails({
         placeId: placeEach.place_id
       }, function (place, status) {
@@ -386,35 +388,48 @@ export class MapComponent implements AfterViewInit{
 
   getInformations(place) {
     var self = this;
+
+    if (place.website) {
+      place.isCadastrado = true;
+    } else {
+      place.isCadastrado = false;
+    }
+    
+    if (place.isCadastrado) {
+      self.placesInformation.unshift(place);
+    } else {
+      self.placesInformation.push(place);
+    }
+    // self.placesInformation.push(place);
     // busca dados de cada place retornado pelo google para validar se tem cadastro no sistema ou não
-    this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
-      estabelecimentoResponse => {
-        self.setStar(place);
-        
-        if(place.website){
-          place.isCadastrado = true;
-        } else {
-          place.isCadastrado = false;
-        }
+    // this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
+    //   estabelecimentoResponse => {
+    //     self.setStar(place);
 
-        if(place.isCadastrado){
-          self.placesInformation.unshift(place);
-        } else {
-          self.placesInformation.push(place);
-        }
+    //     if(place.website){
+    //       place.isCadastrado = true;
+    //     } else {
+    //       place.isCadastrado = false;
+    //     }
 
-        // NÃO REMOVER ESSE MÉTODO
-        // if (estabelecimentoResponse.place_id === place.place_id) {
-        //   place.isCadastrado = true;
-        //   self.placesInformation.unshift(estabelecimentoResponse);
-        //   return;
-        // }
+    //     if(place.isCadastrado){
+    //       self.placesInformation.unshift(place);
+    //     } else {
+    //       self.placesInformation.push(place);
+    //     }
 
-        //Buscar os dados no banco para saber se ele tem cadastro ou não e reutilizar o mesmo json acresentando as informações que faltam
+    //     // NÃO REMOVER ESSE MÉTODO
+    //     // if (estabelecimentoResponse.place_id === place.place_id) {
+    //     //   place.isCadastrado = true;
+    //     //   self.placesInformation.unshift(estabelecimentoResponse);
+    //     //   return;
+    //     // }
 
-        self.zone.run(() => { });
-      }
-    );
+    //     //Buscar os dados no banco para saber se ele tem cadastro ou não e reutilizar o mesmo json acresentando as informações que faltam
+
+    //   }
+    //   );
+    self.zone.run(() => { });
   }
 
   setStar(place) {
@@ -437,13 +452,13 @@ export class MapComponent implements AfterViewInit{
     });
   }
 
-  openDetails(place){
+  openDetails(place) {
     this.modalDetails.open(ModalDetailsComponent, {
       width: '920px',
       height: '520px',
       panelClass: 'custom-dialog-container',
-      data: {place : place, mapa : this.map},
-      
+      data: { place: place, mapa: this.map },
+
     });
   }
 }

@@ -1,6 +1,7 @@
 import { Avaliacao } from "./avaliacao";
 
 export class Usuario {
+	id: any;
 	primeiroNome: string = undefined;
 	segundoNome: string = undefined;
 	senha: string = undefined;

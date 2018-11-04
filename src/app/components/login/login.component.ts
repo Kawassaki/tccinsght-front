@@ -8,7 +8,6 @@ import { Usuario } from '../../models/usuario';
 // import '../assets/login-animation.js';
 import '../../../assets/login-animation.js';
 import { UsuarioService } from '../../services/usuario/usuario.service';
-import { SnackBarComponent } from '../snack-bar/snack-bar.component';
 
 @Component({
   selector: 'app-login',
@@ -75,7 +74,7 @@ export class LoginComponent implements OnInit {
       usuario => {
         if (usuario !== null) {
 
-          localStorage.setItem('user', usuario);
+          localStorage.setItem('user',JSON.stringify(usuario));
           window.location.reload();
 
           this.router.navigate(['busca']);
@@ -129,15 +128,30 @@ export class LoginComponent implements OnInit {
     }, null, options);
 
     this.usuarioService.salvarUsuario(this.userCadastro).subscribe(
-      usuario => {
-        if(usuario !== null){
+      usuarioResponse => {
+        
+        if(usuarioResponse !== null){
+          
+          if(usuarioResponse.email !== null){
+        
             self.voltar();
+          
+          } else {
+            var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
+            var action: string = '';
+  
+            this.snackBar.open(userNotFoundMessage, action, {
+              duration: 10000,
+              panelClass: ['success-snackbar']
+            });
+          }
+          
         } else {
-          var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos novamente";
+          var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
           var action: string = '';
 
           this.snackBar.open(userNotFoundMessage, action, {
-            duration: 1000,
+            duration: 10000,
             panelClass: ['success-snackbar']
           });
         }

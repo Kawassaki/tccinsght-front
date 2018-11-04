@@ -1,6 +1,6 @@
 <!-- <mat-card class="example-card"> -->
-<mat-accordion>
-  <mat-expansion-panel [expanded]="expanded">
+<mat-accordion *ngIf="expanded">
+  <mat-expansion-panel [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Encontre seu estabelecimento no mapa
@@ -31,20 +31,24 @@
 
     <div class="container">
       <mat-form-field>
-        <input matInput placeholder="Identificador do seu local:" [(ngModel)]="estabelecimento.place_id" disabled>
+        <input matInput placeholder="Identificador do seu local:" [(ngModel)]="estabelecimento.placeId" disabled>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Nome do Estabelecimento:" [(ngModel)]="estabelecimento.nome">
+        <input matInput placeholder="Nome do Estabelecimento:" [(ngModel)]="estabelecimento.nome" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Telefone:" [(ngModel)]="estabelecimento.telefone">
+        <input matInput placeholder="Telefone:" [(ngModel)]="estabelecimento.contato" required>
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Website:" [(ngModel)]="estabelecimento.website">
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Endereço:" [(ngModel)]="estabelecimento.endereco">
+        <input matInput placeholder="Endereço:" [(ngModel)]="estabelecimento.endereco" required>
       </mat-form-field>
+      <mat-form-field>
+          <input matInput placeholder="Email" [formControl]="email" type="email">
+          <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>
     </div>
 
   </mat-tab>
@@ -57,24 +61,24 @@
     <div class="padding-tabs">
 
       <button class="col-md-12" (click)="addDetail()" mat-icon-button>
-        <mat-icon>add_circle</mat-icon> 
+        <mat-icon>add_circle</mat-icon>
       </button>
       <span>Cadastre Informações adicionais para seus clientes!</span>
 
-      <div class="row" *ngFor="let detail of listDetails">
+      <div class="row" *ngFor="let detalhes of estabelecimento.detalhes">
         <div class="col-md-12">
           <mat-card class="mt-1" [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }">
             <mat-card-content>
               <div class="container">
                 <mat-form-field>
-                  <input matInput placeholder="Titulo:" [(ngModel)]="detail.titulo">
+                  <input matInput placeholder="Titulo:" [(ngModel)]="detalhes.titulo">
                 </mat-form-field>
                 <mat-form-field>
-                  <input matInput placeholder="Descrição:" [(ngModel)]="detail.descricao">
+                  <input matInput placeholder="Descrição:" [(ngModel)]="detalhes.descricao">
                 </mat-form-field>
               </div>
               <div style="display: flex; justify-content: flex-end;">
-                <button mat-icon-button matTooltip="Novo Campo" matTooltipPosition="before" (click)="removeDetail(detail)">
+                <button mat-icon-button matTooltip="Novo Campo" matTooltipPosition="before" (click)="removeDetail(detalhes)">
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
@@ -89,27 +93,44 @@
     <ng-template mat-tab-label>
       <mat-icon class="vertical-align">local_atm</mat-icon> Pagamento
     </ng-template>
+    
+    <div class="container">
+    
+    <mat-form-field>
+      <input matInput placeholder="Nome Titular:" [ngModel]="estabelecimento?.pagamento?.nomeTitular" required>
+    </mat-form-field>
 
+    <mat-form-field>
+        <input matInput placeholder="CPF Titular:" type="text" name="cpf" [ngModel]="estabelecimento?.pagamento?.cpfTitular" [cpf]="estabelecimento?.pagamento?.cpfTitular" #cpfInput="ngModel" required />
+        <mat-error *ngIf="cpfInput?.errors?.cpf">CPF Inválido</mat-error>
+    </mat-form-field>
+    <!-- <mat-error *ngIf="pagamento.cpfTitular?.errors?.cpf">CPF Inválido</mat-error> -->
+    <!-- <mat-error *ngIf="pagamento.cpfTitular?.errors?.cpf">CPF Obrigatório</mat-error> -->
+    
     <form [formGroup]="formPayment">
+        
       <div class="container">
+      
         <mat-form-field>
-          <input matInput placeholder="Número do Cartão:" formControlName="numeroCartao" id="cc-number" type="tel" autocomplete="cc-number"
-            ccNumber>
+          <input matInput placeholder="Número do Cartão:" formControlName="numeroCartao" id="cc-number" type="tel"
+            autocomplete="cc-number" ccNumber>
         </mat-form-field>
+        
         <mat-form-field>
-          <input matInput placeholder="Data do Vencimento:" formControlName="vencimento" id="cc-exp-date" type="tel" autocomplete="cc-exp"
-            ccExp>
+          <input matInput placeholder="Data do Vencimento:" formControlName="vencimento" id="cc-exp-date" type="tel"
+            autocomplete="cc-exp" ccExp>
         </mat-form-field>
+        
         <mat-form-field>
-          <input matInput placeholder="Código Verificador:" formControlName="codigoVerificador" id="cc-cvc" type="tel" autocomplete="off"
-            ccCVC>
+          <input matInput placeholder="Código Verificador:" formControlName="codigoVerificador" id="cc-cvc" type="tel"
+            autocomplete="off" ccCVC>
         </mat-form-field>
-        <mat-form-field>
-          <input matInput placeholder="Email" [formControl]="email" type="email">
-          <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-        </mat-form-field>
+
+      
       </div>
+
     </form>
+  </div>
 
     <div class="padding-tabs">
       <!-- <mat-card-title>Pagamento</mat-card-title> -->
