@@ -7,5 +7,6 @@ import { } from 'googlemaps';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  template : string = `<img src="https://www.batterychargers.com/sites/all/themes/se01_theme/images/loading.gif" />`
 
 }

@@ -10,6 +10,7 @@ import '../../../assets/login-animation.js';
 import { UsuarioService } from '../../services/usuario/usuario.service';
 import { AuthService } from "angular4-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,8 @@ export class LoginComponent implements OnInit {
     private usuarioService: UsuarioService,
     private renderer: Renderer,
     public snackBar: MatSnackBar,
-    private authService: AuthService
+    private authService: AuthService,
+    private spinnerService: Ng4LoadingSpinnerService
   ) { }
 
 
@@ -63,6 +65,7 @@ export class LoginComponent implements OnInit {
 
   logar() {
     let self = this;
+    self.spinnerService.show();
 
     if (self.emailLogin && self.emailLogin.valid) {
       self.userLogin.email = self.emailLogin.value;
@@ -84,10 +87,13 @@ export class LoginComponent implements OnInit {
 
           window.setTimeout(function () {
             self.isAuth = true;
+            self.spinnerService.hide();
           }, 3000);
 
         } else {
-          var userNotFoundMessage: string = "Usuário não encontrado, tente novamente";
+          self.spinnerService.hide();
+          
+          var userNotFoundMessage: string = "Usuário não encontrado, verifique as informações de login e tente novamente";
           var action: string = '';
 
           this.snackBar.open(userNotFoundMessage, action, {
@@ -101,8 +107,10 @@ export class LoginComponent implements OnInit {
 
   cadastrar() {
     let self = this;
+    self.spinnerService.show();
     self.isCadastro = true;
     this.router.navigate(['cadastro']);
+    self.spinnerService.hide();
   }
 
   voltar() {
@@ -112,56 +120,30 @@ export class LoginComponent implements OnInit {
 
   confrimar(): void {
     var self = this;
+    self.spinnerService.show();
+    if (self.emailCadastro && self.emailCadastro.valid) {
+      self.userCadastro.email = self.emailCadastro.value;
+    }
+
+    self.getIp(self.userCadastro);
+    self.salvarUsuario(self.userCadastro);
+  }
+
+  getIp(usuario:Usuario){
+    var self = this;
+
     const options = {
       enableHighAccuracy: false,
       timeout: 500,
       maximumAge: 0
     };
-
-    if (self.emailCadastro && self.emailCadastro.valid) {
-      self.userCadastro.email = self.emailCadastro.value;
-    }
-
     window.navigator.geolocation.watchPosition(function (data) {
-      self.userCadastro.dadosUsuarioSessao.latitude = data.coords.latitude.toString();
-      self.userCadastro.dadosUsuarioSessao.longitude = data.coords.longitude.toString();
-      self.usuarioService.getIP(self.userCadastro);
+      usuario.dadosUsuarioSessao.latitude = data.coords.latitude.toString();
+      usuario.dadosUsuarioSessao.longitude = data.coords.longitude.toString();
+      self.usuarioService.getIP(usuario);
       // console.log(self.userCadastro);
       
     }, null, options);
-
-    this.usuarioService.salvarUsuario(this.userCadastro).subscribe(
-      usuarioResponse => {
-        
-        if(usuarioResponse !== null){
-          
-          if(usuarioResponse.email !== null){
-        
-            self.voltar();
-          
-          } else {
-            var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
-            var action: string = '';
-  
-            this.snackBar.open(userNotFoundMessage, action, {
-              duration: 10000,
-              panelClass: ['success-snackbar']
-            });
-          }
-          
-        } else {
-          var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
-          var action: string = '';
-
-          this.snackBar.open(userNotFoundMessage, action, {
-            duration: 10000,
-            panelClass: ['success-snackbar']
-          });
-        }
-      }
-    );
-
-    
   }
 
   setFocusEmail() {
@@ -179,31 +161,113 @@ export class LoginComponent implements OnInit {
 
   signInWithGoogle(): void {
     var self = this;
+    self.spinnerService.show();
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
       (userData) => {
+        
         if(userData.authToken != null){
-          localStorage.setItem('user',JSON.stringify(userData));
-          window.location.reload();
-          this.router.navigate(['busca']);
-          window.setTimeout(function () {
-            self.isAuth = true;
-          }, 3000);
+
+          self.usuarioService.loginSocial(userData.email).subscribe(
+            usuario => {
+
+              if (usuario !== null) {
+      
+                localStorage.setItem('user',JSON.stringify(usuario));
+                window.location.reload();
+                this.router.navigate(['busca']);
+      
+                window.setTimeout(function () {
+                  self.isAuth = true;
+                }, 3000);
+      
+              } else {
+                let usuario = new Usuario();
+                usuario.email = userData.email;
+                usuario.primeiroNome = userData.name;
+                usuario.senha = userData.authToken;
+                self.getIp(usuario);
+                self.salvarUsuario(usuario);
+              }
+            }
+          );
         }
-            
       }
     );
   }
   signInWithFB(): void {
     var self = this;
+    self.spinnerService.show();
     this.authService.signIn(FacebookLoginProvider.PROVIDER_ID).then(
       (userData) => {
+
         if(userData.authToken != null){
-          localStorage.setItem('user',JSON.stringify(userData));
-          window.location.reload();
-          this.router.navigate(['busca']);
-          window.setTimeout(function () {
-            self.isAuth = true;
-          }, 3000);
+
+          self.usuarioService.loginSocial(userData.email).subscribe(
+            usuario => {
+
+              if (usuario !== null) {
+      
+                localStorage.setItem('user',JSON.stringify(usuario));
+                window.location.reload();
+      
+                this.router.navigate(['busca']);
+      
+                window.setTimeout(function () {
+                  self.isAuth = true;
+                }, 3000);
+      
+              } else {
+                let usuario = new Usuario();
+                usuario.email = userData.email;
+                usuario.primeiroNome = userData.firstName;
+                usuario.segundoNome = userData.lastName;
+                usuario.senha = userData.authToken;
+                self.getIp(usuario);
+                self.salvarUsuario(usuario);
+              }
+            }
+          );
+        }
+      });
+  }
+
+  salvarUsuario(usuario){
+    var self = this;
+    self.usuarioService.salvarUsuario(usuario).subscribe(
+      usuarioResponse => {
+        
+        if(usuarioResponse !== null){
+          
+          if(usuarioResponse.email !== null){
+        
+            localStorage.setItem('user',JSON.stringify(usuarioResponse));
+            window.location.reload();
+  
+            self.router.navigate(['busca']);
+  
+            window.setTimeout(function () {
+              self.isAuth = true;
+              self.spinnerService.hide();
+            }, 3000);
+          
+          } else {
+            var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
+            var action: string = '';
+  
+            self.snackBar.open(userNotFoundMessage, action, {
+              duration: 10000,
+              panelClass: ['success-snackbar']
+            });
+          }
+        } else {
+            var userNotFoundMessage: string = "Dados do cadastro inconsistentes, verifique os campos e tente novamente";
+            var action: string = '';
+  
+            self.snackBar.open(userNotFoundMessage, action, {
+              duration: 10000,
+              panelClass: ['success-snackbar']
+            
+          });
         }
       }
     );

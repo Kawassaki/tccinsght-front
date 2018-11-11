@@ -30,6 +30,7 @@ import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { CpfCnpjModule } from 'ng2-cpf-cnpj';
 import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 let config = new AuthServiceConfig([
   {
@@ -70,7 +71,8 @@ let config = new AuthServiceConfig([
     AvatarModule.forRoot(),
     CreditCardDirectivesModule,
     CpfCnpjModule,
-    SocialLoginModule.initialize(config)  
+    SocialLoginModule.initialize(config),
+    Ng4LoadingSpinnerModule.forRoot()
   ],
   exports: [
     RouterModule,

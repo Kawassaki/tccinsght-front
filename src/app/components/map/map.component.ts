@@ -6,6 +6,7 @@ import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ModalDetailsComponent } from '../dialogs/modal-details/modal-details.component';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-map',
@@ -62,14 +63,17 @@ export class MapComponent implements AfterViewInit {
     public dialog: MatDialog,
     public modalDetails: MatDialog,
     private _formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private spinnerService : Ng4LoadingSpinnerService
   ) { }
 
   ngAfterViewInit() {
+    this.spinnerService.show();
     window.setInterval(2000);
     this.criaMapa();
     window.setInterval(2000);
     this.loadForm();
+    this.spinnerService.hide();
   }
 
   loadForm() {

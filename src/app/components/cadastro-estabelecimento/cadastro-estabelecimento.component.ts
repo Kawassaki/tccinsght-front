@@ -7,7 +7,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '../../../../nod
 import { Usuario } from '../../models/usuario';
 import { Detalhes } from '../../models/detalhes';
 import { Pagamento } from '../../models/pagamento';
-
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MatSnackBar } from '@angular/material';
 
 
@@ -35,11 +35,13 @@ export class CadastroEstabelecimentoComponent implements OnInit {
   public codigoVerificador: any;
   public formPayment: FormGroup;
   public email = new FormControl('', [Validators.required, Validators.email]);
-  public expanded = false;
+  public loading = false;
   public cpfTitular : string;
+  public nomeTitular : string;
   
 
   public estabelecimento = new Estabelecimento();
+  public pagamento =  new Pagamento();
   
   private renderer: Renderer;
   private estabelecimentos: any;
@@ -58,12 +60,13 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     private estabelecimentoService: EstabelecimentoService,
     private _fb: FormBuilder,
     public snackBar: MatSnackBar,
+    private spinnerService: Ng4LoadingSpinnerService
   ) {
-    this.estabelecimento.pagamento =  new Pagamento();
   }
 
   ngOnInit() {
     var self = this;
+    self.spinnerService.show();
     self.validaFormPagament();
 
     self.usuario = JSON.parse(localStorage.getItem('user'));
@@ -125,34 +128,24 @@ export class CadastroEstabelecimentoComponent implements OnInit {
       });
     }, null, options);
   }
-  retornaEstabelecimentoApi() {
-    // this.estabelecimentoService.getEstabelecimentos().subscribe(estabelecimentoTeste => {
-    //   this.estabelecimentos = estabelecimentoTeste
-    //   console.log(this.estabelecimentos);
-    // }
-    // );
-
-
-    // this.estabelecimentoService.getEstabelecimentosById().subscribe(
-    //   estabelecimentoTeste => {
-    //     this.estabelecimentosById = estabelecimentoTeste
-    //     console.log(this.estabelecimentosById);
-    //   }
-    // );
-
-  }
-
+  
   salvarEstabelecimento() {
     var self = this;
+    self.spinnerService.show();
 
     self.estabelecimento.usuario = self.usuario;
+    self.estabelecimento.pagamento = self.pagamento;
+
     
     if(self.formPayment.valid){
       self.estabelecimento.pagamento.numeroCartao = self.formPayment.controls.numeroCartao.value;
       self.estabelecimento.pagamento.dataVencimento = new Date(('01/' + self.formPayment.controls.vencimento.value.replace(' ', ''))).toISOString();
       self.estabelecimento.pagamento.codigoVerificador = self.formPayment.controls.codigoVerificador.value;
       self.estabelecimento.pagamento.email = self.email.value;
+      self.estabelecimento.pagamento.cpfTitular = self.cpfTitular;
+      self.estabelecimento.pagamento.nomeTitular = self.nomeTitular;
     }
+    self.estabelecimento.email = self.email.value;
 
     self.estabelecimentoService.salvarEstabelecimento(self.estabelecimento).subscribe(
       estabelecimento => {
@@ -160,7 +153,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         if(estabelecimento !== null){
             var estabelecimentoMessage: string = "Estabelecimento Salvo com Sucesso! :)";
             var action: string = '';
-  
+            self.spinnerService.hide();
             self.snackBar.open(estabelecimentoMessage, action, {
               duration: 10000,
               panelClass: ['success-snackbar']
@@ -168,7 +161,7 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         } else {
           var estabelecimentoMessage: string = "Dados do estabelecimento inconsistentes, verifique os campos e tente novamente";
           var action: string = '';
-
+          self.spinnerService.hide();
           self.snackBar.open(estabelecimentoMessage, action, {
             duration: 10000,
             panelClass: ['success-snackbar']
@@ -176,7 +169,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
         }
       }
     );
-    // console.log(self.estabelecimento);
   }
 
   validaFormPagament() {
@@ -314,8 +306,11 @@ export class CadastroEstabelecimentoComponent implements OnInit {
           self.email.setValue(estabelecimentoResponse.pagamento.email);
           pagamento.email = estabelecimentoResponse.pagamento.email;
           pagamento.numeroCartao = estabelecimentoResponse.pagamento.numeroCartao;
-          pagamento.nomeTitular = estabelecimentoResponse.pagamento.nomeTitular;
           pagamento.id = estabelecimentoResponse.pagamento.id;
+          pagamento.nomeTitular = estabelecimentoResponse.pagamento.nomeTitular;
+          pagamento.cpfTitular = estabelecimentoResponse.pagamento.cpfTitular;
+          self.nomeTitular = estabelecimentoResponse.pagamento.nomeTitular;
+          self.cpfTitular = estabelecimentoResponse.pagamento.cpfTitular
 
           self.formPayment.controls.numeroCartao.setValue(pagamento.numeroCartao);
           self.formPayment.controls.codigoVerificador.setValue(pagamento.codigoVerificador);
@@ -338,10 +333,14 @@ export class CadastroEstabelecimentoComponent implements OnInit {
           if(estabelecimento.detalhes.length === 0){
             self.addDetail();
           }
-          self.expanded = false;
+          self.loading = false;
+          
+          if(!self.loading){
+            self.spinnerService.hide();
+          }
 
         } else {
-          self.expanded = true;
+          self.loading = true;
           self.carregaMapa();
         }
       }

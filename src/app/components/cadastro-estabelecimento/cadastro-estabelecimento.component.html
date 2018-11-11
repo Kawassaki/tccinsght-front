@@ -1,6 +1,6 @@
 <!-- <mat-card class="example-card"> -->
-<mat-accordion *ngIf="expanded">
-  <mat-expansion-panel [expanded]="true">
+<mat-accordion>
+  <mat-expansion-panel [expanded]="false">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Encontre seu estabelecimento no mapa
@@ -97,11 +97,11 @@
     <div class="container">
     
     <mat-form-field>
-      <input matInput placeholder="Nome Titular:" [ngModel]="estabelecimento?.pagamento?.nomeTitular" required>
+      <input matInput placeholder="Nome Titular:" [(ngModel)]="nomeTitular" required>
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput placeholder="CPF Titular:" type="text" name="cpf" [ngModel]="estabelecimento?.pagamento?.cpfTitular" [cpf]="estabelecimento?.pagamento?.cpfTitular" #cpfInput="ngModel" required />
+        <input matInput placeholder="CPF Titular:" type="text" name="cpf" [(ngModel)]="cpfTitular" [cpf]="cpfTitular" #cpfInput="ngModel" required />
         <mat-error *ngIf="cpfInput?.errors?.cpf">CPF Inválido</mat-error>
     </mat-form-field>
     <!-- <mat-error *ngIf="pagamento.cpfTitular?.errors?.cpf">CPF Inválido</mat-error> -->

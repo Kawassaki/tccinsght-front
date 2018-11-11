@@ -29,6 +29,14 @@ export class UsuarioService {
     );
   }
 
+  public loginSocial(loginRequest: any) {
+    return this.http.get(environment.apiUrl + '/rest/usuario/entrarSocial?email=' + loginRequest).map(
+      response => {
+        return response.json();
+      }
+    );
+  }
+
   public getIP(usuario: Usuario) {
     return this.httpClient.get<{ ip: string }>('https://jsonip.com').subscribe(data => {
       usuario.dadosUsuarioSessao.ipAcesso = data.ip;
