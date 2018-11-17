@@ -21,6 +21,13 @@ export class UsuarioService {
       }
     );
   }
+  public atualizarUsuario(usuario: Usuario) {
+    return this.http.post(environment.apiUrl + '/rest/usuario/atualizar', usuario).map(
+      response => {
+        return response.json();
+      }
+    );
+  }
   public login(loginRequest: any) {
     return this.http.post(environment.apiUrl + '/rest/usuario/entrar', loginRequest).map(
       response => {

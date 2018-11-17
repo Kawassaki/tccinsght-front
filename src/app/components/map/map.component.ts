@@ -64,7 +64,7 @@ export class MapComponent implements AfterViewInit {
     public modalDetails: MatDialog,
     private _formBuilder: FormBuilder,
     private router: Router,
-    private spinnerService : Ng4LoadingSpinnerService
+    private spinnerService: Ng4LoadingSpinnerService
   ) { }
 
   ngAfterViewInit() {
@@ -259,15 +259,16 @@ export class MapComponent implements AfterViewInit {
     var self = this;
     let service = new google.maps.places.PlacesService(this.map);
     let timeout;
-
+    var placesId = [];
+    var placesComparation = [];
     self.placesInformation = [];
 
     self.places.forEach(function (placeEach) {
-      console.log(placeEach);
-
+      placesId.push(placeEach.place_id);
       service.getDetails({
         placeId: placeEach.place_id
       }, function (place, status) {
+        placesComparation.push(place);
 
         if (status === google.maps.places.PlacesServiceStatus.OK) {
 
@@ -288,10 +289,11 @@ export class MapComponent implements AfterViewInit {
 
             });
           }, timeout);
-
         }
       });
     });
+
+    self.getInformations(placesId, placesComparation);
   }
   addMarkPlace(place): any {
     var self = this;
@@ -321,8 +323,6 @@ export class MapComponent implements AfterViewInit {
     self.map.fitBounds(bounds);
     self.map.setZoom(15);
     self.map.setCenter(self.mapCenter);
-
-    self.getInformations(place);
 
     if (self.directionsDisplay) {
       self.directionsDisplay.setDirections({ routes: [] });
@@ -390,49 +390,41 @@ export class MapComponent implements AfterViewInit {
     directionsDisplay.setMap(null);
   }
 
-  getInformations(place) {
+  getInformations(placesIds, places) {
     var self = this;
-
-    if (place.website) {
-      place.isCadastrado = true;
-    } else {
-      place.isCadastrado = false;
-    }
-    
-    if (place.isCadastrado) {
-      self.placesInformation.unshift(place);
-    } else {
-      self.placesInformation.push(place);
-    }
     // self.placesInformation.push(place);
     // busca dados de cada place retornado pelo google para validar se tem cadastro no sistema ou não
-    // this.estabelecimentoService.getInfoByPlaceId(place).subscribe(
-    //   estabelecimentoResponse => {
-    //     self.setStar(place);
+    this.estabelecimentoService.buscarEstabelecimentoPorPlaceId(placesIds).subscribe(
 
-    //     if(place.website){
-    //       place.isCadastrado = true;
-    //     } else {
-    //       place.isCadastrado = false;
-    //     }
+      estabelecimentoResponse => {
+        if (estabelecimentoResponse) {
 
-    //     if(place.isCadastrado){
-    //       self.placesInformation.unshift(place);
-    //     } else {
-    //       self.placesInformation.push(place);
-    //     }
+          estabelecimentoResponse.forEach(function (estabelecimentoResponse) {
 
-    //     // NÃO REMOVER ESSE MÉTODO
-    //     // if (estabelecimentoResponse.place_id === place.place_id) {
-    //     //   place.isCadastrado = true;
-    //     //   self.placesInformation.unshift(estabelecimentoResponse);
-    //     //   return;
-    //     // }
+            places.forEach(function (estabelecimento) {
 
-    //     //Buscar os dados no banco para saber se ele tem cadastro ou não e reutilizar o mesmo json acresentando as informações que faltam
+              if (estabelecimento) {
 
-    //   }
-    //   );
+                if (estabelecimento.place_id === estabelecimentoResponse.placeId) {
+                  estabelecimento.dadosAdicionais = estabelecimentoResponse;
+                }
+              }
+            });
+          });
+        }
+        places.forEach(function (place) {
+          if (place) {
+            if (place.dadosAdicionais) {
+              self.placesInformation.unshift(place);
+            } else {
+              self.placesInformation.push(place);
+            }
+          }
+        });
+        console.log(self.placesInformation);
+
+      }
+    );
     self.zone.run(() => { });
   }
 

@@ -60,7 +60,7 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <div *ngIf="!(placesInformation.length > 0)" class="spinner">
-      <mat-spinner></mat-spinner>
+    <ng4-loading-spinner></ng4-loading-spinner>
   </div>
   <div *ngIf="placesInformation">
     <div *ngFor="let placeInfo of placesInformation; let i = index" [attr.data-index]="i">
@@ -97,7 +97,7 @@
           </span>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-stroked-button color="warn" (click)="openDetails(placeInfo)" [disabled]="!placeInfo.isCadastrado">Detalhes</button>
+          <button mat-stroked-button color="warn" (click)="openDetails(placeInfo)" [disabled]="!placeInfo.dadosAdicionais">Detalhes</button>
           <!-- <button mat-button>SHARE</button> -->
         </mat-card-actions>
       </mat-card>

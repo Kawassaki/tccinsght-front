@@ -31,18 +31,18 @@
           </mat-expansion-panel-header>
           <div class="example-container">
             <mat-form-field>
-              <input matInput placeholder="Digite sua senha" [(ngModel)]="usuario.senha">
+              <input matInput type="password" placeholder="Digite sua senha" [(ngModel)]="usuario.senha">
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="Confirme sua senha" [(ngModel)]="usuario.confirmaSenha">
-              <mat-error *ngIf="usuario.confirmaSenha !== usuario.senha">{{getErrorConfirmPassword(usuario.confirmaSenha)}}</mat-error>
+              <input matInput placeholder="Confirme sua senha" type="password" [(ngModel)]="confirmaSenha">
+              <mat-error *ngIf="confirmaSenha !== usuario.senha">{{getErrorConfirmPassword(confirmaSenha)}}</mat-error>
             </mat-form-field>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
 
       <mat-card-actions>
-        <button mat-raised-button class="button-color-orange" (click)="salvarUsuario()">Salvar</button>
+        <button mat-raised-button class="button-color-orange" (click)="salvarUsuario()" [disabled]=" confirmaSenha !== usuario.senha">Salvar</button>
       </mat-card-actions>
     </div>
   </mat-card-content>

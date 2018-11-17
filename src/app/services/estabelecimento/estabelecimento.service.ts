@@ -8,41 +8,38 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class EstabelecimentoService {
 
- constructor(private http: Http) { }
+  constructor(private http: Http) { }
 
- public buscarEstabelecimentoPorUsuario(param){
-    return this.http.get( environment.apiUrl + '/rest/estabelecimento/buscarEstabelecimentoPorUsuario?idUsuario=' + param)
+  public buscarEstabelecimentoPorUsuario(param) {
+    return this.http.get(environment.apiUrl + '/rest/estabelecimento/buscarEstabelecimentoPorUsuario?idUsuario=' + param)
       .map(response => {
         localStorage.setItem('estabelecimentos', response.json());
         return response.json();
       });
   }
 
-//   public getEstabelecimentosById(): Observable<any>{
-//     return this.http.get(environment.apiUrl + '/rest/testJersey')
-//       .map(response => {
-//         localStorage.setItem('estabelecimentos', response.json());
-//         return response.json();
-//       });
-//   }
+  public buscarEstabelecimentoPorPlaceId(placesIds) {
+    var params = [];
 
-  public salvarEstabelecimento(estabelecimento){
-    console.log(estabelecimento);
-    return this.http.post(environment.apiUrl + '/rest/estabelecimento/salvarEstabelecimento', estabelecimento).map(
-        response => {
-          return response.json();
-        }
-      );
+    placesIds.forEach(function (id) {
+      params.push('placesId=' + id || '');
+    });
+    params = params.join('&');
+    
+    return this.http.get(environment.apiUrl + '/rest/estabelecimento/buscaEstabelecimentosPorPlacesIds?' + params)
+      .map(response => {
+        // localStorage.setItem('estabelecimentos', response.json());
+        return response.json();
+      });
   }
 
-//   public getInfoByPlaceId(place): Observable<any>{
-//     console.log(place);
-//     return this.http.get(environment.apiUrl + '/rest/testJersey')
-//     .map(response => {
-//       localStorage.setItem('estabelecimentos', response.json());
-//       return response.json();
-//     });
-//   }
+  public salvarEstabelecimento(estabelecimento) {
+    console.log(estabelecimento);
+    return this.http.post(environment.apiUrl + '/rest/estabelecimento/salvarEstabelecimento', estabelecimento).map(
+      response => {
+        return response.json();
+      }
+    );
+  }
 }
-
 

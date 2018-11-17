@@ -16,7 +16,8 @@ export class UserComponent implements OnInit {
   public color = 'accent';
   public checked: boolean;
   public disabled: boolean;
-  public email = new FormControl('', [Validators.required, Validators.email]); 
+  public email = new FormControl('', [Validators.required, Validators.email]);
+  public confirmaSenha; 
   
 
   constructor(private usuarioService: UsuarioService, public snackBar: MatSnackBar) { }
@@ -35,7 +36,7 @@ export class UserComponent implements OnInit {
     var self = this;
     self.usuario.email = self.email.value;
     
-    this.usuarioService.salvarUsuario(self.usuario).subscribe(
+    this.usuarioService.atualizarUsuario(self.usuario).subscribe(
       usuarioResponse => {
         
         if(usuarioResponse !== null){
