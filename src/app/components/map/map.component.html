@@ -53,7 +53,8 @@
   </div>
 </mat-expansion-panel>
 
-<mat-expansion-panel [expanded]="placesInformation.length > 0" class="margin-top-map" [hidden]="!formAnswered" [disabled]="loading">
+<mat-expansion-panel [expanded]="placesInformation.length > 0" class="margin-top-map" [hidden]="!formAnswered"
+  [disabled]="loading">
   <mat-expansion-panel-header>
     <mat-panel-title>
       Detalhes dos estabelecimentos:
@@ -64,7 +65,8 @@
   </div>
   <div *ngIf="placesInformation">
     <div *ngFor="let placeInfo of placesInformation; let i = index" [attr.data-index]="i">
-      <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }" matBadge="8" matBadgePosition="after" matBadgeColor="accent">
+      <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }" matBadge="8" matBadgePosition="after"
+        matBadgeColor="accent">
         <mat-card-header>
           <avatar class="size-avatar" [name]="placeInfo.name" [displayType]="'circle'" [size]="40"></avatar>
           <!-- <div mat-card-avatar class="example-header-image"> {{placeInfo.initialNamePlace}}</div> -->
@@ -74,31 +76,27 @@
           </div>
         </mat-card-header>
         <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-        <mat-card-content style="overflow: auto;max-height: 330px;">
+        <mat-card-content style="overflow: auto;max-height: 330px;" matBadge="4">
           <p>
             <b>Site:</b> {{placeInfo.website? placeInfo.website : "Sem dados disponíveis :("}}
           </p>
           <p>
-            <b>Contato:</b> {{placeInfo.international_phone_number ? placeInfo.international_phone_number : "Sem dados disponíveis :("}}
+            <b>Contato:</b> {{placeInfo.international_phone_number ? placeInfo.international_phone_number : "Sem dados
+            disponíveis :("}}
           </p>
-          <!-- <p> -->
-          <b>Nota:</b>
-          <span matTooltip="{{placeInfo.rating ? placeInfo.rating : 'Este local ainda não foi avaliado :(' }}" matTooltipPosition="right">
+          <b>Media de Avaliações:</b>
+          <span>
+            <b>
+              {{placeInfo.rating ? placeInfo.rating : 'Este local ainda não foi avaliado :(' }}
+            </b>
             <a *ngFor="let item of placeInfo.starList">
-              <!-- <div *ngIf="!item">
-                    <mat-icon [style.display]="item?'none':'inherit'">star</mat-icon>
-                  </div>
-                  <div *ngIf="item">
-                    <mat-icon [style.display]="item?'none':'inherit'">star_border</mat-icon>
-                  </div> -->
               <i class="fa star" [ngClass]="{'fa-star-o':item,'fa-star':!item}"></i>
             </a>
-            <!-- </p> -->
           </span>
         </mat-card-content>
         <mat-card-actions>
+          <!-- <mat-chip color="primary">{{placeInfo.dadosAdicionais.detalhes.length}}</mat-chip> -->
           <button mat-stroked-button color="warn" (click)="openDetails(placeInfo)" [disabled]="!placeInfo.dadosAdicionais">Detalhes</button>
-          <!-- <button mat-button>SHARE</button> -->
         </mat-card-actions>
       </mat-card>
     </div>

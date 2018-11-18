@@ -84,10 +84,13 @@
     </mat-tab>
 
     <mat-tab label="Informações Adicionais">
-      <mat-list class="list">
-
+      <mat-list *ngFor="let details of data.place.dadosAdicionais.detalhes;">
+        <mat-list-item> <b>{{details.titulo}}: </b> {{details.descricao}} 
+          <mat-divider></mat-divider>
+        </mat-list-item>
+        <!-- <mat-divider></mat-divider> -->
+        <!-- <mat-list-item> </mat-list-item> -->
       </mat-list>
-
     </mat-tab>
   </mat-tab-group>
   <mat-card-header>

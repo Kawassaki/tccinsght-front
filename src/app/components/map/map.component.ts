@@ -269,7 +269,7 @@ export class MapComponent implements AfterViewInit {
         placeId: placeEach.place_id
       }, function (place, status) {
         placesComparation.push(place);
-
+        self.setStar(place);
         if (status === google.maps.places.PlacesServiceStatus.OK) {
 
           for (var i = 0; i < placeEach.length; i++) {
