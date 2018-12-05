@@ -31,6 +31,8 @@ import { CpfCnpjModule } from 'ng2-cpf-cnpj';
 import { SocialLoginModule, AuthServiceConfig } from "angular4-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-login";
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { DialogFaqComponent } from './components/dialogs/dialog-faq/dialog-faq.component';
+import { DialogTermosComponent } from './components/dialogs/dialog-termos/dialog-termos.component';
 
 let config = new AuthServiceConfig([
   {
@@ -58,6 +60,8 @@ let config = new AuthServiceConfig([
     DialogLocale,
     CadastrarComponent,
     ModalDetailsComponent,
+    DialogFaqComponent,
+    DialogTermosComponent,
            
   ],
   imports: [
@@ -84,6 +88,6 @@ let config = new AuthServiceConfig([
     AuthenticationService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [DialogLocale, ModalDetailsComponent]
+  entryComponents: [DialogLocale, ModalDetailsComponent, DialogFaqComponent, DialogTermosComponent]
 })
 export class AppModule { }

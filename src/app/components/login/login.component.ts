@@ -11,6 +11,7 @@ import { UsuarioService } from '../../services/usuario/usuario.service';
 import { AuthService } from "angular4-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angular4-social-login";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { DialogTermosComponent } from '../dialogs/dialog-termos/dialog-termos.component';
 
 @Component({
   selector: 'app-login',
@@ -39,6 +40,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    public termosDialog: MatDialog,
     private usuarioService: UsuarioService,
     private renderer: Renderer,
     public snackBar: MatSnackBar,
@@ -175,7 +177,7 @@ export class LoginComponent implements OnInit {
                 localStorage.setItem('user',JSON.stringify(usuario));
                 window.location.reload();
                 this.router.navigate(['busca']);
-      
+
                 window.setTimeout(function () {
                   self.isAuth = true;
                 }, 3000);
@@ -272,6 +274,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
-
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+import { DialogFaqComponent } from '../dialogs/dialog-faq/dialog-faq.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-menu',
@@ -11,7 +13,8 @@ export class MenuComponent implements OnInit {
   public isAuth = false;
 
   constructor(
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -23,6 +26,15 @@ export class MenuComponent implements OnInit {
 
     }
   }
+
+  abrirFaq(): void {
+    this.dialog.open(DialogFaqComponent, {
+      width: '920px',
+      height: '500px',
+      panelClass: 'custom-dialog-container'
+    });
+  }
+
   sair(){
     localStorage.removeItem('user');
     location.reload();

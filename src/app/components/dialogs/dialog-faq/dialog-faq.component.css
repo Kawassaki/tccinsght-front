@@ -1,0 +1,12 @@
+.row-title{
+    display: flex;
+    flex-direction: row;
+}
+
+.icon-title{
+    margin: 0.6%;
+}
+
+.menu-spacer {
+    flex: 1 1 auto;
+}

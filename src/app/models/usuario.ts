@@ -6,6 +6,7 @@ export class Usuario {
 	segundoNome: string = undefined;
 	senha: string = undefined;
 	email: string = undefined;
+	isPrimeiroAcesso: boolean;
 	dadosUsuarioSessao: any = {
 		latitude : undefined,
 		longitude : undefined,

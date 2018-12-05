@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ModalDetailsComponent } from '../dialogs/modal-details/modal-details.component';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { DialogTermosComponent } from '../dialogs/dialog-termos/dialog-termos.component';
+import { Usuario } from '../../models/usuario';
 
 @Component({
   selector: 'app-map',
@@ -61,6 +63,7 @@ export class MapComponent implements AfterViewInit {
     private zone: NgZone,
     private estabelecimentoService: EstabelecimentoService,
     public dialog: MatDialog,
+    public termosDialog: MatDialog,
     public modalDetails: MatDialog,
     private _formBuilder: FormBuilder,
     private router: Router,
@@ -74,6 +77,7 @@ export class MapComponent implements AfterViewInit {
     window.setInterval(2000);
     this.loadForm();
     this.spinnerService.hide();
+    this.openTermos();
   }
 
   loadForm() {
@@ -456,6 +460,18 @@ export class MapComponent implements AfterViewInit {
       data: { place: place, mapa: this.map },
 
     });
+  }
+
+  openTermos() {
+    var user = JSON.parse(localStorage.getItem('user'));
+    if(user.primeiroAcesso == true){
+      this.termosDialog.open(DialogTermosComponent, {
+        width: '920px',
+        height: '500px'
+      });
+    } else {
+      return false;
+    }
   }
 }
 

@@ -67,6 +67,9 @@
     <div *ngFor="let placeInfo of placesInformation; let i = index" [attr.data-index]="i">
       <mat-card [ngStyle]="{'background-color': i % 2 === 0 ? '#eeeeee' : '#fafafa' }" matBadge="8" matBadgePosition="after"
         matBadgeColor="accent">
+        <div *ngIf="placeInfo.dadosAdicionais" style="float:right; font-weight:bold">
+            Recomendado <i class="fa star" [ngClass]="{'fa-star':true}"></i>
+        </div>
         <mat-card-header>
           <avatar class="size-avatar" [name]="placeInfo.name" [displayType]="'circle'" [size]="40"></avatar>
           <!-- <div mat-card-avatar class="example-header-image"> {{placeInfo.initialNamePlace}}</div> -->
