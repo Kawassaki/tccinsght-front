@@ -143,8 +143,6 @@ export class LoginComponent implements OnInit {
       usuario.dadosUsuarioSessao.latitude = data.coords.latitude.toString();
       usuario.dadosUsuarioSessao.longitude = data.coords.longitude.toString();
       self.usuarioService.getIP(usuario);
-      // console.log(self.userCadastro);
-      
     }, null, options);
   }
 

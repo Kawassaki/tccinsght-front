@@ -218,14 +218,6 @@ export class MapComponent implements AfterViewInit {
 
 
       let searchBox = new google.maps.places.SearchBox(self.search.nativeElement);
-
-      // $timeout(function() {
-      // var input = angular.element("#" + 'id_of_searchBox')[0];
-
-      // }, 100);
-      // google.maps.event.trigger(self.search.nativeElement, 'focus')
-      // google.maps.event.trigger(self.search.nativeElement, 'keydown', { keyCode: 13 });
-
       self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.search.nativeElement);
       self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.rota.nativeElement);
 
@@ -233,8 +225,6 @@ export class MapComponent implements AfterViewInit {
       self.map.addListener('bounds_changed', function () {
         searchBox.setBounds(self.map.getBounds());
       });
-
-      // google.maps.event.trigger(searchBox, 'place_changed');
 
       searchBox.addListener('places_changed', function () {
         self.map.setCenter(self.mapCenter);
@@ -268,25 +258,34 @@ export class MapComponent implements AfterViewInit {
     self.placesInformation = [];
 
     self.places.forEach(function (placeEach) {
+
       placesId.push(placeEach.place_id);
+
       service.getDetails({
         placeId: placeEach.place_id
       }, function (place, status) {
+
         placesComparation.push(place);
         self.setStar(place);
+
         if (status === google.maps.places.PlacesServiceStatus.OK) {
 
           for (var i = 0; i < placeEach.length; i++) {
             timeout = i * 200;
           }
+         
           window.setTimeout(function () {
+
             let marker = self.addMarkPlace(place);
+
             google.maps.event.addListener(marker, 'click', function () {
+
               if (marker.getAnimation() === google.maps.Animation.BOUNCE) {
                 marker.setAnimation(null);
                 self.latitudeTo = null;
                 self.longitudeTo = null;
               }
+
               marker.setAnimation(google.maps.Animation.BOUNCE);
               self.latitudeTo = place.geometry.location.lat();
               self.longitudeTo = place.geometry.location.lng();
@@ -299,6 +298,7 @@ export class MapComponent implements AfterViewInit {
 
     self.getInformations(placesId, placesComparation);
   }
+
   addMarkPlace(place): any {
     var self = this;
     let bounds = new google.maps.LatLngBounds();
@@ -334,10 +334,6 @@ export class MapComponent implements AfterViewInit {
 
     return marker;
   }
-  // getQuerySelector(query){
-  //   this.hidden = true;
-  //   console.log("map.component.ts", query);
-  // }
 
   gerarRota() {
     var self = this;
@@ -348,9 +344,6 @@ export class MapComponent implements AfterViewInit {
 
     self.directionsService = new google.maps.DirectionsService;
     self.directionsDisplay = new google.maps.DirectionsRenderer;
-    // polylineOptions: {
-    //   strokeColor: "red"
-    // }, suppressMarkers: true
 
     self.directionsDisplay.setMap(self.map);
     self.directionsDisplay.setOptions({ suppressMarkers: true });
@@ -360,31 +353,41 @@ export class MapComponent implements AfterViewInit {
   calculateAndDisplayRoute(directionsService, directionsDisplay) {
     var self = this;
     directionsDisplay.setDirections({ routes: [] });
+    // Calcula a Rota com base na origem e no destino passado como parametro (padrão do google)
 
     if (self.latitudeTo && self.longitudeTo && (self.markers && self.markers.length > 1)) {
+
+      //método route possui as seguintes propriedades: origin, destination, travelMode
       directionsService.route({
         origin: { lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng() },
         destination: { lat: self.latitudeTo, lng: self.longitudeTo },
         travelMode: google.maps.TravelMode.DRIVING
       }, function (response, status) {
+
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
         } else {
           window.alert('Directions request failed due to ' + status);
         }
+
       });
+
     } else if (self.markers && self.markers.length === 1) {
+
       directionsService.route({
         origin: { lat: self.markerCurrentLocation.getPosition().lat(), lng: self.markerCurrentLocation.getPosition().lng() },
         destination: { lat: self.markers[0].position.lat(), lng: self.markers[0].position.lng() },
         travelMode: google.maps.TravelMode.DRIVING
       }, function (response, status) {
+
         if (status === 'OK') {
           directionsDisplay.setDirections(response);
         } else {
           window.alert('Directions request failed due to 2' + status);
         }
+
       });
+
     } else {
       self.openDialog();
     }
@@ -396,7 +399,6 @@ export class MapComponent implements AfterViewInit {
 
   getInformations(placesIds, places) {
     var self = this;
-    // self.placesInformation.push(place);
     // busca dados de cada place retornado pelo google para validar se tem cadastro no sistema ou não
     this.estabelecimentoService.buscarEstabelecimentoPorPlaceId(placesIds).subscribe(
 
@@ -425,8 +427,6 @@ export class MapComponent implements AfterViewInit {
             }
           }
         });
-        console.log(self.placesInformation);
-
       }
     );
     self.zone.run(() => { });

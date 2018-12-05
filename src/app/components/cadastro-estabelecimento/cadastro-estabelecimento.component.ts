@@ -247,7 +247,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     }
 
     self.markerCurrentLocation.setPosition(place.geometry.location);
-    // self.markers[0].setPosition(place.geometry.location);
 
     if (place.geometry.viewport) {
       bounds.union(place.geometry.viewport);
@@ -256,7 +255,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
     }
 
     this.map.fitBounds(bounds);
-    // console.log(self.markers);
 
     return self.markerCurrentLocation;
 
@@ -302,7 +300,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
           pagamento.codigoVerificador = estabelecimentoResponse.pagamento.codigoVerificador;
           pagamento.cpfTitular = estabelecimentoResponse.pagamento.cpfTitular;
           pagamento.dataVencimento = new Date(estabelecimentoResponse.pagamento.dataVencimento).toISOString();
-          // pagamento.dataVencimento.
           self.email.setValue(estabelecimentoResponse.pagamento.email);
           pagamento.email = estabelecimentoResponse.pagamento.email;
           pagamento.numeroCartao = estabelecimentoResponse.pagamento.numeroCartao;
@@ -328,7 +325,6 @@ export class CadastroEstabelecimentoComponent implements OnInit {
             detalhes.descricao = detalheResponse.descricao;
             estabelecimento.detalhes.unshift(detalhes);
           });
-          console.log(estabelecimento);
           
           if(estabelecimento.detalhes.length === 0){
             self.addDetail();

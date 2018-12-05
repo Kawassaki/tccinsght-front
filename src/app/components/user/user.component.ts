@@ -76,22 +76,10 @@ export class UserComponent implements OnInit {
 
 
   salvaGeolocation(usuario){
-    if(usuario.permiteLocaliacao){
-     
       window.navigator.geolocation.getCurrentPosition(function (data) {
         usuario.latitude = data.coords.latitude;
         usuario.longitude = data.coords.longitude;
       });
-      
-
-      // this.usuarioService.getIP(usuario);
-
-    } else {
-      usuario.latitude = null;
-      usuario.longitude = null;
-      usuario.ipDeAcesso = null;
-    }
-
   }
 
   getErrorConfirmPassword(senha) {
