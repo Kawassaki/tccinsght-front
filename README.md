@@ -1,17 +1,14 @@
 # iBranch
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+Projeto desenvolvido em angular 5
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Baixando o git
+Baixar o git no seguinte link: `https://git-scm.com/downloads`
 
-## Further help
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Clonando o Projeto
+Logo em seguida abrir a pasta do git local e executar o seguinte comando no "git bash" `git clone https://github.com/Kawassaki/tccinsght-front.git`
 
-## NPM Dependences
-## Material Desing:
-	> Run: npm install --save @angular/material @angular/cdk
-	> Run: npm install --save @angular/animations
-	> Run: npm install --save hammerjs
-	
-## Google Maps 
-	> Run: npm install --save @types/googlemaps
+## Instalando as Dependências do Projeto
+Após clonar o repostório é necessário instalar as dependencias do projeto, para isso deverá ser executado o seguinte comando na raiz do projeto: `npm install --save`
+
+## Rodando o Proejto
+Pronto! Seu projeto está configurado, agora basta executar o seguinte comando `ng serve --open` e o projeto será inicializado no link `http://localhost:4200/`
