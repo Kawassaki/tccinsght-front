@@ -33,6 +33,7 @@ import { GoogleLoginProvider, FacebookLoginProvider } from "angular4-social-logi
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { DialogFaqComponent } from './components/dialogs/dialog-faq/dialog-faq.component';
 import { DialogTermosComponent } from './components/dialogs/dialog-termos/dialog-termos.component';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 let config = new AuthServiceConfig([
   {
@@ -76,7 +77,8 @@ let config = new AuthServiceConfig([
     CreditCardDirectivesModule,
     CpfCnpjModule,
     SocialLoginModule.initialize(config),
-    Ng4LoadingSpinnerModule.forRoot()
+    Ng4LoadingSpinnerModule.forRoot(),
+    SimpleNotificationsModule.forRoot()
   ],
   exports: [
     RouterModule,

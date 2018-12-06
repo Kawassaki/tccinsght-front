@@ -6,7 +6,6 @@ import { DialogLocale } from '../dialogs/dialog-locale/dialogs.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from "@angular/router";
 import { ModalDetailsComponent } from '../dialogs/modal-details/modal-details.component';
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { DialogTermosComponent } from '../dialogs/dialog-termos/dialog-termos.component';
 import { Usuario } from '../../models/usuario';
 
@@ -38,6 +37,7 @@ export class MapComponent implements AfterViewInit {
   private mapCenter: any;
   public mapLoaded = false;
   public loading = true;
+  public nenhumEncontrado = false;
 
   public formAnswered = false;
 
@@ -59,6 +59,9 @@ export class MapComponent implements AfterViewInit {
   sixthFormGroup: FormGroup;
   queryString: string = undefined;
 
+  public latitudeAtual;
+  public longitudeAtual;
+
   constructor(
     private zone: NgZone,
     private estabelecimentoService: EstabelecimentoService,
@@ -66,17 +69,15 @@ export class MapComponent implements AfterViewInit {
     public termosDialog: MatDialog,
     public modalDetails: MatDialog,
     private _formBuilder: FormBuilder,
-    private router: Router,
-    private spinnerService: Ng4LoadingSpinnerService
+    private router: Router,    
+    public snackBar: MatSnackBar
   ) { }
 
   ngAfterViewInit() {
-    this.spinnerService.show();
     window.setInterval(2000);
     this.criaMapa();
     window.setInterval(2000);
     this.loadForm();
-    this.spinnerService.hide();
     this.openTermos();
   }
 
@@ -168,6 +169,9 @@ export class MapComponent implements AfterViewInit {
     window.navigator.geolocation.watchPosition(function (data) {
 
       if (!self.map.getCenter() || (data.coords.latitude !== self.map.getCenter().lat()) || (data.coords.longitude !== self.map.getCenter().lng())) {
+        self.latitudeAtual = data.coords.latitude;
+        self.longitudeAtual = data.coords.longitude;
+
         self.mapCenter = new google.maps.LatLng(data.coords.latitude, data.coords.longitude);
         self.map.setCenter(self.mapCenter);
       }
@@ -212,10 +216,9 @@ export class MapComponent implements AfterViewInit {
 
   initAutocomplete(queryString) {
     var self = this;
-
+    var tipos = ['restaurant']
     if (queryString !== undefined && queryString !== null && queryString !== "") {
       self.search.nativeElement.value = queryString;
-
 
       let searchBox = new google.maps.places.SearchBox(self.search.nativeElement);
       self.map.controls[google.maps.ControlPosition.TOP_LEFT].push(self.search.nativeElement);
@@ -273,7 +276,7 @@ export class MapComponent implements AfterViewInit {
           for (var i = 0; i < placeEach.length; i++) {
             timeout = i * 200;
           }
-         
+
           window.setTimeout(function () {
 
             let marker = self.addMarkPlace(place);
@@ -290,6 +293,7 @@ export class MapComponent implements AfterViewInit {
               self.latitudeTo = place.geometry.location.lat();
               self.longitudeTo = place.geometry.location.lng();
 
+              
             });
           }, timeout);
         }
@@ -315,9 +319,9 @@ export class MapComponent implements AfterViewInit {
       position: place.geometry.location,
       animation: google.maps.Animation.DROP
     })
-
+    
     self.markers.push(marker);
-
+  
     if (place.geometry.viewport) {
       bounds.union(place.geometry.viewport);
     } else {
@@ -420,11 +424,25 @@ export class MapComponent implements AfterViewInit {
         }
         places.forEach(function (place) {
           if (place) {
-            if (place.dadosAdicionais) {
-              self.placesInformation.unshift(place);
+
+            if( !(place.types.includes('restaurant') || place.types.includes('food')) ){
+              var action: string = 'OK';
+              self.snackBar.open("O retorno da busca possui estabelecimentos que não são restaurantes, por favor verifique a palavra chave de sua busca e tente novamente", action, {
+                duration: 1000000,
+                panelClass: ['success-snackbar']
+              });
+              self.nenhumEncontrado = self.placesInformation.length === 0;
+
             } else {
-              self.placesInformation.push(place);
+              if (place.dadosAdicionais) {
+                self.placesInformation.unshift(place);
+              } else {
+                self.placesInformation.push(place);
+              }
+
+              self.nenhumEncontrado = false;
             }
+
           }
         });
       }
@@ -464,7 +482,7 @@ export class MapComponent implements AfterViewInit {
 
   openTermos() {
     var user = JSON.parse(localStorage.getItem('user'));
-    if(user.primeiroAcesso == true){
+    if (user.primeiroAcesso == true) {
       this.termosDialog.open(DialogTermosComponent, {
         width: '920px',
         height: '500px'
